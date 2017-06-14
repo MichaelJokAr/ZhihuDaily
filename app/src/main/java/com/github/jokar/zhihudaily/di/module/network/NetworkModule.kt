@@ -1,42 +1,26 @@
-package com.sunagy.mazcloud.model.network
+package com.github.jokar.zhihudaily.di.module
 
 import com.github.jokar.zhihudaily.BuildConfig
+import dagger.Module
+import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 /**
- * Created by JokAr on 2017/6/11.
+ * Created by JokAr on 2017/6/14.
  */
-class NetworkConfig() {
+@Module
+class NetworkModule {
     private val DEFAULT_TIMEOUT = 15
-    private val BASE_URL = ""
+    private val BASE_URL = "https://news-at.zhihu.com/api/4/"
 
-    lateinit var retrofit: Retrofit
-
-    init {
-        initRetrofit()
-    }
-
-    companion object {
-        @Volatile
-        var INSTANCE: NetworkConfig? = null
-
-        fun getInstance(): NetworkConfig {
-            if (INSTANCE == null) {
-                synchronized(NetworkConfig::class) {
-                    if (INSTANCE == null) {
-                        INSTANCE = NetworkConfig()
-                    }
-                }
-            }
-            return INSTANCE!!
-        }
-    }
-
-    private fun initRetrofit() {
+    @Singleton
+    @Provides
+    fun providerRetrofit(): Retrofit {
         val interceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG)
             interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -50,12 +34,10 @@ class NetworkConfig() {
                 .readTimeout(DEFAULT_TIMEOUT.toLong(), TimeUnit.SECONDS)
                 .build()
 
-        retrofit = Retrofit.Builder()
+        return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
     }
-
-
 }
