@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOL_SVERSION
+    defaultConfig {
+        applicationId APPLICATIONID
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    //
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    //
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    //
+    compileOptions {
+        encoding "UTF-8"
+    }
+    //
+    dexOptions {
+        javaMaxHeapSize '4g'
+        preDexLibraries = false
+    }
+}
+
+//使用生成文件
+kapt {
+    generateStubs = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+    //support
+    implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
+    //rxJava
+    implementation "io.reactivex.rxjava2:rxjava:$RXJAVA2_VERSION"
+    implementation 'io.reactivex.rxjava2:rxandroid:latest.release'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    //network - squareup
+    implementation 'com.squareup.retrofit2:retrofit:latest.release'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:latest.release'
+    implementation "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"
+    implementation 'com.squareup.okhttp3:logging-interceptor:latest.release'
+    //图片加载工具
+    implementation "com.github.bumptech.glide:glide:$GLIDE_VERSION"
+    kapt "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$GLIDE_VERSION"
+    //json -google
+    implementation 'com.google.code.gson:gson:latest.release'
+    //tabLayout
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.0@aar'
+    //内存检测-leakcanary
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$LEAKCANARY_VERSION"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
+}
