@@ -7,7 +7,6 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
-import com.github.jokar.zhihudaily.MainActivity
 import com.github.jokar.zhihudaily.R
 import kotlinx.android.synthetic.main.activity_splash.*
 

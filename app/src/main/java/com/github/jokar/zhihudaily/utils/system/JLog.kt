@@ -11,4 +11,13 @@ object JLog {
     fun d(value: String?) {
         Log.d(TAG, value ?: "")
     }
+
+    fun e(e: Throwable) {
+        e.printStackTrace()
+        e(e.message)
+    }
+
+    fun e(value: String?) {
+        Log.e(TAG, value ?: "")
+    }
 }

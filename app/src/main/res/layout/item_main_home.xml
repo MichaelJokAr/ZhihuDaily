@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="48dp">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawableLeft="@mipmap/home"
+        android:drawablePadding="15dp"
+        android:gravity="center|left"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="首页"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15dp"/>
+</LinearLayout>

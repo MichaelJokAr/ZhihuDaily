@@ -64,6 +64,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:latest.release'
     implementation "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"
     implementation 'com.squareup.okhttp3:logging-interceptor:latest.release'
+    implementation 'com.squareup.retrofit2:converter-gson:latest.release'
     //图片加载工具
     implementation "com.github.bumptech.glide:glide:$GLIDE_VERSION"
     kapt "com.github.bumptech.glide:compiler:$GLIDE_VERSION"

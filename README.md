@@ -1,5 +1,5 @@
-### ZhihuDayly 
-ZhihuDayly for Kotlin
+### ZhihuDaily 
+ZhihuDaily for Kotlin
 
 ### Dev
 - Android-Studio:3.0
