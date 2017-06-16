@@ -1,4 +1,4 @@
-package com.github.jokar.zhihudaily.ui.activity
+package com.github.jokar.zhihudaily.ui.view
 
 import com.github.jokar.zhihudaily.model.entities.MainMenu
 

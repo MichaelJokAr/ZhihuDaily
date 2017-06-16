@@ -5,7 +5,8 @@ import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.model.entities.ThemeEntities
 import com.github.jokar.zhihudaily.model.event.MainModel
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
-import com.github.jokar.zhihudaily.ui.activity.MainView
+import com.github.jokar.zhihudaily.ui.view.MainView
+import com.github.jokar.zhihudaily.utils.system.JLog
 import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
 
@@ -19,7 +20,8 @@ class MainPresenter @Inject constructor(var mainModel: MainModel?, var view: Mai
         mainModel?.getThemes(transformer,
                 object : ListDataCallBack<MainMenu> {
                     override fun data(data: ArrayList<MainMenu>) {
-
+                        JLog.d(data.toString())
+                        view?.loadThemes(data)
                     }
                 })
     }
