@@ -1,6 +1,6 @@
 package com.github.jokar.zhihudaily.utils.system
 
-import android.util.Log
+import com.elvishew.xlog.XLog
 
 /**
  * Created by JokAr on 2017/6/14.
@@ -9,7 +9,7 @@ object JLog {
     val TAG: String = "ZhihuDaily"
 
     fun d(value: String?) {
-        Log.d(TAG, value ?: "")
+        XLog.tag(TAG).d(value ?: "")
     }
 
     fun e(e: Throwable) {
@@ -18,6 +18,6 @@ object JLog {
     }
 
     fun e(value: String?) {
-        Log.e(TAG, value ?: "")
+        XLog.tag(TAG).e(value ?: "")
     }
 }

@@ -82,4 +82,6 @@ dependencies {
     compile 'com.google.dagger:dagger-android-support:2.11'
     kapt  'com.google.dagger:dagger-android-processor:2.11'
     kapt 'com.google.dagger:dagger-compiler:2.11'
+    //xLog
+    implementation 'com.elvishew:xlog:latest.release'
 }

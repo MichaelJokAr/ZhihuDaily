@@ -10,9 +10,9 @@
         android:drawableLeft="@mipmap/home"
         android:drawablePadding="15dp"
         android:gravity="center|left"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="20dp"
         android:text="首页"
         android:textColor="@color/colorPrimary"
-        android:textSize="15dp"/>
+        android:textSize="17dp"/>
 </LinearLayout>

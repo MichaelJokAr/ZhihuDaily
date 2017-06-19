@@ -2,6 +2,9 @@ package com.github.jokar.zhihudaily.app
 
 import android.app.Activity
 import android.app.Application
+import com.elvishew.xlog.LogLevel
+import com.elvishew.xlog.XLog
+import com.github.jokar.zhihudaily.BuildConfig
 import com.github.jokar.zhihudaily.di.component.DaggerAppComponent
 import com.github.jokar.zhihudaily.di.component.network.DaggerNetworkComponent
 import com.github.jokar.zhihudaily.di.component.network.NetworkComponent
@@ -47,8 +50,13 @@ class MyApplication : Application(), HasActivityInjector {
         }
         LeakCanary.install(this)
 
-
         DaggerAppComponent.create()
                 .inject(this)
+
+        Thread {
+            //初始化xLog
+            XLog.init(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE)
+        }.start()
+
     }
 }

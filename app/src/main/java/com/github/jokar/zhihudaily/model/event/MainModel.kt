@@ -8,7 +8,6 @@ import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.model.entities.ThemeEntities
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
 import com.github.jokar.zhihudaily.model.network.services.ThemeServices
-import com.github.jokar.zhihudaily.utils.system.JLog
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -48,10 +47,17 @@ class MainModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     result ->
+                    var menu: MainMenu = MainMenu(null, "首页", null, null)
+                    menu.isClick = true
+                    result.add(0, menu)
                     callBack.data(result)
                 }, {
-                    error ->
-                    callBack.onError(error)
+                    _ ->
+                    var array: ArrayList<MainMenu> = ArrayList()
+                    var menu: MainMenu = MainMenu(null, "首页", null, null)
+                    menu.isClick = true
+                    array.add(menu)
+                    callBack.data(array)
                 }, {
                     callBack.onComplete()
                 }, {
