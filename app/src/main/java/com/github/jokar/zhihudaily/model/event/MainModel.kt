@@ -25,7 +25,7 @@ class MainModel {
 
     init {
         DaggerThemeComponent.builder()
-                .networkComponent(MyApplication.getNetComponent())
+                .networkComponent(MyApplication.getInstance().getNetComponent())
                 .themeModule(ThemeModule())
                 .build()
                 .inject(this)
