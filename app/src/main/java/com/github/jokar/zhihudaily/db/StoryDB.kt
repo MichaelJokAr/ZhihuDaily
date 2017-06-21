@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
+import com.github.jokar.zhihudaily.utils.system.JLog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -43,16 +44,28 @@ class StoryDB(var context: Context) {
         val db = dbHelper.writableDatabase
         if (db.isOpen) {
             var gson: Gson? = Gson()
-            stores?.forEach({
-                var contentValues = ContentValues()
-                contentValues.put(id, it.id)
-                var json: String = gson?.toJson(images)!!
-                contentValues.put(images, json)
-                contentValues.put(title, it.title)
-                contentValues.put(this.date, it.date)
-                db.insert(tableName, null, contentValues)
-            })
-            gson = null
+            //开始事务
+            db.beginTransaction()
+            try {
+                stores?.forEach({
+                    var contentValues = ContentValues()
+                    contentValues.put(id, it.id)
+                    var json: String = gson?.toJson(images)!!
+                    contentValues.put(images, json)
+                    contentValues.put(title, it.title)
+                    contentValues.put(this.date, it.date)
+                    db.insert(tableName, null, contentValues)
+                })
+                //设置事务处理成功
+                db.setTransactionSuccessful()
+            } catch(e: Exception) {
+                JLog.e(e)
+            } finally {
+                //结束事务
+                db.endTransaction()
+                gson = null
+            }
+
         }
     }
     /**
