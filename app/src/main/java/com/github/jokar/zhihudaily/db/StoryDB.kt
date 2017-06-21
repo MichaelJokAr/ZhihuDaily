@@ -40,7 +40,7 @@ class StoryDB(var context: Context) {
         }
     }
 
-    fun insert(stores:ArrayList<StoryEntities>?){
+    fun insert(stores: ArrayList<StoryEntities>?) {
         val db = dbHelper.writableDatabase
         if (db.isOpen) {
             var gson: Gson? = Gson()
@@ -50,7 +50,7 @@ class StoryDB(var context: Context) {
                 stores?.forEach({
                     var contentValues = ContentValues()
                     contentValues.put(id, it.id)
-                    var json: String = gson?.toJson(images)!!
+                    var json: String = gson?.toJson(it.images)!!
                     contentValues.put(images, json)
                     contentValues.put(title, it.title)
                     contentValues.put(this.date, it.date)
@@ -68,6 +68,7 @@ class StoryDB(var context: Context) {
 
         }
     }
+
     /**
      *更新点赞
      */
@@ -127,6 +128,7 @@ class StoryDB(var context: Context) {
                 arrayList.add(story)
             }
             gson = null
+            return arrayList
         }
 
         return null
@@ -135,7 +137,7 @@ class StoryDB(var context: Context) {
     /**
      * 根据时间获取story
      */
-    fun getStoryByDate(dateTime: Long): ArrayList<StoryEntities>?{
+    fun getStoryByDate(dateTime: Long): ArrayList<StoryEntities>? {
         val db = dbHelper.readableDatabase
         if (db.isOpen) {
             var arrayList: ArrayList<StoryEntities> = ArrayList()
@@ -146,6 +148,7 @@ class StoryDB(var context: Context) {
                 arrayList.add(story)
             }
             gson = null
+            return arrayList
         }
 
         return null

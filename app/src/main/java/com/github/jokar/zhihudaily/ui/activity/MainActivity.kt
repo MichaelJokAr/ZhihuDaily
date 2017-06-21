@@ -1,28 +1,42 @@
 package com.github.jokar.zhihudaily.ui.activity
 
+
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.presenter.MainPresenter
 import com.github.jokar.zhihudaily.ui.adapter.main.MainAdapter
+import com.github.jokar.zhihudaily.ui.adapter.viewpager.ViewPagerAdapter
+import com.github.jokar.zhihudaily.ui.fragment.MainFragment
 import com.github.jokar.zhihudaily.ui.view.MainView
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), MainView {
+class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
+    @Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentInjector
+    }
 
     @Inject
     lateinit var presenter: MainPresenter
 
     var adapter: MainAdapter? = null
     var menuList: ArrayList<MainMenu>? = null
+    var pagerAdapter: ViewPagerAdapter? = null
 
     var menuChooseIndex: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +58,8 @@ class MainActivity : BaseActivity(), MainView {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
 
+        pagerAdapter = ViewPagerAdapter(supportFragmentManager)
+
     }
 
     override fun onWindowInitialized() {
@@ -52,15 +68,13 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     override fun loadThemes(data: ArrayList<MainMenu>) {
-        menuList = data.clone() as ArrayList<MainMenu>
+        menuList = data
 
         adapter = MainAdapter(this, bindUntilEvent(ActivityEvent.DESTROY),
                 menuList!!)
         recyclerView.adapter = adapter
         adapter?.adapterClickListener = object : MainAdapter.AdapterClickListener {
             override fun itemClickListener(position: Int) {
-
-
                 if (position != menuChooseIndex) {
                     menuList?.get(position - 1)?.isClick = true
                     menuList?.get(menuChooseIndex - 1)?.isClick = false
@@ -72,10 +86,12 @@ class MainActivity : BaseActivity(), MainView {
             }
 
             override fun collectionClick() {
-
             }
-
         }
+
+        pagerAdapter?.addFragment(MainFragment(), "主页")
+        viewPager.adapter = pagerAdapter
+
     }
 
 

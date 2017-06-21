@@ -12,6 +12,18 @@ object JLog {
         XLog.tag(TAG).d(value ?: "")
     }
 
+    fun d(value: Long?) {
+        XLog.tag(TAG).d(value ?: "")
+    }
+
+
+    fun w(value: String?) {
+        XLog.tag(TAG).w(value ?: "")
+    }
+
+    fun w(value: Long?) {
+        XLog.tag(TAG).w(value ?: "")
+    }
     fun e(e: Throwable) {
         e.printStackTrace()
         e(e.message)

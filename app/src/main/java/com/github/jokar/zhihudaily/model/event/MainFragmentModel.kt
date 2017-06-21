@@ -1,15 +1,19 @@
 package com.github.jokar.zhihudaily.model.event
 
+import android.content.Context
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.db.StoryDB
+import com.github.jokar.zhihudaily.di.component.db.DaggerStoryDBComponent
 import com.github.jokar.zhihudaily.di.component.network.DaggerLatestComponent
+import com.github.jokar.zhihudaily.di.module.db.StoryDBModule
 import com.github.jokar.zhihudaily.di.module.network.LatestModule
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
 import com.github.jokar.zhihudaily.model.network.result.ListResourceObserver
 import com.github.jokar.zhihudaily.model.network.services.LatestService
+import com.github.jokar.zhihudaily.utils.system.JLog
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.Observable
@@ -23,7 +27,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by JokAr on 2017/6/20.
  */
-class MainFragmentModel {
+class MainFragmentModel(var context: Context) {
 
     @Inject
     lateinit var retrofit: Retrofit
@@ -35,9 +39,13 @@ class MainFragmentModel {
     lateinit var storyDB: StoryDB
 
     init {
+        val storyDBComponent = DaggerStoryDBComponent.builder()
+                .storyDBModule(StoryDBModule(context))
+                .build()
+
         DaggerLatestComponent.builder()
-                .storyDBComponent(MyApplication.getInstance().getStoryDBComponent())
-                .networkComponent(MyApplication.getInstance().getNetComponent())
+                .storyDBComponent(storyDBComponent)
+                .networkComponent(MyApplication.getNetComponent())
                 .latestModule(LatestModule())
                 .build()
                 .inject(this)
@@ -55,7 +63,7 @@ class MainFragmentModel {
         Observable.create(ObservableOnSubscribe<ArrayList<StoryEntities>> { e ->
             val calendar = Calendar.getInstance()
             var year: Int = calendar.get(Calendar.YEAR)
-            var month: Int = calendar.get(Calendar.MONTH)
+            var month: Int = calendar.get(Calendar.MONTH) + 1
             var day: Int = calendar.get(Calendar.DAY_OF_MONTH)
 
             var date: Long = 0
@@ -64,6 +72,7 @@ class MainFragmentModel {
             date += month
             date += day
             //先检测本地是否有
+            JLog.w(date)
             val stores: ArrayList<StoryEntities>? = storyDB.getStoryByDate(date)
             //本地有就直接返回本地数据
             if (stores != null && stores?.size > 0) {
@@ -74,6 +83,14 @@ class MainFragmentModel {
                 e?.onNext(ArrayList())
             }
         })
+                .filter { t ->
+                    if (t != null && t.size > 0) {
+                        callBack.data(t)
+                        callBack.onComplete()
+                        true
+                    }
+                    false
+                }
                 .flatMap {
                     service.getTheme()
                 }
