@@ -85,4 +85,5 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.11'
     //xLog
     implementation 'com.elvishew:xlog:latest.release'
+    implementation 'com.romandanylyk:pageindicatorview:latest.release'
 }

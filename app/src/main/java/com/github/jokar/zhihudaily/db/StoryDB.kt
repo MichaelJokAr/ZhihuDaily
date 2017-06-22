@@ -44,8 +44,7 @@ class StoryDB(var context: Context) {
         val db = dbHelper.writableDatabase
         if (db.isOpen) {
             var gson: Gson? = Gson()
-            //开始事务
-            db.beginTransaction()
+
             try {
                 stores?.forEach({
                     var contentValues = ContentValues()
@@ -56,16 +55,11 @@ class StoryDB(var context: Context) {
                     contentValues.put(this.date, it.date)
                     db.insert(tableName, null, contentValues)
                 })
-                //设置事务处理成功
-                db.setTransactionSuccessful()
             } catch(e: Exception) {
                 JLog.e(e)
             } finally {
-                //结束事务
-                db.endTransaction()
                 gson = null
             }
-
         }
     }
 
@@ -147,6 +141,7 @@ class StoryDB(var context: Context) {
                 var story: StoryEntities = getStory(cursor, gson)
                 arrayList.add(story)
             }
+            cursor.close()
             gson = null
             return arrayList
         }

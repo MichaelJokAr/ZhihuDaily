@@ -48,7 +48,7 @@ abstract class RecyclerOnScrollListener(recyclerView: RecyclerView) :RecyclerVie
             previousTotal = mHelper.getItemCount()
     }
 
-    fun setCanLoade(loading: Boolean) {
+    fun setCanLoad(loading: Boolean) {
         this.loading = loading
         if (loading)
             previousTotal = mHelper.getItemCount()

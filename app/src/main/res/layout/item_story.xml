@@ -31,7 +31,7 @@
             android:layout_height="0dp"
             android:layout_gravity="right|top"
             android:scaleType="fitXY"
-            android:src="@mipmap/splash"
+            android:src="@mipmap/image_small_default"
             app:layout_heightPercent="100%"
             app:layout_widthPercent="25%" />
     </android.support.percent.PercentFrameLayout>

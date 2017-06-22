@@ -1,9 +1,8 @@
 package com.github.jokar.zhihudaily.di.module.presenter
 
-import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
 import com.github.jokar.zhihudaily.model.event.MainFragmentModel
 import com.github.jokar.zhihudaily.ui.fragment.MainFragment
-import com.github.jokar.zhihudaily.ui.view.common.LoadMoreView
+import com.github.jokar.zhihudaily.ui.view.common.StoryView
 import dagger.Module
 import dagger.Provides
 
@@ -19,7 +18,7 @@ class MainFragmentPresenterModule {
     }
 
     @Provides
-    fun viewProvider(fragment: MainFragment): LoadMoreView<StoryEntities> {
+    fun viewProvider(fragment: MainFragment): StoryView {
         return fragment
     }
 }
