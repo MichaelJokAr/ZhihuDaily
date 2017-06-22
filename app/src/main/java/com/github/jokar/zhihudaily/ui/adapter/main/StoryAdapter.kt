@@ -19,7 +19,6 @@ import com.github.jokar.zhihudaily.ui.adapter.viewpager.ViewPagerAdapter
 import com.github.jokar.zhihudaily.ui.fragment.TopStoryFragment
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
-import com.github.jokar.zhihudaily.widget.viewpager.AutoScrollViewPager
 import com.rd.PageIndicatorView
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.functions.Consumer
@@ -60,7 +59,7 @@ class StoryAdapter(context: Context,
     }
 
     private fun setHeadView(viewHolder: BaseViewHolder) {
-
+        //TODO rcyclerView滚动时顶部view会被回收，再滚动到顶部时会重新走加载流程，原用户选择的页面状态会丢失
         var holder: HeadHolder = viewHolder as HeadHolder
         var pagerAdapter: ViewPagerAdapter = ViewPagerAdapter(fm)
         topStories.forEach({
@@ -72,9 +71,11 @@ class StoryAdapter(context: Context,
         })
         holder.viewPager.adapter = pagerAdapter
         holder.viewPager.offscreenPageLimit = topStories.size
-//        holder.viewPager.startAutoScroll()
+
         holder.pageIndicatorView.setViewPager(holder.viewPager)
 
+        //
+        holder.tvTitle.text = topStories[0].title
         holder.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrollStateChanged(p0: Int) {
@@ -124,7 +125,7 @@ class StoryAdapter(context: Context,
     }
 
     class HeadHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context) {
-        var viewPager: AutoScrollViewPager = find(R.id.viewPager)
+        var viewPager: ViewPager = find(R.id.viewPager)
         var tvTitle: TextView = find(R.id.tvTitle)
         var pageIndicatorView: PageIndicatorView = find(R.id.pageIndicatorView)
 

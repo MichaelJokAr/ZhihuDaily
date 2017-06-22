@@ -11,7 +11,7 @@ class DbOpenHelper(context: Context) : SQLiteOpenHelper(context, "daily.db", nul
 
     val DAILY_TABLE: String = "CREATE TABLE " +
             "story (" +
-            "id INTEGER PRIMARY KEY, " +
+            "_id INTEGER PRIMARY KEY, " +
             "images TEXT, " +
             "title TEXT, " +
             "read INTEGER DEFAULT 0, " +
@@ -22,7 +22,7 @@ class DbOpenHelper(context: Context) : SQLiteOpenHelper(context, "daily.db", nul
     val TOP_STORY_TABLE: String
             = "CREATE TABLE " +
             "topStory (" +
-            "id INTEGER PRIMARY KEY, " +
+            "_id INTEGER PRIMARY KEY, " +
             "image TEXT, " +
             "title TEXT, " +
             "date INTEGER); "

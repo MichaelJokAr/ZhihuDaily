@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken
 class StoryDB(var context: Context) {
 
     val tableName: String = "story"
-    val id: String = "id"
+    val id: String = "_id"
     val images: String = "images"
     val title: String = "title"
     val read: String = "read"
@@ -46,6 +46,8 @@ class StoryDB(var context: Context) {
             var gson: Gson? = Gson()
 
             try {
+                //开始事务
+                db.beginTransaction()
                 stores?.forEach({
                     var contentValues = ContentValues()
                     contentValues.put(id, it.id)
@@ -55,9 +57,13 @@ class StoryDB(var context: Context) {
                     contentValues.put(this.date, it.date)
                     db.insert(tableName, null, contentValues)
                 })
+                //设置事务处理成功
+                db.setTransactionSuccessful()
             } catch(e: Exception) {
                 JLog.e(e)
             } finally {
+                //结束事务
+                db.endTransaction()
                 gson = null
             }
         }

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
-    <com.github.jokar.zhihudaily.widget.viewpager.AutoScrollViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,15 +29,18 @@
             android:padding="10dp"
             android:text=""
             android:textColor="@android:color/white"
-            android:textSize="20dp"/>
+            android:textSize="20dp" />
 
         <com.rd.PageIndicatorView
             android:id="@+id/pageIndicatorView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             app:piv_padding="5dp"
             app:piv_radius="4dp"
-            android:layout_marginBottom="10dp"/>
+            app:piv_animationType="drop"
+            app:piv_viewPager="@id/viewPager"
+            />
     </LinearLayout>
 
 </RelativeLayout>

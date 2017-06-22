@@ -12,7 +12,7 @@ import com.github.jokar.zhihudaily.utils.system.JLog
 class TopStoryDB(var context: Context) {
 
     val tableName: String = "topStory"
-    val id: String = "id"
+    val id: String = "_id"
     val image: String = "image"
     val title: String = "title"
     val date: String = "date"
@@ -23,6 +23,8 @@ class TopStoryDB(var context: Context) {
         val db = dbHelper.writableDatabase
         if (db.isOpen) {
             try {
+                //开始事务
+                db.beginTransaction()
                 stories?.forEach({
                     var contentValues = ContentValues()
                     contentValues.put(id, it.id)
@@ -31,10 +33,13 @@ class TopStoryDB(var context: Context) {
                     contentValues.put(this.date, date)
                     db.insert(tableName, null, contentValues)
                 })
-
+                //设置事务处理成功
+                db.setTransactionSuccessful()
             } catch(e: Exception) {
                 JLog.e(e)
             } finally {
+                //结束事务
+                db.endTransaction()
             }
         }
     }

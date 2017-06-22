@@ -120,9 +120,10 @@ class MainFragmentModel(var context: Context) {
                     if (t.stories != null && t.top_stories != null) {
                         callBack.data(t)
                         callBack.onComplete()
-                        false
+                        JLog.w("has Data")
+                        true
                     }
-                    true
+                    false
                 }
                 .flatMap {
                     latestService.getTheme()

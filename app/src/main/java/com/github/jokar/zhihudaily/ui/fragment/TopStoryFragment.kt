@@ -1,6 +1,7 @@
 package com.github.jokar.zhihudaily.ui.fragment
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,24 +13,22 @@ import com.github.jokar.zhihudaily.widget.LazyFragment
 /**
  * Created by JokAr on 2017/6/22.
  */
-class TopStoryFragment : LazyFragment() {
+class TopStoryFragment : Fragment() {
     var image: ImageView? = null
     var imageUrl: String = ""
+
     override fun setArguments(args: Bundle) {
         super.setArguments(args)
         imageUrl = args.getString("imageUrl")
     }
 
-    override fun getView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.item_top_story, container, false)
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater?.inflate(R.layout.item_top_story, container, false)
     }
 
-    override fun initViews(view: View) {
-        image = view.findViewById(R.id.image) as ImageView?
-    }
-
-    override fun loadData() {
-        super.loadData()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        image = view?.findViewById(R.id.image) as ImageView?
 
         ImageLoader.loadImage(context,
                 imageUrl,
@@ -39,6 +38,5 @@ class TopStoryFragment : LazyFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        image = null
     }
 }
