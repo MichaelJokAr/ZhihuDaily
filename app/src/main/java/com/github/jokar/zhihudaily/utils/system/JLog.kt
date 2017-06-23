@@ -16,6 +16,13 @@ object JLog {
         XLog.tag(TAG).d(value ?: "")
     }
 
+    fun d(value: Int?) {
+        XLog.tag(TAG).d(value ?: "")
+    }
+
+    fun d(value: Boolean?) {
+        XLog.tag(TAG).d(value ?: "")
+    }
 
     fun w(value: String?) {
         XLog.tag(TAG).w(value ?: "")
@@ -24,6 +31,7 @@ object JLog {
     fun w(value: Long?) {
         XLog.tag(TAG).w(value ?: "")
     }
+
     fun e(e: Throwable) {
         e.printStackTrace()
         e(e.message)
@@ -32,4 +40,5 @@ object JLog {
     fun e(value: String?) {
         XLog.tag(TAG).e(value ?: "")
     }
+
 }

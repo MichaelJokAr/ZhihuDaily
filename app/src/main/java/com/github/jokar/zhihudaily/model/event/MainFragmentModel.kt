@@ -27,7 +27,6 @@ import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
 import retrofit2.Retrofit
 import java.util.*
 import javax.inject.Inject
@@ -115,15 +114,15 @@ class MainFragmentModel(var context: Context) {
 
             e.onNext(latestStory)
 
+
         })
                 .filter { t ->
                     if (t.stories != null && t.top_stories != null) {
                         callBack.data(t)
                         callBack.onComplete()
-                        JLog.w("has Data")
-                        true
+                        return@filter false
                     }
-                    false
+                    return@filter true
                 }
                 .flatMap {
                     latestService.getTheme()
@@ -184,9 +183,9 @@ class MainFragmentModel(var context: Context) {
                     if (t != null && t.size > 0) {
                         callBack.data(t)
                         callBack.onComplete()
-                        true
+                        return@filter false
                     }
-                    false
+                    return@filter true
                 }
                 .flatMap {
                     beforeService.getTheme(date)

@@ -78,6 +78,9 @@ dependencies {
     debugCompile "com.squareup.leakcanary:leakcanary-android:$LEAKCANARY_VERSION"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
+    //butterknife
+    compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
+    kapt "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
     //dagger2
     compile 'com.google.dagger:dagger-android:2.11'
     compile 'com.google.dagger:dagger-android-support:2.11'
@@ -85,5 +88,5 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.11'
     //xLog
     implementation 'com.elvishew:xlog:latest.release'
-    implementation 'com.romandanylyk:pageindicatorview:latest.release'
+    implementation 'com.romandanylyk:pageindicatorview:0.2.0@aar'
 }

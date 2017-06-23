@@ -2,9 +2,7 @@ package com.github.jokar.zhihudaily.ui.adapter.main
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Bundle
 import android.support.percent.PercentFrameLayout
-import android.support.v4.app.FragmentManager
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +13,12 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntities
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.adapter.base.LoadMoreAdapter
-import com.github.jokar.zhihudaily.ui.adapter.viewpager.ViewPagerAdapter
-import com.github.jokar.zhihudaily.ui.fragment.TopStoryFragment
+import com.github.jokar.zhihudaily.ui.adapter.viewpager.TopStoryAdapter
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
+import com.github.jokar.zhihudaily.utils.system.JLog
 import com.rd.PageIndicatorView
+import com.rd.draw.data.Orientation
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.functions.Consumer
 
@@ -30,8 +29,7 @@ import io.reactivex.functions.Consumer
 class StoryAdapter(context: Context,
                    data: ArrayList<StoryEntities>,
                    transformer: LifecycleTransformer<Any>,
-                   var topStories: ArrayList<TopStoryEntities>,
-                   var fm: FragmentManager)
+                   var topStories: ArrayList<TopStoryEntities>)
     : LoadMoreAdapter<StoryEntities>(context, data, transformer) {
 
     override fun bindView(viewHolder: BaseViewHolder, position: Int) {
@@ -58,38 +56,6 @@ class StoryAdapter(context: Context,
         }
     }
 
-    private fun setHeadView(viewHolder: BaseViewHolder) {
-        //TODO rcyclerView滚动时顶部view会被回收，再滚动到顶部时会重新走加载流程，原用户选择的页面状态会丢失
-        var holder: HeadHolder = viewHolder as HeadHolder
-        var pagerAdapter: ViewPagerAdapter = ViewPagerAdapter(fm)
-        topStories.forEach({
-            var fragment: TopStoryFragment = TopStoryFragment()
-            var bundle: Bundle = Bundle()
-            bundle.putString("imageUrl", it.image)
-            fragment.arguments = bundle
-            pagerAdapter.addFragment(fragment, "")
-        })
-        holder.viewPager.adapter = pagerAdapter
-        holder.viewPager.offscreenPageLimit = topStories.size
-
-        holder.pageIndicatorView.setViewPager(holder.viewPager)
-
-        //
-        holder.tvTitle.text = topStories[0].title
-        holder.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-
-            override fun onPageScrollStateChanged(p0: Int) {
-
-            }
-
-            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                holder.tvTitle.text = topStories[position].title
-            }
-        })
-    }
 
     override fun createHolder(parent: ViewGroup, viewType: Int): BaseViewHolder? {
         when (viewType) {
@@ -122,6 +88,38 @@ class StoryAdapter(context: Context,
             return 2
         }
         return 3
+    }
+
+    private fun setHeadView(viewHolder: BaseViewHolder) {
+        //TODO recyclerView滚动时顶部view会被回收，再滚动到顶部时会重新走加载流程，原用户选择的页面状态会丢失
+        var holder: HeadHolder = viewHolder as HeadHolder
+        var viewList: ArrayList<View> = arrayListOf()
+        topStories.forEach({
+            var view = inflater?.inflate(R.layout.item_top_story, null, false)
+            viewList.add(view!!)
+        })
+        //
+        var pagerAdapter: TopStoryAdapter? = TopStoryAdapter(context, viewList, topStories)
+        holder.viewPager.adapter = pagerAdapter
+        holder.viewPager.offscreenPageLimit = topStories.size
+
+        //
+        holder.tvTitle.text = topStories[0].title
+        holder.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(p0: Int) {
+
+            }
+
+            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                holder.tvTitle.text = topStories[position].title
+               JLog.d( holder.pageIndicatorView.selection)
+            }
+        })
+
+        holder.pageIndicatorView.setViewPager(holder.viewPager)
     }
 
     class HeadHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context) {
