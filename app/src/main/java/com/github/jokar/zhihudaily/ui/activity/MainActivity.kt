@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.MainMenu
+import com.github.jokar.zhihudaily.model.rxbus.RxBus
+import com.github.jokar.zhihudaily.model.rxbus.event.UpdateToolbarTitleEvent
 import com.github.jokar.zhihudaily.presenter.MainPresenter
 import com.github.jokar.zhihudaily.ui.adapter.main.MainAdapter
 import com.github.jokar.zhihudaily.ui.adapter.viewpager.ViewPagerAdapter
@@ -57,8 +59,15 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         //
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-
         pagerAdapter = ViewPagerAdapter(supportFragmentManager)
+
+        RxBus.getInstance()
+                .toMainThreadObservable(bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe { event ->
+                    if (event is UpdateToolbarTitleEvent) {
+                        toolbar.title = event.title
+                    }
+                }
 
     }
 

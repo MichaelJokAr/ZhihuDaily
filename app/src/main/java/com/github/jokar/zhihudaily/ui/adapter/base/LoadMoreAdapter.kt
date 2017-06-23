@@ -43,7 +43,15 @@ abstract class LoadMoreAdapter<T>(var context: Context,
         this.recyclerView = recyclerView
 
         onScrollListener = object : RecyclerOnScrollListener(this.recyclerView!!) {
-            override fun onLoadMore(currentPage: Int) {
+            override fun lastCompletelyVisibleItem(position: Int) {
+                itemClickListener?.lastCompletelyVisibleItem(position)
+            }
+
+            override fun firstCompletelyVisibleItem(position: Int) {
+                itemClickListener?.firstCompletelyVisibleItem(position)
+            }
+
+            override fun onLoadMore() {
                 itemClickListener?.loadMore()
             }
         }
@@ -54,7 +62,7 @@ abstract class LoadMoreAdapter<T>(var context: Context,
         registerAdapterDataObserver(mNotifyObserver)
 
         if (data != null) {
-            if ( data.size <= 3) {
+            if (data.size <= 3) {
                 setShowLoadMore(false)
             } else {
                 setShowLoadMore(true)
@@ -125,6 +133,11 @@ abstract class LoadMoreAdapter<T>(var context: Context,
 
     abstract fun getViewType(position: Int): Int
 
+    fun setFootClickable(clickable: Boolean) {
+        if (mFootViewHolder != null) {
+            mFootViewHolder?.setClickable(clickable)
+        }
+    }
 
     /**
      * 设置是否需要显示加载更多

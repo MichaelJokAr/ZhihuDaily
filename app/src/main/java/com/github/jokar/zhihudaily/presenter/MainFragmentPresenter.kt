@@ -6,8 +6,6 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
 import com.github.jokar.zhihudaily.model.event.MainFragmentModel
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
-import com.github.jokar.zhihudaily.ui.view.common.LoadMoreView
-import com.github.jokar.zhihudaily.ui.view.common.LoadMoreView2
 import com.github.jokar.zhihudaily.ui.view.common.StoryView
 import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
@@ -18,9 +16,9 @@ import javax.inject.Inject
 class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
                                                 var view: StoryView?) : BasePresenter {
 
-    fun getLatestStory(@NonNull transformer: LifecycleTransformer<LatestStory>){
+    fun getLatestStory(@NonNull transformer: LifecycleTransformer<LatestStory>) {
         model?.getLatestStory(transformer,
-                object :SingleDataCallBack<LatestStory>{
+                object : SingleDataCallBack<LatestStory> {
                     override fun data(data: LatestStory) {
                         view?.loadData(data)
                     }
@@ -42,8 +40,22 @@ class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
                 })
     }
 
-    fun getNextDayStory(){
+    fun getNextDayStory(date: Long,
+                        @NonNull transformer: LifecycleTransformer<LatestStory>) {
 
+        model?.getBeforeStory(date, transformer,
+                object : ListDataCallBack<StoryEntities> {
+
+                    override fun data(data: ArrayList<StoryEntities>) {
+                        view?.loadMoreData(data)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+                        view?.loadMoreFail(e)
+                    }
+
+                })
     }
 
     override fun destroy() {

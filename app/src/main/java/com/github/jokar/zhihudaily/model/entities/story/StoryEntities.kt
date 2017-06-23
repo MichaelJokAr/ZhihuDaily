@@ -15,17 +15,10 @@ data class StoryEntities(@SerializedName("images") var images: Array<String>?,
     var read: Int = 0
     var like: Int = 0
     var collection: Int = 0
+    var dateString:String = ""
 
     override fun toString(): String {
-        return "StoryEntities(images=${Arrays.toString(images)}, " +
-                "type=$type," +
-                "id=$id, " +
-                "ga_prefix=$ga_prefix," +
-                "title=$title, " +
-                "date=$date," +
-                "read=$read," +
-                "like=$like," +
-                "collection=$collection)"
+        return "StoryEntities(images=${Arrays.toString(images)}, type=$type, id=$id, ga_prefix=$ga_prefix, title=$title, date=$date, read=$read, like=$like, collection=$collection, dateString='$dateString')"
     }
 
 

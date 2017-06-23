@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
+import com.github.jokar.zhihudaily.utils.system.DateUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -163,6 +164,7 @@ class StoryDB(var context: Context) {
         var title = cursor.getString(cursor.getColumnIndex(title))
         var story: StoryEntities = StoryEntities(images, null, id, null, title)
         story.date = cursor.getLong(cursor.getColumnIndex(date))
+        story.dateString = DateUtils.judgmentTime(story.date)
         story.read = cursor.getInt(cursor.getColumnIndex(read))
         story.like = cursor.getInt(cursor.getColumnIndex(like))
         story.collection = cursor.getInt(cursor.getColumnIndex(collection))

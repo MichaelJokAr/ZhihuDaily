@@ -2,6 +2,7 @@ package com.github.jokar.zhihudaily.model.event
 
 import android.content.Context
 import android.support.annotation.NonNull
+import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.db.StoryDB
 import com.github.jokar.zhihudaily.db.TopStoryDB
@@ -21,6 +22,7 @@ import com.github.jokar.zhihudaily.model.network.result.ListResourceObserver
 import com.github.jokar.zhihudaily.model.network.result.SingleResourceObserver
 import com.github.jokar.zhihudaily.model.network.services.BeforeService
 import com.github.jokar.zhihudaily.model.network.services.LatestService
+import com.github.jokar.zhihudaily.utils.system.DateUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.LifecycleTransformer
@@ -101,9 +103,11 @@ class MainFragmentModel(var context: Context) {
                 //添加时间标题
                 var timeTitle: StoryEntities = StoryEntities(null, null, 0, null, null)
                 timeTitle.date = date
+                timeTitle.dateString = DateUtils.judgmentTime(date)
                 stories.add(0, timeTitle)
                 //添加head
                 var head: StoryEntities = StoryEntities(null, null, -1, null, null)
+//                head.dateString = context.getString(R.string.app_name)
                 stories.add(0, head)
                 latestStory.stories = stories
             }
@@ -133,6 +137,7 @@ class MainFragmentModel(var context: Context) {
                     //遍历，赋值时间
                     latestStory.stories?.forEach({
                         it.date = latestStory.date
+                        it.dateString = DateUtils.judgmentTime(latestStory.date)
                     })
                     //保存到数据表
                     storyDB.insert(latestStory.stories)
@@ -141,9 +146,11 @@ class MainFragmentModel(var context: Context) {
                     //添加时间标题
                     var timeTitle: StoryEntities = StoryEntities(null, null, 0, null, null)
                     timeTitle.date = latestStory.date
+                    timeTitle.dateString = DateUtils.judgmentTime(latestStory.date)
                     latestStory.stories?.add(0, timeTitle)
                     //添加head
                     var head: StoryEntities = StoryEntities(null, null, -1, null, null)
+//                    head.dateString = context.getString(R.string.app_name)
                     latestStory.stories?.add(0, head)
 
                     latestStory
@@ -164,13 +171,15 @@ class MainFragmentModel(var context: Context) {
 
         Observable.create(ObservableOnSubscribe<ArrayList<StoryEntities>> { e ->
             //先检测本地是否有
-            JLog.w(date)
-            val stories: ArrayList<StoryEntities>? = storyDB.getStoryByDate(date)
+            var beforeDate = DateUtils.getBeforeDate(date)
+
+            val stories: ArrayList<StoryEntities>? = storyDB.getStoryByDate(beforeDate)
             //本地有就直接返回本地数据
             if (stories != null && stories?.size > 0) {
                 //添加时间标题
                 var timeTitle: StoryEntities = StoryEntities(null, null, 0, null, null)
-                timeTitle.date = date
+                timeTitle.date = beforeDate
+                timeTitle.dateString = DateUtils.judgmentTime(beforeDate)
                 stories.add(0, timeTitle)
                 e?.onNext(stories)
                 e?.onComplete()
@@ -196,12 +205,14 @@ class MainFragmentModel(var context: Context) {
                     //遍历，赋值时间
                     stories?.forEach({
                         it.date = date
+                        it.dateString = DateUtils.judgmentTime(date)
                     })
                     //保存到数据表
                     storyDB.insert(stories)
                     //添加时间标题
                     var timeTitle: StoryEntities = StoryEntities(null, null, 0, null, null)
                     timeTitle.date = date
+                    timeTitle.dateString = DateUtils.judgmentTime(date)
                     stories?.add(0, timeTitle)
                     stories!!
                 }

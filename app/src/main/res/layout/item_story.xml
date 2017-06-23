@@ -9,7 +9,7 @@
         android:id="@+id/percentFrameLayout"
         android:layout_width="match_parent"
         android:background="?attr/selectableItemBackground"
-        android:layout_height="100dp"
+        android:layout_height="95dp"
         android:padding="10dp">
 
         <TextView

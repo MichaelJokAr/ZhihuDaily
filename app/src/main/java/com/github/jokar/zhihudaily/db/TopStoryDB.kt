@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntities
+import com.github.jokar.zhihudaily.utils.system.DateUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
 
 /**
@@ -68,6 +69,7 @@ class TopStoryDB(var context: Context) {
         var title = cursor.getString(cursor.getColumnIndex(title))
         var story: TopStoryEntities = TopStoryEntities(image, null, id, null, title)
         story.date = cursor.getLong(cursor.getColumnIndex(date))
+        story.dateString = DateUtils.judgmentTime(story.date)
         return story
     }
 }

@@ -5,7 +5,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-
+import com.github.jokar.zhihudaily.utils.system.JLog
 
 
 /**
@@ -36,5 +36,18 @@ object ImageLoader {
 
     }
 
+    /**
+     * 清除
 
+     * @param imageView
+     */
+    fun clear(context: Context, imageView: ImageView) {
+        // TODO: 2016/11/14 主动清除view,会导致频繁gc(暂未发现Bug)
+        try {
+            Glide.with(context).clear(imageView)
+        } catch (e: Exception) {
+            JLog.e(e)
+        }
+
+    }
 }

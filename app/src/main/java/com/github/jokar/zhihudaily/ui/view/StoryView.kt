@@ -37,4 +37,5 @@ interface StoryView {
      */
     fun loadMoreFail(e:Throwable)
 
+
 }

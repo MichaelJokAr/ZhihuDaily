@@ -13,6 +13,8 @@ import butterknife.Unbinder
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
+import com.github.jokar.zhihudaily.model.rxbus.RxBus
+import com.github.jokar.zhihudaily.model.rxbus.event.UpdateToolbarTitleEvent
 import com.github.jokar.zhihudaily.presenter.MainFragmentPresenter
 import com.github.jokar.zhihudaily.ui.adapter.base.LoadMoreAdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.main.StoryAdapter
@@ -84,16 +86,23 @@ class MainFragment : LazyFragment(), StoryView {
                     data.top_stories!!)
             recyclerView.adapter = adapter
             adapter?.itemClickListener = object : LoadMoreAdapterItemClickListener {
+                override fun firstCompletelyVisibleItem(position: Int) {
+                    super.firstCompletelyVisibleItem(position)
+                    //更新
+                    RxBus.getInstance().post(UpdateToolbarTitleEvent(arrayList!![position].dateString))
+                }
+
                 override fun itemClickListener(position: Int) {
 
                 }
 
                 override fun loadMore() {
-
+                    getMoreData()
                 }
 
                 override fun footViewClick() {
-
+                    adapter?.setFootClickable(false)
+                    getMoreData()
                 }
 
             }
@@ -125,6 +134,9 @@ class MainFragment : LazyFragment(), StoryView {
      * 加载更多数据
      */
     override fun loadMoreData(data: ArrayList<StoryEntities>) {
+        val size = data.size
+        arrayList?.addAll(data)
+        adapter?.notifyItemRangeInserted(arrayList?.size!! - size, size)
 
     }
 
@@ -132,12 +144,21 @@ class MainFragment : LazyFragment(), StoryView {
      * 请求/加载更多失败
      */
     override fun loadMoreFail(e: Throwable) {
+        adapter?.setFootClickable(true)
+    }
 
+    /**
+     * 获取下一天数据
+     */
+    fun getMoreData() {
+
+        presenter?.getNextDayStory(arrayList?.get(arrayList?.size!! - 1)?.date!!, bindUntilEvent(FragmentEvent.DESTROY_VIEW))
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         bind?.unbind()
+        arrayList = null
         presenter?.destroy()
     }
 }

@@ -18,7 +18,6 @@ import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.rd.PageIndicatorView
-import com.rd.draw.data.Orientation
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.functions.Consumer
 
@@ -40,7 +39,7 @@ class StoryAdapter(context: Context,
             }
             1 -> {
                 var holder: TimeHolder = viewHolder as TimeHolder
-                holder.text.text = storyEntities.date.toString()
+                holder.text.text = storyEntities.dateString
             }
             2, 3 -> {
                 var holder: ViewHolder = viewHolder as ViewHolder
@@ -90,6 +89,13 @@ class StoryAdapter(context: Context,
         return 3
     }
 
+    override fun onViewRecycled(holder: BaseViewHolder?) {
+        super.onViewRecycled(holder)
+        if (holder is ViewHolder) {
+            ImageLoader.clear(context, holder.image)
+        }
+    }
+
     private fun setHeadView(viewHolder: BaseViewHolder) {
         //TODO recyclerView滚动时顶部view会被回收，再滚动到顶部时会重新走加载流程，原用户选择的页面状态会丢失
         var holder: HeadHolder = viewHolder as HeadHolder
@@ -115,7 +121,7 @@ class StoryAdapter(context: Context,
 
             override fun onPageSelected(position: Int) {
                 holder.tvTitle.text = topStories[position].title
-               JLog.d( holder.pageIndicatorView.selection)
+                JLog.d(holder.pageIndicatorView.selection)
             }
         })
 
