@@ -8,11 +8,13 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
+import com.github.jokar.zhihudaily.utils.system.JLog
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_story_detail.*
 import kotlinx.android.synthetic.main.common_load.*
 import javax.inject.Inject
+
 
 /**
  * Created by JokAr on 2017/6/25.
@@ -29,15 +31,18 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail> {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_story_detail)
+        initToolbar(toolbar, "")
         id = intent.getIntExtra("id", 0)
 
         nestedScrollView.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
+            override fun onScrollChange(v: NestedScrollView?, x: Int, y: Int,
+                                        oldX: Int, oldY: Int) {
+                JLog.d("y $y")
+                rlTop.scrollTo(x, -y / 2)
 
-            override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int,
-                                        oldScrollX: Int, oldScrollY: Int) {
-                webView.scrollTo(scrollX, oldScrollY / 3)
             }
         })
+
     }
 
     override fun onWindowInitialized() {
