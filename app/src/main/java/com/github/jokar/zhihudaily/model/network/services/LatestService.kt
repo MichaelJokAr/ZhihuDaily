@@ -13,5 +13,5 @@ interface LatestService {
      * 获取最新消息
      */
     @GET("news/latest")
-    fun getTheme(): Observable<LatestStory>
+    fun getStories(): Observable<LatestStory>
 }

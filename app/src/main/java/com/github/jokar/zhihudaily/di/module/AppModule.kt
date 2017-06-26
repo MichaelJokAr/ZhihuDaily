@@ -4,6 +4,7 @@ import android.content.Context
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.subComponent.MainFragmentSubComponent
 import com.github.jokar.zhihudaily.di.subComponent.MainSubComponent
+import com.github.jokar.zhihudaily.di.subComponent.StoryDetailSubComponent
 import dagger.Module
 import dagger.Provides
 
@@ -12,7 +13,8 @@ import dagger.Provides
  * Created by JokAr on 2017/6/15.
  */
 @Module(subcomponents = arrayOf(MainSubComponent::class,
-        MainFragmentSubComponent::class))
+        MainFragmentSubComponent::class,
+        StoryDetailSubComponent::class))
 class AppModule {
 
     @Provides

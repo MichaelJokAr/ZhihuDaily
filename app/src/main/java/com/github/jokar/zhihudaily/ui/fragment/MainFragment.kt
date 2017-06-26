@@ -1,6 +1,7 @@
 package com.github.jokar.zhihudaily.ui.fragment
 
 import android.app.Activity
+import android.content.Intent
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateToolbarTitleEvent
 import com.github.jokar.zhihudaily.presenter.MainFragmentPresenter
+import com.github.jokar.zhihudaily.ui.activity.StoryDetailActivity
 import com.github.jokar.zhihudaily.ui.adapter.base.LoadMoreAdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.main.StoryAdapter
 import com.github.jokar.zhihudaily.ui.view.common.StoryView
@@ -93,7 +95,9 @@ class MainFragment : LazyFragment(), StoryView {
                 }
 
                 override fun itemClickListener(position: Int) {
-
+                    var intent = Intent(activity, StoryDetailActivity::class.java)
+                    intent.putExtra("id", arrayList!![position].id)
+                    startActivity(intent)
                 }
 
                 override fun loadMore() {
@@ -120,14 +124,17 @@ class MainFragment : LazyFragment(), StoryView {
      * 加载完成
      */
     override fun loadComplete() {
-        SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false)
+        activity.runOnUiThread { SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false) }
+
     }
 
     /**
      * 请求/加载失败
      */
     override fun fail(e: Throwable) {
-        SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false)
+        activity.runOnUiThread({
+            SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false)
+        })
     }
 
     /**

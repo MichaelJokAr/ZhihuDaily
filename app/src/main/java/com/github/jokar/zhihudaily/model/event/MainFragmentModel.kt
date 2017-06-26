@@ -2,7 +2,6 @@ package com.github.jokar.zhihudaily.model.event
 
 import android.content.Context
 import android.support.annotation.NonNull
-import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.db.StoryDB
 import com.github.jokar.zhihudaily.db.TopStoryDB
@@ -129,7 +128,7 @@ class MainFragmentModel(var context: Context) {
                     return@filter true
                 }
                 .flatMap {
-                    latestService.getTheme()
+                    latestService.getStories()
                 }
                 .compose(transformer)
                 .compose(SchedulersUtil.applySchedulersIO())
@@ -197,7 +196,7 @@ class MainFragmentModel(var context: Context) {
                     return@filter true
                 }
                 .flatMap {
-                    beforeService.getTheme(date)
+                    beforeService.getStories(date)
                 }
                 .compose(transformer)
                 .compose(SchedulersUtil.applySchedulersIO())

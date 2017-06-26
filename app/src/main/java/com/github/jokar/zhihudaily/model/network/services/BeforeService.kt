@@ -14,5 +14,5 @@ interface BeforeService {
      * 获取过往消息
      */
     @GET("news/before/{date}")
-    fun getTheme(@Path("date") date: Long): Observable<LatestStory>
+    fun getStories(@Path("date") date: Long): Observable<LatestStory>
 }

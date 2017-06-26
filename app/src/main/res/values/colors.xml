@@ -3,4 +3,9 @@
     <color name="colorPrimary">#00a2ed</color>
     <color name="colorPrimaryDark">#1976d2</color>
     <color name="colorAccent">#00a2ed</color>
+
+    <color name="error_view_retry_button_background">#30000000</color>
+    <color name="error_view_retry_button_background_stroke">#50000000</color>
+    <color name="error_view_text_dark">#CC000000</color>
+    <color name="error_view_text_light">#858585</color>
 </resources>

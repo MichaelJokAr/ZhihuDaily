@@ -115,6 +115,21 @@ class StoryDB(var context: Context) {
         }
     }
 
+    fun getLikeAndCollectionState(id: Int): Pair<Int, Int> {
+        var db = dbHelper.readableDatabase
+        var like: Int = 0
+        var collection: Int = 0
+        if (db.isOpen) {
+
+            val cursor = db.query(tableName, null, "${this.id} = ?", arrayOf("$id"), null, null, null)
+            if(cursor.moveToFirst()){
+                like = cursor.getInt(cursor.getColumnIndex(this.like))
+                collection = cursor.getInt(cursor.getColumnIndex(this.collection))
+            }
+        }
+        return Pair(like, collection)
+    }
+
     /**
      * 获取所有收藏的story
      */
