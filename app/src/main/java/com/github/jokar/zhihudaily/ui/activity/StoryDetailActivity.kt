@@ -3,6 +3,7 @@ package com.github.jokar.zhihudaily.ui.activity
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
 import android.view.View
+import android.view.ViewTreeObserver
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
@@ -19,14 +20,16 @@ import javax.inject.Inject
 /**
  * Created by JokAr on 2017/6/25.
  */
-class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail> {
+class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedScrollView.OnScrollChangeListener {
+
 
     @Inject
     lateinit var presenter: StoryDetailPresenter
+    var isGone = true
 
     var id: Int = 0
     var data: StoryDetail? = null
-
+    var height: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -34,14 +37,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail> {
         initToolbar(toolbar, "")
         id = intent.getIntExtra("id", 0)
 
-        nestedScrollView.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
-            override fun onScrollChange(v: NestedScrollView?, x: Int, y: Int,
-                                        oldX: Int, oldY: Int) {
-                JLog.d("y $y")
-                rlTop.scrollTo(x, -y / 2)
-
-            }
-        })
+        nestedScrollView.setOnScrollChangeListener(this@StoryDetailActivity)
 
     }
 
@@ -74,6 +70,11 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail> {
 
     override fun fail(e: Throwable) {
         loadView.showError(e.message!!)
+    }
+
+    override fun onScrollChange(v: NestedScrollView?, x: Int, y: Int, oldX: Int, oldY: Int) {
+        rlTop.scrollTo(x, -y / 2)
+
     }
 
 }
