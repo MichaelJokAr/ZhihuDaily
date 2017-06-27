@@ -75,6 +75,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
     override fun onScrollChange(v: NestedScrollView?, x: Int, y: Int, oldX: Int, oldY: Int) {
         rlTop.scrollTo(x, -y / 2)
 
+
     }
 
 }
