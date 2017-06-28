@@ -21,16 +21,12 @@ class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
                 object : SingleDataCallBack<LatestStory> {
                     override fun data(data: LatestStory) {
                         view?.loadData(data)
+                        view?.loadComplete()
                     }
 
                     override fun onStart() {
                         super.onStart()
                         view?.getDataStart()
-                    }
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        view?.loadComplete()
                     }
 
                     override fun onError(e: Throwable) {

@@ -1,15 +1,15 @@
 package com.github.jokar.zhihudaily.ui.activity
 
+import android.R.attr.scrollY
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
 import android.view.View
-import android.view.ViewTreeObserver
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.github.jokar.zhihudaily.utils.system.JLog
+import com.github.jokar.zhihudaily.utils.system.ScrollUtils
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_story_detail.*
@@ -25,11 +25,11 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
 
     @Inject
     lateinit var presenter: StoryDetailPresenter
-    var isGone = true
 
     var id: Int = 0
     var data: StoryDetail? = null
-    var height: Int = 0
+    var imageHeight: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -38,6 +38,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
         id = intent.getIntExtra("id", 0)
 
         nestedScrollView.setOnScrollChangeListener(this@StoryDetailActivity)
+        imageHeight = resources.getDimensionPixelOffset(R.dimen.storyDetailImage)
 
     }
 
@@ -75,7 +76,28 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
     override fun onScrollChange(v: NestedScrollView?, x: Int, y: Int, oldX: Int, oldY: Int) {
         rlTop.scrollTo(x, -y / 2)
 
+        val baseColor = resources.getColor(R.color.colorPrimary)
+        val height = resources.getDimensionPixelSize(R.dimen.storyDetailImage)
+        val alpha: Float = Math.min(1, y / height).toFloat()
+        toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor))
 
+//        appBarLayout.background.alpha = 125
     }
 
+    fun getAlphaForActionBar(scrollY: Int): Float {
+        val minDist = 0
+        val maxDist = 600
+        if (scrollY > maxDist) {
+            return 0f
+        } else if (scrollY < minDist) {
+            return 0f
+        } else {
+            var alpha = 0f
+            alpha = 1f - (1f / maxDist * scrollY)
+            return alpha
+        }
+    }
 }
+
+
+

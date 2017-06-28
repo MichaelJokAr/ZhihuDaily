@@ -2,6 +2,7 @@ package com.github.jokar.zhihudaily.model.event
 
 import android.content.Context
 import android.support.annotation.NonNull
+import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.db.StoryDB
 import com.github.jokar.zhihudaily.db.TopStoryDB
@@ -106,7 +107,7 @@ class MainFragmentModel(var context: Context) {
                 stories.add(0, timeTitle)
                 //添加head
                 var head: StoryEntities = StoryEntities(null, null, -1, null, null)
-//                head.dateString = context.getString(R.string.app_name)
+                head.dateString = context.getString(R.string.app_name)
                 stories.add(0, head)
                 latestStory.stories = stories
             }
@@ -149,10 +150,10 @@ class MainFragmentModel(var context: Context) {
                     latestStory.stories?.add(0, timeTitle)
                     //添加head
                     var head: StoryEntities = StoryEntities(null, null, -1, null, null)
-//                    head.dateString = context.getString(R.string.app_name)
+                    head.dateString = context.getString(R.string.app_name)
                     latestStory.stories?.add(0, head)
 
-                    latestStory
+                   latestStory
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(SingleResourceObserver(callBack))
