@@ -82,41 +82,42 @@ class MainFragment : LazyFragment(), StoryView {
      */
     override fun loadData(data: LatestStory) {
 
-        if (adapter == null) {
-            arrayList = data.stories?.clone() as ArrayList<StoryEntities>
-            adapter = StoryAdapter(context, arrayList!!, bindUntilEvent(FragmentEvent.DESTROY_VIEW),
-                    data.top_stories!!)
-            recyclerView.adapter = adapter
-            adapter?.itemClickListener = object : LoadMoreAdapterItemClickListener {
-                override fun firstCompletelyVisibleItem(position: Int) {
-                    super.firstCompletelyVisibleItem(position)
-                    //更新
-                    RxBus.getInstance().post(UpdateToolbarTitleEvent(arrayList!![position].dateString))
-                }
+        activity.runOnUiThread {
+            if (adapter == null) {
+                arrayList = data.stories?.clone() as ArrayList<StoryEntities>
+                adapter = StoryAdapter(context, arrayList!!, bindUntilEvent(FragmentEvent.DESTROY_VIEW),
+                        data.top_stories!!)
+                recyclerView.adapter = adapter
+                adapter?.itemClickListener = object : LoadMoreAdapterItemClickListener {
+                    override fun firstCompletelyVisibleItem(position: Int) {
+                        super.firstCompletelyVisibleItem(position)
+                        //更新
+                        RxBus.getInstance().post(UpdateToolbarTitleEvent(arrayList!![position].dateString))
+                    }
 
-                override fun itemClickListener(position: Int) {
-                    var intent = Intent(activity, StoryDetailActivity::class.java)
-                    intent.putExtra("id", arrayList!![position].id)
-                    startActivity(intent)
-                }
+                    override fun itemClickListener(position: Int) {
+                        var intent = Intent(activity, StoryDetailActivity::class.java)
+                        intent.putExtra("id", arrayList!![position].id)
+                        startActivity(intent)
+                    }
 
-                override fun loadMore() {
-                    getMoreData()
-                }
+                    override fun loadMore() {
+                        getMoreData()
+                    }
 
-                override fun footViewClick() {
-                    adapter?.setFootClickable(false)
-                    getMoreData()
-                }
+                    override fun footViewClick() {
+                        adapter?.setFootClickable(false)
+                        getMoreData()
+                    }
 
+                }
+            } else {
+                arrayList?.clear()
+                arrayList?.addAll(data.stories?.clone() as ArrayList<StoryEntities>)
+                adapter?.topStories = data.top_stories!!
+                adapter?.notifyDataSetChanged()
             }
-        } else {
-            arrayList?.clear()
-            arrayList?.addAll(data.stories?.clone() as ArrayList<StoryEntities>)
-            adapter?.topStories = data.top_stories!!
-            adapter?.notifyDataSetChanged()
         }
-
 
     }
 
