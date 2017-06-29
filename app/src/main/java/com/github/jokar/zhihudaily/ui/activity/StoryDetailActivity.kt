@@ -1,6 +1,5 @@
 package com.github.jokar.zhihudaily.ui.activity
 
-import android.R.attr.scrollY
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
 import android.view.View
@@ -9,7 +8,6 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.github.jokar.zhihudaily.utils.system.ScrollUtils
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_story_detail.*
@@ -75,13 +73,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
 
     override fun onScrollChange(v: NestedScrollView?, x: Int, y: Int, oldX: Int, oldY: Int) {
         rlTop.scrollTo(x, -y / 2)
-
-        val baseColor = resources.getColor(R.color.colorPrimary)
-        val height = resources.getDimensionPixelSize(R.dimen.storyDetailImage)
-        val alpha: Float = Math.min(1, y / height).toFloat()
-        toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor))
-
-//        appBarLayout.background.alpha = 125
+        toolbar.alpha = getAlphaForActionBar(y)
     }
 
     fun getAlphaForActionBar(scrollY: Int): Float {

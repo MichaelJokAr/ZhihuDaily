@@ -38,9 +38,7 @@ class LoadLayoutView : LinearLayout {
         orientation = LinearLayout.VERTICAL
         gravity = Gravity.CENTER
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            layoutTransition = LayoutTransition()
-        }
+        layoutTransition = LayoutTransition()
 
         progressBar = findViewById(R.id.progressBar) as ProgressBar?
         llContainer = findViewById(R.id.llContainer) as LinearLayout?
