@@ -59,12 +59,12 @@ class AppDataBaseHelper constructor(context: Context) {
     /**
      * 根据id获取story
      */
-    fun selectStory(id: Int): StoryEntity {
+    fun getStory(id: Int): StoryEntity{
         return appDataBase.storyDao().selectStory(id)
     }
 
     /**
-     * 更新story
+     * 更新story;必须在非主线程中进行
      */
     fun updateStory(story: StoryEntity) {
         appDataBase.storyDao().updateStory(story)

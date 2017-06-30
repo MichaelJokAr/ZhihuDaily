@@ -3,6 +3,7 @@ package com.github.jokar.zhihudaily.model.entities.story
 import android.arch.persistence.room.*
 import com.github.jokar.zhihudaily.room.converter.Converters
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 /**
  * Created by JokAr on 2017/6/20.
@@ -51,7 +52,24 @@ data class StoryEntity constructor(
     @ColumnInfo(name = "image")
     var image: String? = null
 
-    @Ignore
+    /**
+     * 时间-文字
+     */
+    @ColumnInfo(name = "date_string")
     var dateString: String = ""
+
+    override fun toString(): String {
+        return "StoryEntity(id=$id, images=${Arrays.toString(images)}," +
+                " title=$title," +
+                " date=$date," +
+                " read=$read," +
+                " like=$like," +
+                " collection=$collection," +
+                " body=$body," +
+                " image_source=$image_source," +
+                " image=$image," +
+                " dateString='$dateString')"
+    }
+
 
 }

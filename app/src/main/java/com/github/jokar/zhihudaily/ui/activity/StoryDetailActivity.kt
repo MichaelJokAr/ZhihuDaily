@@ -5,6 +5,7 @@ import android.support.v4.widget.NestedScrollView
 import android.view.View
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
+import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.HtmlUtil
@@ -19,7 +20,8 @@ import javax.inject.Inject
 /**
  * Created by JokAr on 2017/6/25.
  */
-class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedScrollView.OnScrollChangeListener {
+class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
+        NestedScrollView.OnScrollChangeListener {
 
     @Inject
     lateinit var presenter: StoryDetailPresenter
@@ -27,7 +29,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
     val maxHeight = 600;
 
     var id: Int = 0
-    var data: StoryDetail? = null
+    var data: StoryEntity? = null
     var imageHeight: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,26 +55,29 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
         loadView.showLoad()
     }
 
-    override fun loadData(result: StoryDetail) {
-        data = result
-        ImageLoader.loadImage(this,
-                data?.image!!,
-                R.mipmap.image_small_default,
-                image)
-        tvAuthor.text = data?.image_source
-        tvTiTle.text = data?.title
-        webView.loadDataWithBaseURL("", HtmlUtil.createHtmlData(data?.css, data?.js,
-                data?.body!!), "text/html", "utf-8", null)
-//        webView.loadUrl(data?.share_url)
+    override fun loadData(result: StoryEntity) {
+        runOnUiThread({
+            data = result
+            ImageLoader.loadImage(this,
+                    data?.image!!,
+                    R.mipmap.image_small_default,
+                    image)
+            tvAuthor.text = data?.image_source
+            tvTiTle.text = data?.title
+            webView.loadDataWithBaseURL("",data?.body, "text/html", "utf-8", null)
+        })
     }
 
     override fun loadComplete() {
-        loadView.visibility = View.GONE
-        nestedScrollView.visibility = View.VISIBLE
+        runOnUiThread {
+            loadView.visibility = View.GONE
+            nestedScrollView.visibility = View.VISIBLE
+        }
     }
 
     override fun fail(e: Throwable) {
-        loadView.showError(e.message!!)
+        runOnUiThread { loadView.showError(e.message!!) }
+
     }
 
     var lastY = 0

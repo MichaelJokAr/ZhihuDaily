@@ -5,8 +5,10 @@ import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.component.network.DaggerLatestAndBeforeComponent
+import com.github.jokar.zhihudaily.di.component.room.DaggerAppDataBaseComponent
 import com.github.jokar.zhihudaily.di.module.network.BeforeModule
 import com.github.jokar.zhihudaily.di.module.network.LatestModule
+import com.github.jokar.zhihudaily.di.module.room.AppDataBaseModule
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
@@ -24,6 +26,8 @@ import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import java.util.*
 import javax.inject.Inject
@@ -48,9 +52,13 @@ class MainFragmentModel(var context: Context) {
     lateinit var dataBaseHelper: AppDataBaseHelper
 
     init {
+        val component = DaggerAppDataBaseComponent.builder()
+                .appDataBaseModule(AppDataBaseModule(context))
+                .build()
 
         DaggerLatestAndBeforeComponent.builder()
                 .networkComponent(MyApplication.getNetComponent())
+                .appDataBaseComponent(component)
                 .latestModule(LatestModule())
                 .beforeModule(BeforeModule())
                 .build()
@@ -78,7 +86,6 @@ class MainFragmentModel(var context: Context) {
             date += month
             date += day
             //先检测本地是否有
-            JLog.w(date)
             var latestStory: LatestStory = LatestStory(date, null, null)
             var stories: ArrayList<StoryEntity>? = dataBaseHelper.getStoryByDate(date)
             var topStories: ArrayList<TopStoryEntity>? = dataBaseHelper.getTopStoryByDate(date)
@@ -206,6 +213,19 @@ class MainFragmentModel(var context: Context) {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ListResourceObserver(callBack))
+    }
+
+
+    /**
+     * 更新为已读
+     */
+    fun updateStory(story:StoryEntity,
+                    @NonNull transformer: LifecycleTransformer<Any>){
+        Observable.just(story)
+                .compose(transformer)
+                .subscribeOn(Schedulers.newThread())
+                .unsubscribeOn(Schedulers.newThread())
+                .subscribe { dataBaseHelper.updateStory(story) }
 
     }
 }

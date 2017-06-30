@@ -54,6 +54,13 @@ class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
                 })
     }
 
+    /**
+     * 更新已读
+     */
+    fun updateStory(story: StoryEntity,
+                    @NonNull transformer: LifecycleTransformer<Any>){
+        model?.updateStory(story,transformer)
+    }
     override fun destroy() {
         model = null
         view = null
