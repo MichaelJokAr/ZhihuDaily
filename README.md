@@ -6,3 +6,10 @@ ZhihuDaily for Kotlin
 - Java version: Java8
 - Kotlin version: 1.1.2-5
 - SDK Tool: 25.0.2
+
+
+### Points
+- MVP
+- dagger2(v2.11)
+- rx
+- room

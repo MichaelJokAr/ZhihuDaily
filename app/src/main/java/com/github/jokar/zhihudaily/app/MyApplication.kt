@@ -6,13 +6,9 @@ import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
 import com.github.jokar.zhihudaily.BuildConfig
 import com.github.jokar.zhihudaily.di.component.DaggerAppComponent
-import com.github.jokar.zhihudaily.di.component.db.DaggerStoryDBComponent
-import com.github.jokar.zhihudaily.di.component.db.StoryDBComponent
 import com.github.jokar.zhihudaily.di.component.network.DaggerNetworkComponent
 import com.github.jokar.zhihudaily.di.component.network.NetworkComponent
 import com.github.jokar.zhihudaily.di.module.NetworkModule
-import com.github.jokar.zhihudaily.di.module.db.StoryDBModule
-import com.github.jokar.zhihudaily.utils.system.JLog
 import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

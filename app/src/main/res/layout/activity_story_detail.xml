@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"/>
+
             <RelativeLayout
                 android:id="@+id/rlTop"
                 android:layout_width="match_parent"
@@ -34,6 +35,23 @@
                     android:scaleType="fitXY"
                     android:src="@mipmap/splash"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.15"
+                    android:background="#000000"/>
+
+                <TextView
+                    android:id="@+id/tvTiTle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/tvAuthor"
+                    android:gravity="center|left"
+                    android:padding="10dp"
+                    android:text="作者"
+                    android:textColor="@android:color/white"
+                    android:textSize="23dp"/>
+
                 <TextView
                     android:id="@+id/tvAuthor"
                     android:layout_width="match_parent"
@@ -41,9 +59,12 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
                     android:gravity="center|right"
-                    android:padding="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:text="作者"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="13dp"/>
             </RelativeLayout>
 
             <WebView

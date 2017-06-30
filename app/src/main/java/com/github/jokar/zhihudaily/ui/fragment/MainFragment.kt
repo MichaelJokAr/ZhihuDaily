@@ -13,7 +13,7 @@ import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
-import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
+import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateToolbarTitleEvent
 import com.github.jokar.zhihudaily.presenter.MainFragmentPresenter
@@ -43,7 +43,7 @@ class MainFragment : LazyFragment(), StoryView {
 
     var bind: Unbinder? = null
     var adapter: StoryAdapter? = null
-    var arrayList: ArrayList<StoryEntities>? = null
+    var arrayList: ArrayList<StoryEntity>? = null
 
     override fun onAttach(activity: Activity?) {
         AndroidSupportInjection.inject(this)
@@ -84,7 +84,7 @@ class MainFragment : LazyFragment(), StoryView {
 
         activity.runOnUiThread {
             if (adapter == null) {
-                arrayList = data.stories?.clone() as ArrayList<StoryEntities>
+                arrayList = data.stories?.clone() as ArrayList<StoryEntity>
                 adapter = StoryAdapter(context, arrayList!!, bindUntilEvent(FragmentEvent.DESTROY_VIEW),
                         data.top_stories!!)
                 recyclerView.adapter = adapter
@@ -113,7 +113,7 @@ class MainFragment : LazyFragment(), StoryView {
                 }
             } else {
                 arrayList?.clear()
-                arrayList?.addAll(data.stories?.clone() as ArrayList<StoryEntities>)
+                arrayList?.addAll(data.stories?.clone() as ArrayList<StoryEntity>)
                 adapter?.topStories = data.top_stories!!
                 adapter?.notifyDataSetChanged()
             }
@@ -133,18 +133,20 @@ class MainFragment : LazyFragment(), StoryView {
      * 请求/加载失败
      */
     override fun fail(e: Throwable) {
-        activity.runOnUiThread({
+        activity.runOnUiThread{
             SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false)
-        })
+        }
     }
 
     /**
      * 加载更多数据
      */
-    override fun loadMoreData(data: ArrayList<StoryEntities>) {
-        val size = data.size
-        arrayList?.addAll(data)
-        adapter?.notifyItemRangeInserted(arrayList?.size!! - size, size)
+    override fun loadMoreData(data: ArrayList<StoryEntity>) {
+        activity.runOnUiThread {
+            val size = data.size
+            arrayList?.addAll(data)
+            adapter?.notifyItemRangeInserted(arrayList?.size!! - size, size)
+        }
 
     }
 

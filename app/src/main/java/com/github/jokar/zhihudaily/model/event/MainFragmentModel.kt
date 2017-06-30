@@ -4,24 +4,19 @@ import android.content.Context
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.app.MyApplication
-import com.github.jokar.zhihudaily.db.StoryDB
-import com.github.jokar.zhihudaily.db.TopStoryDB
-import com.github.jokar.zhihudaily.di.component.db.DaggerStoryDBComponent
-import com.github.jokar.zhihudaily.di.component.db.DaggerTopStoryDBComponent
 import com.github.jokar.zhihudaily.di.component.network.DaggerLatestAndBeforeComponent
-import com.github.jokar.zhihudaily.di.module.db.StoryDBModule
-import com.github.jokar.zhihudaily.di.module.db.TopStoryModule
 import com.github.jokar.zhihudaily.di.module.network.BeforeModule
 import com.github.jokar.zhihudaily.di.module.network.LatestModule
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
-import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
-import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntities
+import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
+import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
 import com.github.jokar.zhihudaily.model.network.result.ListResourceObserver
 import com.github.jokar.zhihudaily.model.network.result.SingleResourceObserver
 import com.github.jokar.zhihudaily.model.network.services.BeforeService
 import com.github.jokar.zhihudaily.model.network.services.LatestService
+import com.github.jokar.zhihudaily.room.AppDataBaseHelper
 import com.github.jokar.zhihudaily.utils.system.DateUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
@@ -46,25 +41,15 @@ class MainFragmentModel(var context: Context) {
     lateinit var latestService: LatestService
 
     @Inject
-    lateinit var storyDB: StoryDB
-    @Inject
-    lateinit var topStoryDB: TopStoryDB
-
-    @Inject
     lateinit var beforeService: BeforeService
 
-    init {
-        val storyDBComponent = DaggerStoryDBComponent.builder()
-                .storyDBModule(StoryDBModule(context))
-                .build()
+    //room
+    @Inject
+    lateinit var dataBaseHelper: AppDataBaseHelper
 
-        val topStoryDBComponent = DaggerTopStoryDBComponent.builder()
-                .topStoryModule(TopStoryModule(context))
-                .build()
+    init {
 
         DaggerLatestAndBeforeComponent.builder()
-                .storyDBComponent(storyDBComponent)
-                .topStoryDBComponent(topStoryDBComponent)
                 .networkComponent(MyApplication.getNetComponent())
                 .latestModule(LatestModule())
                 .beforeModule(BeforeModule())
@@ -95,18 +80,18 @@ class MainFragmentModel(var context: Context) {
             //先检测本地是否有
             JLog.w(date)
             var latestStory: LatestStory = LatestStory(date, null, null)
-            var stories: ArrayList<StoryEntities>? = storyDB.getStoryByDate(date)
-            var topStories: ArrayList<TopStoryEntities>? = topStoryDB.getTopStoriesByDate(date)
+            var stories: ArrayList<StoryEntity>? = dataBaseHelper.getStoryByDate(date)
+            var topStories: ArrayList<TopStoryEntity>? = dataBaseHelper.getTopStoryByDate(date)
 
             //本地有就直接返回本地数据
             if (stories != null && stories?.size > 0) {
                 //添加时间标题
-                var timeTitle: StoryEntities = StoryEntities(null, null, 0, null, null)
+                var timeTitle: StoryEntity = StoryEntity(0)
                 timeTitle.date = date
                 timeTitle.dateString = DateUtils.judgmentTime(date)
                 stories.add(0, timeTitle)
                 //添加head
-                var head: StoryEntities = StoryEntities(null, null, -1, null, null)
+                var head: StoryEntity = StoryEntity(-1)
                 head.dateString = context.getString(R.string.app_name)
                 stories.add(0, head)
                 latestStory.stories = stories
@@ -139,21 +124,24 @@ class MainFragmentModel(var context: Context) {
                         it.date = latestStory.date
                         it.dateString = DateUtils.judgmentTime(latestStory.date)
                     })
+                    latestStory.top_stories?.forEach({
+                        it.date = latestStory.date
+                    })
                     //保存到数据表
-                    storyDB.insert(latestStory.stories)
-                    topStoryDB.insert(latestStory.top_stories!!, latestStory.date)
+                    dataBaseHelper.insertStory(latestStory.stories!!)
+                    dataBaseHelper.insertTopStory(latestStory.top_stories!!)
 
                     //添加时间标题
-                    var timeTitle: StoryEntities = StoryEntities(null, null, 0, null, null)
+                    var timeTitle: StoryEntity = StoryEntity(0)
                     timeTitle.date = latestStory.date
                     timeTitle.dateString = DateUtils.judgmentTime(latestStory.date)
                     latestStory.stories?.add(0, timeTitle)
                     //添加head
-                    var head: StoryEntities = StoryEntities(null, null, -1, null, null)
+                    var head: StoryEntity = StoryEntity(-1)
                     head.dateString = context.getString(R.string.app_name)
                     latestStory.stories?.add(0, head)
 
-                   latestStory
+                    latestStory
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(SingleResourceObserver(callBack))
@@ -164,20 +152,20 @@ class MainFragmentModel(var context: Context) {
      */
     fun getBeforeStory(date: Long,
                        @NonNull transformer: LifecycleTransformer<LatestStory>,
-                       @NonNull callBack: ListDataCallBack<StoryEntities>) {
+                       @NonNull callBack: ListDataCallBack<StoryEntity>) {
 
         checkNotNull(transformer)
         checkNotNull(callBack)
 
-        Observable.create(ObservableOnSubscribe<ArrayList<StoryEntities>> { e ->
+        Observable.create(ObservableOnSubscribe<ArrayList<StoryEntity>> { e ->
             //先检测本地是否有
             var beforeDate = DateUtils.getBeforeDate(date)
 
-            val stories: ArrayList<StoryEntities>? = storyDB.getStoryByDate(beforeDate)
+            val stories: ArrayList<StoryEntity>? = dataBaseHelper.getStoryByDate(beforeDate)
             //本地有就直接返回本地数据
             if (stories != null && stories?.size > 0) {
                 //添加时间标题
-                var timeTitle: StoryEntities = StoryEntities(null, null, 0, null, null)
+                var timeTitle: StoryEntity = StoryEntity(0)
                 timeTitle.date = beforeDate
                 timeTitle.dateString = DateUtils.judgmentTime(beforeDate)
                 stories.add(0, timeTitle)
@@ -208,9 +196,9 @@ class MainFragmentModel(var context: Context) {
                         it.dateString = DateUtils.judgmentTime(date)
                     })
                     //保存到数据表
-                    storyDB.insert(stories)
+                    dataBaseHelper.insertStory(stories!!)
                     //添加时间标题
-                    var timeTitle: StoryEntities = StoryEntities(null, null, 0, null, null)
+                    var timeTitle: StoryEntity = StoryEntity(0)
                     timeTitle.date = date
                     timeTitle.dateString = DateUtils.judgmentTime(date)
                     stories?.add(0, timeTitle)

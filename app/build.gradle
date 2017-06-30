@@ -53,6 +53,10 @@ dependencies {
     implementation "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:percent:$SUPPORT_LIBRARY_VERSION"
+    //room
+    implementation 'android.arch.persistence.room:runtime:latest.release'
+    kapt 'android.arch.persistence.room:compiler:latest.release'
+    implementation 'android.arch.persistence.room:rxjava2:latest.release'
     //rxJava
     implementation "io.reactivex.rxjava2:rxjava:$RXJAVA2_VERSION"
     implementation 'io.reactivex.rxjava2:rxandroid:latest.release'

@@ -3,10 +3,7 @@ package com.github.jokar.zhihudaily.model.event
 import android.content.Context
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.app.MyApplication
-import com.github.jokar.zhihudaily.db.StoryDB
-import com.github.jokar.zhihudaily.di.component.db.DaggerStoryDBComponent
 import com.github.jokar.zhihudaily.di.component.network.DaggerNewsComponent
-import com.github.jokar.zhihudaily.di.module.db.StoryDBModule
 import com.github.jokar.zhihudaily.di.module.network.NewsModule
 import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
@@ -26,17 +23,13 @@ class StoryDetailModel(var context: Context) {
     lateinit var retrofit: Retrofit
     @Inject
     lateinit var service: NewsServices
-    @Inject
-    lateinit var storyDB: StoryDB
+
 
     init {
-        val storyDBComponent = DaggerStoryDBComponent.builder()
-                .storyDBModule(StoryDBModule(context))
-                .build()
+
 
         DaggerNewsComponent
                 .builder()
-                .storyDBComponent(storyDBComponent)
                 .networkComponent(MyApplication.getNetComponent())
                 .newsModule(NewsModule())
                 .build()
@@ -54,9 +47,9 @@ class StoryDetailModel(var context: Context) {
                 .compose(transformer)
                 .compose(SchedulersUtil.applySchedulersIO())
                 .map { storyDetail ->
-                    val state = storyDB.getLikeAndCollectionState(id)
-                    storyDetail.like = state.first
-                    storyDetail.collection = state.second
+                    //                    val state = storyDB.getLikeAndCollectionState(id)
+//                    storyDetail.like = state.first
+//                    storyDetail.collection = state.second
                     storyDetail
                 }
                 .observeOn(AndroidSchedulers.mainThread())

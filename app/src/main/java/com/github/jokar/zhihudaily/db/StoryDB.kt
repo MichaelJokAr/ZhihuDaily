@@ -3,7 +3,7 @@ package com.github.jokar.zhihudaily.db
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
+import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.utils.system.DateUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.google.gson.Gson
@@ -25,7 +25,7 @@ class StoryDB(var context: Context) {
 
     var dbHelper: DbOpenHelper = DbOpenHelper.getInstance(context)
 
-    fun insert(story: StoryEntities) {
+    fun insert(story: StoryEntity) {
 
         val db = dbHelper.writableDatabase
         if (db.isOpen) {
@@ -41,7 +41,7 @@ class StoryDB(var context: Context) {
         }
     }
 
-    fun insert(stores: ArrayList<StoryEntities>?) {
+    fun insert(stores: ArrayList<StoryEntity>?) {
         val db = dbHelper.writableDatabase
         if (db.isOpen) {
             var gson: Gson? = Gson()
@@ -122,7 +122,7 @@ class StoryDB(var context: Context) {
         if (db.isOpen) {
 
             val cursor = db.query(tableName, null, "${this.id} = ?", arrayOf("$id"), null, null, null)
-            if(cursor.moveToFirst()){
+            if (cursor.moveToFirst()) {
                 like = cursor.getInt(cursor.getColumnIndex(this.like))
                 collection = cursor.getInt(cursor.getColumnIndex(this.collection))
             }
@@ -133,14 +133,14 @@ class StoryDB(var context: Context) {
     /**
      * 获取所有收藏的story
      */
-    fun getAllCollectedStory(): ArrayList<StoryEntities>? {
+    fun getAllCollectedStory(): ArrayList<StoryEntity>? {
         val db = dbHelper.readableDatabase
         if (db.isOpen) {
-            var arrayList: ArrayList<StoryEntities> = ArrayList()
+            var arrayList: ArrayList<StoryEntity> = ArrayList()
             val cursor = db.query(tableName, null, "$collection = ?", arrayOf("1"), null, null, "$date desc")
             var gson: Gson? = Gson()
             while (cursor.moveToNext()) {
-                var story: StoryEntities = getStory(cursor, gson)
+                var story: StoryEntity = getStory(cursor, gson)
                 arrayList.add(story)
             }
             gson = null
@@ -153,14 +153,14 @@ class StoryDB(var context: Context) {
     /**
      * 根据时间获取story
      */
-    fun getStoryByDate(dateTime: Long): ArrayList<StoryEntities>? {
+    fun getStoryByDate(dateTime: Long): ArrayList<StoryEntity>? {
         val db = dbHelper.readableDatabase
         if (db.isOpen) {
-            var arrayList: ArrayList<StoryEntities> = ArrayList()
+            var arrayList: ArrayList<StoryEntity> = ArrayList()
             val cursor = db.query(tableName, null, "$date = ?", arrayOf("$dateTime"), null, null, "$date desc")
             var gson: Gson? = Gson()
             while (cursor.moveToNext()) {
-                var story: StoryEntities = getStory(cursor, gson)
+                var story: StoryEntity = getStory(cursor, gson)
                 arrayList.add(story)
             }
             cursor.close()
@@ -171,13 +171,13 @@ class StoryDB(var context: Context) {
         return null
     }
 
-    private fun getStory(cursor: Cursor, gson: Gson?): StoryEntities {
+    private fun getStory(cursor: Cursor, gson: Gson?): StoryEntity {
         var id = cursor.getInt(cursor.getColumnIndex(id))
         var image = cursor.getString(cursor.getColumnIndex(images))
         val type = object : TypeToken<Array<String>>() {}.type
         var images: Array<String> = gson?.fromJson(image, type)!!
         var title = cursor.getString(cursor.getColumnIndex(title))
-        var story: StoryEntities = StoryEntities(images, null, id, null, title)
+        var story: StoryEntity = StoryEntity(id)
         story.date = cursor.getLong(cursor.getColumnIndex(date))
         story.dateString = DateUtils.judgmentTime(story.date)
         story.read = cursor.getInt(cursor.getColumnIndex(read))

@@ -20,6 +20,7 @@ data class StoryDetail(@SerializedName("body") var body: String,
 
     var collection: Int = 0
 
+
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<StoryDetail> = object : Parcelable.Creator<StoryDetail> {

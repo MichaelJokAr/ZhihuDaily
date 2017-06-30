@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.github.jokar.zhihudaily.R
-import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
-import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntities
+import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
+import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.adapter.base.LoadMoreAdapter
 import com.github.jokar.zhihudaily.ui.adapter.viewpager.TopStoryAdapter
@@ -26,10 +26,10 @@ import io.reactivex.functions.Consumer
  * Created by JokAr on 2017/6/21.
  */
 class StoryAdapter(context: Context,
-                   data: ArrayList<StoryEntities>,
+                   data: ArrayList<StoryEntity>,
                    transformer: LifecycleTransformer<Any>,
-                   var topStories: ArrayList<TopStoryEntities>)
-    : LoadMoreAdapter<StoryEntities>(context, data, transformer) {
+                   var topStories: ArrayList<TopStoryEntity>)
+    : LoadMoreAdapter<StoryEntity>(context, data, transformer) {
 
     override fun bindView(viewHolder: BaseViewHolder, position: Int) {
         val storyEntities = data[position]

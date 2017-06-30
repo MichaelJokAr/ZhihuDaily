@@ -3,7 +3,7 @@ package com.github.jokar.zhihudaily.db
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntities
+import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.utils.system.DateUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
 
@@ -20,7 +20,7 @@ class TopStoryDB(var context: Context) {
 
     var dbHelper: DbOpenHelper = DbOpenHelper.getInstance(context)
 
-    fun insert(stories: ArrayList<TopStoryEntities>, date: Long) {
+    fun insert(stories: ArrayList<TopStoryEntity>, date: Long) {
         val db = dbHelper.writableDatabase
         if (db.isOpen) {
             try {
@@ -48,13 +48,13 @@ class TopStoryDB(var context: Context) {
     /**
      *
      */
-    fun getTopStoriesByDate(dateTime: Long): ArrayList<TopStoryEntities>? {
+    fun getTopStoriesByDate(dateTime: Long): ArrayList<TopStoryEntity>? {
         val db = dbHelper.readableDatabase
         if (db.isOpen) {
-            var arrayList: ArrayList<TopStoryEntities> = ArrayList()
+            var arrayList: ArrayList<TopStoryEntity> = ArrayList()
             val cursor = db.query(tableName, null, "$date = ?", arrayOf("$dateTime"), null, null, "$date desc")
             while (cursor.moveToNext()) {
-                var story: TopStoryEntities = getStory(cursor)
+                var story: TopStoryEntity = getStory(cursor)
                 arrayList.add(story)
             }
             cursor.close()
@@ -63,11 +63,11 @@ class TopStoryDB(var context: Context) {
         return null
     }
 
-    private fun getStory(cursor: Cursor): TopStoryEntities {
+    private fun getStory(cursor: Cursor): TopStoryEntity {
         var id = cursor.getInt(cursor.getColumnIndex(id))
         var image = cursor.getString(cursor.getColumnIndex(image))
         var title = cursor.getString(cursor.getColumnIndex(title))
-        var story: TopStoryEntities = TopStoryEntities(image, null, id, null, title)
+        var story: TopStoryEntity = TopStoryEntity(id)
         story.date = cursor.getLong(cursor.getColumnIndex(date))
         story.dateString = DateUtils.judgmentTime(story.date)
         return story

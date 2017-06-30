@@ -1,14 +1,12 @@
 package com.github.jokar.zhihudaily.ui.adapter.viewpager
 
 import android.content.Context
-import android.support.annotation.NonNull
-import android.support.annotation.Nullable
 import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
-import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntities
+import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 
 
@@ -17,7 +15,7 @@ import com.github.jokar.zhihudaily.utils.image.ImageLoader
  */
 class TopStoryAdapter(var context: Context,
                       var viewList: ArrayList<View>,
-                      var topStories: ArrayList<TopStoryEntities>) : PagerAdapter() {
+                      var topStories: ArrayList<TopStoryEntity>) : PagerAdapter() {
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val view = viewList[position]

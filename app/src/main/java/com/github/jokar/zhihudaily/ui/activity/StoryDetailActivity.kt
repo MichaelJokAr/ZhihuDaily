@@ -7,9 +7,8 @@ import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
+import com.github.jokar.zhihudaily.utils.HtmlUtil
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
-import com.github.jokar.zhihudaily.utils.system.JLog
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_story_detail.*
@@ -61,8 +60,10 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
                 R.mipmap.image_small_default,
                 image)
         tvAuthor.text = data?.image_source
-
-        webView.loadDataWithBaseURL("", data?.body, "text/html", "utf-8", null)
+        tvTiTle.text = data?.title
+        webView.loadDataWithBaseURL("", HtmlUtil.createHtmlData(data?.css, data?.js,
+                data?.body!!), "text/html", "utf-8", null)
+//        webView.loadUrl(data?.share_url)
     }
 
     override fun loadComplete() {
@@ -74,7 +75,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryDetail>, NestedS
         loadView.showError(e.message!!)
     }
 
-    var lastY=0
+    var lastY = 0
     override fun onScrollChange(v: NestedScrollView?, x: Int, y: Int, oldX: Int, oldY: Int) {
         rlTop.scrollTo(x, -y / 2)
 

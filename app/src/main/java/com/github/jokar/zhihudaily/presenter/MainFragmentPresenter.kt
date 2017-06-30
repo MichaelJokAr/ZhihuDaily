@@ -2,7 +2,7 @@ package com.github.jokar.zhihudaily.presenter
 
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
-import com.github.jokar.zhihudaily.model.entities.story.StoryEntities
+import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.event.MainFragmentModel
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
@@ -40,9 +40,9 @@ class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
                         @NonNull transformer: LifecycleTransformer<LatestStory>) {
 
         model?.getBeforeStory(date, transformer,
-                object : ListDataCallBack<StoryEntities> {
+                object : ListDataCallBack<StoryEntity> {
 
-                    override fun data(data: ArrayList<StoryEntities>) {
+                    override fun data(data: ArrayList<StoryEntity>) {
                         view?.loadMoreData(data)
                     }
 
