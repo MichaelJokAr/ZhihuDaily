@@ -9,7 +9,7 @@ import android.text.TextUtils
  */
 class Converters {
     @TypeConverter
-    open fun arrayToString(array: Array<String>): String {
+    fun arrayToString(array: Array<String>): String {
         if (array == null || array.size === 0) {
             return ""
         }
@@ -22,7 +22,7 @@ class Converters {
     }
 
     @TypeConverter
-    open fun StringToArray(value: String): Array<String>? {
+    fun StringToArray(value: String): Array<String>? {
         return if (TextUtils.isEmpty(value)) null else value.split(",").toTypedArray()
 
     }

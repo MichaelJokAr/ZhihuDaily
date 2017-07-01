@@ -15,14 +15,12 @@ import com.github.jokar.zhihudaily.model.network.result.SingleResourceObserver
 import com.github.jokar.zhihudaily.model.network.services.NewsServices
 import com.github.jokar.zhihudaily.room.AppDataBaseHelper
 import com.github.jokar.zhihudaily.utils.HtmlUtil
-import com.github.jokar.zhihudaily.utils.system.JLog
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Predicate
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -64,13 +62,13 @@ class StoryDetailModel(var context: Context) {
 
         Observable.create(ObservableOnSubscribe<StoryEntity> {
             e ->
-                var story = dataBaseHelper.getStory(id)
-                e.onNext(story)
+            var story = dataBaseHelper.getStory(id)
+            e.onNext(story)
         })
-                .filter{
+                .filter {
                     story ->
                     //判断本地是否有详细数据
-                    if(!TextUtils.isEmpty(story?.body)){
+                    if (!TextUtils.isEmpty(story?.body)) {
                         callBack.data(story!!)
                         callBack.onComplete()
                         return@filter false
@@ -94,5 +92,20 @@ class StoryDetailModel(var context: Context) {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(SingleResourceObserver(callBack))
+    }
+
+
+    /**
+     * 更新story
+     */
+    fun updateStory(story: StoryEntity, transformer: LifecycleTransformer<Any>) {
+        Observable.just(story)
+                .compose(transformer)
+                .subscribeOn(Schedulers.newThread())
+                .unsubscribeOn(Schedulers.newThread())
+                .subscribe {
+
+                    dataBaseHelper.updateStory(story)
+                }
     }
 }

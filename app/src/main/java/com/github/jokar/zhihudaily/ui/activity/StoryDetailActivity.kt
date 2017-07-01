@@ -2,18 +2,23 @@ package com.github.jokar.zhihudaily.ui.activity
 
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.github.jokar.zhihudaily.R
-import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
-import com.github.jokar.zhihudaily.utils.HtmlUtil
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
+import com.github.jokar.zhihudaily.utils.system.JLog
+import com.jakewharton.rxbinding2.view.RxMenuItem
+import com.like.LikeButton
+import com.like.OnLikeListener
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_story_detail.*
 import kotlinx.android.synthetic.main.common_load.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -39,14 +44,53 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         initToolbar(toolbar, "")
         id = intent.getIntExtra("id", 0)
 
-        nestedScrollView.setOnScrollChangeListener(this@StoryDetailActivity)
-        imageHeight = resources.getDimensionPixelOffset(R.dimen.storyDetailImage)
-
+        init()
     }
+
 
     override fun onWindowInitialized() {
         super.onWindowInitialized()
         presenter.getStoryDetail(id, bindUntilEvent(ActivityEvent.DESTROY))
+    }
+
+    fun init(){
+        nestedScrollView.setOnScrollChangeListener(this@StoryDetailActivity)
+        imageHeight = resources.getDimensionPixelOffset(R.dimen.storyDetailImage)
+
+        //喜欢
+        likeButton.setOnLikeListener(object :OnLikeListener{
+            override fun liked(p0: LikeButton?) {
+                data?.like = 1
+                update()
+            }
+
+            override fun unLiked(p0: LikeButton?) {
+                data?.like = 0
+                update()
+            }
+
+        })
+
+        //收藏
+        likeCollect.setOnLikeListener(object :OnLikeListener{
+            override fun liked(p0: LikeButton?) {
+                data?.collection = 1
+                update()
+            }
+
+            override fun unLiked(p0: LikeButton?) {
+                data?.collection = 0
+                update()
+            }
+
+        })
+    }
+
+    /**
+     * 更新数据
+     */
+    fun update(){
+        presenter.updateStory(data!!,bindUntilEvent(ActivityEvent.DESTROY))
     }
 
     override fun getDataStart() {
@@ -56,6 +100,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
     }
 
     override fun loadData(result: StoryEntity) {
+
         runOnUiThread({
             data = result
             ImageLoader.loadImage(this,
@@ -64,7 +109,17 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
                     image)
             tvAuthor.text = data?.image_source
             tvTiTle.text = data?.title
-            webView.loadDataWithBaseURL("",data?.body, "text/html", "utf-8", null)
+            //判断是否已经喜欢了
+            if(data?.like == 1){
+                likeButton.isLiked = true
+            }
+
+            //判断是否已经收藏了
+            if(data?.collection == 1){
+                likeCollect.isLiked = true
+            }
+
+            webView.loadDataWithBaseURL("", data?.body, "text/html", "utf-8", null)
         })
     }
 

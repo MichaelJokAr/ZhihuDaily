@@ -97,9 +97,11 @@ class MainFragment : LazyFragment(), StoryView {
 
                     override fun itemClickListener(position: Int) {
                         //更新已读
-                        arrayList!![position].read = 1
-                        presenter.updateStory(arrayList!![position], bindUntilEvent(FragmentEvent.CREATE_VIEW))
-                        adapter?.notifyItemChanged(position)
+                        if(arrayList!![position].read == 0) {
+                            arrayList!![position].read = 1
+                            presenter.updateStory(arrayList!![position], bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                            adapter?.notifyItemChanged(position)
+                        }
                         //跳转详情页
                         var intent = Intent(activity, StoryDetailActivity::class.java)
                         intent.putExtra("id", arrayList!![position].id)

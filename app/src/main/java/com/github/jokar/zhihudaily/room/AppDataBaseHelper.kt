@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
+import com.github.jokar.zhihudaily.utils.system.JLog
 
 /**
  * Created by JokAr on 2017/6/30.
@@ -33,14 +34,22 @@ class AppDataBaseHelper constructor(context: Context) {
      * 插入story
      */
     fun insertStory(stories: ArrayList<StoryEntity>) {
-        appDataBase.storyDao().insert(stories)
+        try {
+            appDataBase.storyDao().insert(stories)
+        } catch(e: Exception) {
+            JLog.e(e)
+        }
     }
 
     /**
      * 插入topStory
      */
     fun insertTopStory(topStories: ArrayList<TopStoryEntity>) {
-        appDataBase.topStoryDao().insert(topStories)
+        try {
+            appDataBase.topStoryDao().insert(topStories)
+        } catch(e: Exception) {
+            JLog.e(e)
+        }
     }
 
     /**
@@ -67,6 +76,10 @@ class AppDataBaseHelper constructor(context: Context) {
      * 更新story;必须在非主线程中进行
      */
     fun updateStory(story: StoryEntity) {
-        appDataBase.storyDao().updateStory(story)
+        try {
+            appDataBase.storyDao().updateStory(story)
+        } catch(e: Exception) {
+            JLog.e(e)
+        }
     }
 }

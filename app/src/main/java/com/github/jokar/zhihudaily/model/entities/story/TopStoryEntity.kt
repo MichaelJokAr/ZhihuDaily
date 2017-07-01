@@ -25,7 +25,4 @@ data class TopStoryEntity(
     @ColumnInfo(name = "date")
     var date: Long = 0
 
-    @ColumnInfo(name = "date_string")
-    var dateString: String = ""
-
 }

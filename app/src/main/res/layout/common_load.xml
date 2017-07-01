@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.jokar.zhihudaily.widget.LoadLayoutView
-    android:id="@+id/loadView"
+<com.github.jokar.zhihudaily.widget.LoadLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loadView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:background="#eeeeee"/>

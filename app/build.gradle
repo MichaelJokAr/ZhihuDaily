@@ -93,4 +93,6 @@ dependencies {
     //xLog
     implementation 'com.elvishew:xlog:latest.release'
     implementation 'com.romandanylyk:pageindicatorview:0.2.0@aar'
+    //likeButton
+    implementation 'com.github.jd-alexander:LikeButton:0.2.1'
 }

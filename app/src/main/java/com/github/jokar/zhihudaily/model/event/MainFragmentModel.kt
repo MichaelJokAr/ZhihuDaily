@@ -130,6 +130,7 @@ class MainFragmentModel(var context: Context) {
                     latestStory.stories?.forEach({
                         it.date = latestStory.date
                         it.dateString = DateUtils.judgmentTime(latestStory.date)
+                        JLog.d(it.toString())
                     })
                     latestStory.top_stories?.forEach({
                         it.date = latestStory.date

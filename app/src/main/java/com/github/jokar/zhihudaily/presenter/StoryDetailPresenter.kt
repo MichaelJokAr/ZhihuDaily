@@ -35,6 +35,13 @@ class StoryDetailPresenter @Inject constructor(var model: StoryDetailModel?,
                 })
     }
 
+    /**
+     * 更新story
+     */
+    fun updateStory(story:StoryEntity,transformer: LifecycleTransformer<Any>){
+        model?.updateStory(story,transformer)
+    }
+
     override fun destroy() {
         model = null
         view = null
