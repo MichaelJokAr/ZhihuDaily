@@ -5,6 +5,7 @@ import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.subComponent.MainFragmentSubComponent
 import com.github.jokar.zhihudaily.di.subComponent.MainSubComponent
 import com.github.jokar.zhihudaily.di.subComponent.StoryDetailSubComponent
+import com.github.jokar.zhihudaily.di.subComponent.ThemeFragmentSubComponent
 import dagger.Module
 import dagger.Provides
 
@@ -14,7 +15,8 @@ import dagger.Provides
  */
 @Module(subcomponents = arrayOf(MainSubComponent::class,
         MainFragmentSubComponent::class,
-        StoryDetailSubComponent::class))
+        StoryDetailSubComponent::class,
+        ThemeFragmentSubComponent::class))
 class AppModule {
 
     @Provides

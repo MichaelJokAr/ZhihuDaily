@@ -8,11 +8,13 @@ import android.support.v7.widget.LinearLayoutManager
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
+import com.github.jokar.zhihudaily.model.rxbus.event.UpdateThemeEvent
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateToolbarTitleEvent
 import com.github.jokar.zhihudaily.presenter.MainPresenter
 import com.github.jokar.zhihudaily.ui.adapter.main.MainAdapter
 import com.github.jokar.zhihudaily.ui.adapter.viewpager.ViewPagerAdapter
 import com.github.jokar.zhihudaily.ui.fragment.MainFragment
+import com.github.jokar.zhihudaily.ui.fragment.ThemeFragment
 import com.github.jokar.zhihudaily.ui.view.MainView
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
@@ -23,6 +25,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import javax.inject.Inject
+import android.content.Intent
+import android.support.v4.view.GravityCompat
+import com.github.jokar.zhihudaily.R.id.drawerLayout
+
+
 
 
 class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
@@ -58,7 +65,8 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         toggle.syncState()
         //
         recyclerView.layoutManager = LinearLayoutManager(this)
-
+        //设置不可左右滑动
+        viewPager.setPagingEnabled(false)
         pagerAdapter = ViewPagerAdapter(supportFragmentManager)
 
         RxBus.getInstance()
@@ -85,12 +93,21 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         adapter?.adapterClickListener = object : MainAdapter.AdapterClickListener {
             override fun itemClickListener(position: Int) {
                 if (position != menuChooseIndex) {
-                    menuList?.get(position - 1)?.isClick = true
+                    val menu = menuList?.get(position - 1)
+                    menu?.isClick = true
                     menuList?.get(menuChooseIndex - 1)?.isClick = false
 
                     adapter?.notifyItemChanged(position)
                     adapter?.notifyItemChanged(menuChooseIndex)
                     menuChooseIndex = position
+                    if(position == 1){
+                        viewPager.setCurrentItem(0,false)
+                        drawerLayout.closeDrawers()
+                    }else{
+                        RxBus.getInstance().post(UpdateThemeEvent(menu?.id!!))
+                        viewPager.setCurrentItem(1,false)
+                        drawerLayout.closeDrawers()
+                    }
                 }
             }
 
@@ -99,11 +116,23 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         }
 
         pagerAdapter?.addFragment(MainFragment(), "主页")
+        pagerAdapter?.addFragment(ThemeFragment(),"主题")
         viewPager.adapter = pagerAdapter
 
     }
 
-
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            //返回桌面
+            //启动一个意图,回到桌面
+            val backHome = Intent(Intent.ACTION_MAIN)
+            backHome.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            backHome.addCategory(Intent.CATEGORY_HOME)
+            startActivity(backHome)
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         menuList = null

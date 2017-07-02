@@ -2,12 +2,12 @@ package com.github.jokar.zhihudaily.model.event
 
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.app.MyApplication
-import com.github.jokar.zhihudaily.di.component.network.DaggerThemeComponent
-import com.github.jokar.zhihudaily.di.module.network.ThemeModule
+import com.github.jokar.zhihudaily.di.component.network.DaggerThemesComponent
+import com.github.jokar.zhihudaily.di.module.network.ThemesModule
 import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.model.entities.ThemeEntities
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
-import com.github.jokar.zhihudaily.model.network.services.ThemeServices
+import com.github.jokar.zhihudaily.model.network.services.ThemesServices
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,13 +21,13 @@ class MainModel {
     @Inject
     lateinit var retrofit: Retrofit
     @Inject
-    lateinit var services: ThemeServices
+    lateinit var mServices: ThemesServices
 
     init {
 
-        DaggerThemeComponent.builder()
+        DaggerThemesComponent.builder()
                 .networkComponent(MyApplication.getNetComponent())
-                .themeModule(ThemeModule())
+                .themesModule(ThemesModule())
                 .build()
                 .inject(this)
     }
@@ -41,7 +41,7 @@ class MainModel {
         checkNotNull(transformer)
         checkNotNull(callBack)
 
-        services.getTheme()
+        mServices.getTheme()
                 .compose(transformer)
                 .compose(SchedulersUtil.applySchedulersIO())
                 .map { data -> data?.themes!! }

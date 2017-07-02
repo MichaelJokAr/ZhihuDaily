@@ -121,7 +121,7 @@ class StoryAdapter(context: Context,
 
             override fun onPageSelected(position: Int) {
                 holder.tvTitle.text = topStories[position].title
-                JLog.d(holder.pageIndicatorView.selection)
+                JLog.d("onPageSelected: ${holder.pageIndicatorView.selection}")
             }
         })
 
