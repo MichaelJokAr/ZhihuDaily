@@ -1,10 +1,10 @@
 package com.github.jokar.zhihudaily.di.module
 
 import com.github.jokar.zhihudaily.BuildConfig
+import com.github.jokar.zhihudaily.model.network.log.LoggingInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,11 +22,11 @@ class NetworkModule {
     @Singleton
     @Provides
     fun providerRetrofit(): Retrofit {
-        val interceptor = HttpLoggingInterceptor()
+        val interceptor = LoggingInterceptor()
         if (BuildConfig.DEBUG)
-            interceptor.level = HttpLoggingInterceptor.Level.BODY
+            interceptor.level = LoggingInterceptor.Level.BODY
         else
-            interceptor.level = HttpLoggingInterceptor.Level.NONE
+            interceptor.level = LoggingInterceptor.Level.NONE
 
         val client = OkHttpClient.Builder()
                 .addInterceptor(interceptor)

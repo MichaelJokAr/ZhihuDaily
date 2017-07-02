@@ -2,23 +2,19 @@ package com.github.jokar.zhihudaily.ui.activity
 
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.github.jokar.zhihudaily.utils.system.JLog
-import com.jakewharton.rxbinding2.view.RxMenuItem
+import com.github.jokar.zhihudaily.widget.LoadLayout
 import com.like.LikeButton
 import com.like.OnLikeListener
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_story_detail.*
 import kotlinx.android.synthetic.main.common_load.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -50,15 +46,19 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
 
     override fun onWindowInitialized() {
         super.onWindowInitialized()
+        getData()
+    }
+
+    private fun getData() {
         presenter.getStoryDetail(id, bindUntilEvent(ActivityEvent.DESTROY))
     }
 
-    fun init(){
+    fun init() {
         nestedScrollView.setOnScrollChangeListener(this@StoryDetailActivity)
         imageHeight = resources.getDimensionPixelOffset(R.dimen.storyDetailImage)
 
         //喜欢
-        likeButton.setOnLikeListener(object :OnLikeListener{
+        likeButton.setOnLikeListener(object : OnLikeListener {
             override fun liked(p0: LikeButton?) {
                 data?.like = 1
                 update()
@@ -72,7 +72,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         })
 
         //收藏
-        likeCollect.setOnLikeListener(object :OnLikeListener{
+        likeCollect.setOnLikeListener(object : OnLikeListener {
             override fun liked(p0: LikeButton?) {
                 data?.collection = 1
                 update()
@@ -84,13 +84,25 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
             }
 
         })
+
+        loadView.retryListener = LoadLayout.RetryListener { getData() }
     }
 
     /**
      * 更新数据
      */
-    fun update(){
-        presenter.updateStory(data!!,bindUntilEvent(ActivityEvent.DESTROY))
+    fun update() {
+        presenter.updateStory(data!!, bindUntilEvent(ActivityEvent.DESTROY))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        webView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        webView.onPause()
     }
 
     override fun getDataStart() {
@@ -110,12 +122,12 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
             tvAuthor.text = data?.image_source
             tvTiTle.text = data?.title
             //判断是否已经喜欢了
-            if(data?.like == 1){
+            if (data?.like == 1) {
                 likeButton.isLiked = true
             }
 
             //判断是否已经收藏了
-            if(data?.collection == 1){
+            if (data?.collection == 1) {
                 likeCollect.isLiked = true
             }
 
@@ -131,8 +143,9 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
     }
 
     override fun fail(e: Throwable) {
-        runOnUiThread { loadView.showError(e.message!!) }
-
+        runOnUiThread {
+            loadView.showError(e.message!!)
+        }
     }
 
     var lastY = 0
@@ -165,6 +178,13 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
             alpha = 1f - (1f / maxHeight * scrollY)
             return alpha
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        data = null
+        presenter?.destroy()
+        webView.destroy()
     }
 }
 

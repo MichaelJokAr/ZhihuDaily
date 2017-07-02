@@ -3,9 +3,7 @@ package com.github.jokar.zhihudaily.model.event
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.component.network.DaggerThemeComponent
-import com.github.jokar.zhihudaily.di.component.room.DaggerAppDataBaseComponent
 import com.github.jokar.zhihudaily.di.module.network.ThemeModule
-import com.github.jokar.zhihudaily.di.module.room.AppDataBaseModule
 import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.model.entities.ThemeEntities
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack

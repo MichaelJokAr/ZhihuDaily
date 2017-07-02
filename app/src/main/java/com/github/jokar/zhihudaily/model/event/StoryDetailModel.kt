@@ -5,15 +5,15 @@ import android.support.annotation.NonNull
 import android.text.TextUtils
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.component.network.DaggerNewsComponent
-import com.github.jokar.zhihudaily.di.component.room.DaggerAppDataBaseComponent
+import com.github.jokar.zhihudaily.di.component.room.DaggerAppDatabaseComponent
 import com.github.jokar.zhihudaily.di.module.network.NewsModule
-import com.github.jokar.zhihudaily.di.module.room.AppDataBaseModule
+import com.github.jokar.zhihudaily.di.module.room.AppDatabaseModule
 import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
 import com.github.jokar.zhihudaily.model.network.result.SingleResourceObserver
 import com.github.jokar.zhihudaily.model.network.services.NewsServices
-import com.github.jokar.zhihudaily.room.AppDataBaseHelper
+import com.github.jokar.zhihudaily.room.AppDatabaseHelper
 import com.github.jokar.zhihudaily.utils.HtmlUtil
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.LifecycleTransformer
@@ -36,18 +36,18 @@ class StoryDetailModel(var context: Context) {
 
     //room
     @Inject
-    lateinit var dataBaseHelper: AppDataBaseHelper
+    lateinit var mDatabaseHelper: AppDatabaseHelper
 
     init {
 
-        val component = DaggerAppDataBaseComponent.builder()
-                .appDataBaseModule(AppDataBaseModule(context))
+        val component = DaggerAppDatabaseComponent.builder()
+                .appDatabaseModule(AppDatabaseModule(context))
                 .build()
 
         DaggerNewsComponent
                 .builder()
                 .networkComponent(MyApplication.getNetComponent())
-                .appDataBaseComponent(component)
+                .appDatabaseComponent(component)
                 .newsModule(NewsModule())
                 .build()
                 .inject(this)
@@ -62,7 +62,7 @@ class StoryDetailModel(var context: Context) {
 
         Observable.create(ObservableOnSubscribe<StoryEntity> {
             e ->
-            var story = dataBaseHelper.getStory(id)
+            var story = mDatabaseHelper.getStory(id)
             e.onNext(story)
         })
                 .filter {
@@ -79,14 +79,16 @@ class StoryDetailModel(var context: Context) {
                 .flatMap { service.getNews(id) }
                 .compose(transformer)
                 .compose(SchedulersUtil.applySchedulersIO())
-                .map { (body, image_source, _, image, _, js, _, _, css) ->
+                .map { (body, image_source, _, image, share_url, js, _, _, css) ->
                     //添加格式到body
-                    var story = dataBaseHelper.getStory(id)
-                    story.body = HtmlUtil.createHtmlData(css, js, body)
+                    var story = mDatabaseHelper.getStory(id)
+                    story.body = HtmlUtil.createHtmlData(css,
+                            js, body)
                     story.image_source = image_source
                     story.image = image
+                    story.share_url = share_url
                     //更新本地数据
-                    dataBaseHelper.updateStory(story)
+                    mDatabaseHelper.updateStory(story)
                     //传递story
                     story
                 }
@@ -103,9 +105,6 @@ class StoryDetailModel(var context: Context) {
                 .compose(transformer)
                 .subscribeOn(Schedulers.newThread())
                 .unsubscribeOn(Schedulers.newThread())
-                .subscribe {
-
-                    dataBaseHelper.updateStory(story)
-                }
+                .subscribe { mDatabaseHelper.updateStory(story) }
     }
 }

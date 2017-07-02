@@ -58,6 +58,12 @@ data class StoryEntity constructor(
     @ColumnInfo(name = "date_string")
     var dateString: String = ""
 
+    /**
+     * 分享url
+     */
+    @ColumnInfo(name = "share_url")
+    var share_url:String? = null
+
     override fun toString(): String {
         return "StoryEntity(id=$id, images=${Arrays.toString(images)}," +
                 " title=$title," +
@@ -68,7 +74,8 @@ data class StoryEntity constructor(
                 " body=$body," +
                 " image_source=$image_source," +
                 " image=$image," +
-                " dateString='$dateString')"
+                " dateString='$dateString'," +
+                " share_url=$share_url)"
     }
 
 

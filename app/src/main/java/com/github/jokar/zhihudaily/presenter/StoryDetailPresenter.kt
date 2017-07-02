@@ -29,7 +29,6 @@ class StoryDetailPresenter @Inject constructor(var model: StoryDetailModel?,
                     }
                     override fun onError(e: Throwable) {
                         super.onError(e)
-                        JLog.e(e)
                         view?.fail(e)
                     }
                 })

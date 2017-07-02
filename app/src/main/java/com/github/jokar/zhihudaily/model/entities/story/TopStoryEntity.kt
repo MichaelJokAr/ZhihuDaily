@@ -25,4 +25,12 @@ data class TopStoryEntity(
     @ColumnInfo(name = "date")
     var date: Long = 0
 
+    override fun toString(): String {
+        return "TopStoryEntity(id=$id," +
+                " image='$image'," +
+                " title=$title," +
+                " date=$date)"
+    }
+
+
 }

@@ -23,6 +23,7 @@ import com.github.jokar.zhihudaily.ui.adapter.main.StoryAdapter
 import com.github.jokar.zhihudaily.ui.view.common.StoryView
 import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LazyFragment
+import com.github.jokar.zhihudaily.widget.LoadLayout
 import com.trello.rxlifecycle2.android.FragmentEvent
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -40,6 +41,8 @@ class MainFragment : LazyFragment(), StoryView {
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     @BindView(R.id.recyclerView)
     lateinit var recyclerView: RecyclerView
+    @BindView(R.id.loadView)
+    lateinit var loadView:LoadLayout
 
     var bind: Unbinder? = null
     var adapter: StoryAdapter? = null
@@ -56,17 +59,22 @@ class MainFragment : LazyFragment(), StoryView {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         swipeRefreshLayout.setOnRefreshListener({
-            presenter.getLatestStory(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-        }
-        )
+            getData()
+        })
+
+        loadView.retryListener = LoadLayout.RetryListener { getData() }
     }
 
     override fun getView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.fragmnet_main, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun loadData() {
         super.loadData()
+        getData()
+    }
+
+    private fun getData() {
         presenter.getLatestStory(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
     }
 
@@ -75,6 +83,10 @@ class MainFragment : LazyFragment(), StoryView {
      */
     override fun getDataStart() {
         SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, true)
+        if(loadView.isShown){
+            loadView.visibility = View.GONE
+            swipeRefreshLayout.visibility = View.VISIBLE
+        }
     }
 
     /**
@@ -142,6 +154,12 @@ class MainFragment : LazyFragment(), StoryView {
     override fun fail(e: Throwable) {
         activity.runOnUiThread {
             SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false)
+
+            if(!loadView.isShown){
+                loadView.visibility = View.VISIBLE
+                swipeRefreshLayout.visibility = View.GONE
+            }
+            loadView.showError(e.message)
         }
     }
 

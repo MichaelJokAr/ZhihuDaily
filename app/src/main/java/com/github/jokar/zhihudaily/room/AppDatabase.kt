@@ -11,8 +11,8 @@ import com.github.jokar.zhihudaily.room.dao.TopStoryDao
  * Created by JokAr on 2017/6/30.
  */
 @Database(entities = arrayOf(StoryEntity::class,
-        TopStoryEntity::class), version = 2)
-abstract class AppDataBase : RoomDatabase() {
+        TopStoryEntity::class), version = 3)
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun storyDao(): StoryDao
     abstract fun topStoryDao(): TopStoryDao

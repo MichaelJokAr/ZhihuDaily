@@ -71,9 +71,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <include layout="@layout/common_load" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <include layout="@layout/common_load" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -93,17 +95,17 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 app:icon_size="35dp"
-                app:unlike_drawable="@mipmap/collect"
-                app:like_drawable="@mipmap/collected"/>
+                app:like_drawable="@mipmap/collected"
+                app:unlike_drawable="@mipmap/collect" />
 
             <com.like.LikeButton
                 android:id="@+id/likeButton"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
-                app:unlike_drawable="@mipmap/ic_like"
+                app:icon_size="25dp"
                 app:like_drawable="@mipmap/ic_liked"
-                app:icon_size="25dp" />
+                app:unlike_drawable="@mipmap/ic_like" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 

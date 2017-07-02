@@ -1,6 +1,6 @@
 package com.github.jokar.zhihudaily.di.component.network
 
-import com.github.jokar.zhihudaily.di.component.room.AppDataBaseComponent
+import com.github.jokar.zhihudaily.di.component.room.AppDatabaseComponent
 import com.github.jokar.zhihudaily.di.module.network.BeforeModule
 import com.github.jokar.zhihudaily.di.module.network.LatestModule
 import com.github.jokar.zhihudaily.di.scoped.UserScope
@@ -12,7 +12,7 @@ import dagger.Component
  */
 @UserScope
 @Component(dependencies = arrayOf(NetworkComponent::class,
-        AppDataBaseComponent::class),
+        AppDatabaseComponent::class),
         modules = arrayOf(LatestModule::class, BeforeModule::class))
 interface LatestAndBeforeComponent {
     fun inject(model: MainFragmentModel)

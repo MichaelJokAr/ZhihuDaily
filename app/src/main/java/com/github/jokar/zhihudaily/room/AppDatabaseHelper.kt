@@ -9,20 +9,20 @@ import com.github.jokar.zhihudaily.utils.system.JLog
 /**
  * Created by JokAr on 2017/6/30.
  */
-class AppDataBaseHelper constructor(context: Context) {
+class AppDatabaseHelper constructor(context: Context) {
 
-    val appDataBase = Room.databaseBuilder(context, AppDataBase::class.java,
+    val appDataBase = Room.databaseBuilder(context, AppDatabase::class.java,
             "daily").build()!!
 
     companion object {
         @Volatile
-        var INSTANCE: AppDataBaseHelper? = null
+        var INSTANCE: AppDatabaseHelper? = null
 
-        fun getInstance(context: Context): AppDataBaseHelper {
+        fun getInstance(context: Context): AppDatabaseHelper {
             if (INSTANCE == null) {
-                synchronized(AppDataBaseHelper::class) {
+                synchronized(AppDatabaseHelper::class) {
                     if (INSTANCE == null) {
-                        INSTANCE = AppDataBaseHelper(context.applicationContext)
+                        INSTANCE = AppDatabaseHelper(context.applicationContext)
                     }
                 }
             }
