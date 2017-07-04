@@ -15,6 +15,7 @@ import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
+import com.github.jokar.zhihudaily.model.rxbus.event.UpdateStoryScrollEvent
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateToolbarTitleEvent
 import com.github.jokar.zhihudaily.presenter.MainFragmentPresenter
 import com.github.jokar.zhihudaily.ui.activity.StoryDetailActivity
@@ -42,7 +43,7 @@ class MainFragment : LazyFragment(), StoryView {
     @BindView(R.id.recyclerView)
     lateinit var recyclerView: RecyclerView
     @BindView(R.id.loadView)
-    lateinit var loadView:LoadLayout
+    lateinit var loadView: LoadLayout
 
     var bind: Unbinder? = null
     var adapter: StoryAdapter? = null
@@ -63,6 +64,15 @@ class MainFragment : LazyFragment(), StoryView {
         })
 
         loadView.retryListener = LoadLayout.RetryListener { getData() }
+
+        RxBus.getInstance()
+                .toMainThreadObservable(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                .subscribe {
+                    event ->
+                    if (event is UpdateStoryScrollEvent) {
+                        recyclerView.scrollToPosition(0)
+                    }
+                }
     }
 
     override fun getView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -83,7 +93,7 @@ class MainFragment : LazyFragment(), StoryView {
      */
     override fun getDataStart() {
         SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, true)
-        if(loadView.isShown){
+        if (loadView.isShown) {
             loadView.visibility = View.GONE
             swipeRefreshLayout.visibility = View.VISIBLE
         }
@@ -109,7 +119,7 @@ class MainFragment : LazyFragment(), StoryView {
 
                     override fun itemClickListener(position: Int) {
                         //更新已读
-                        if(arrayList!![position].read == 0) {
+                        if (arrayList!![position].read == 0) {
                             arrayList!![position].read = 1
                             presenter.updateStory(arrayList!![position], bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                             adapter?.notifyItemChanged(position)
@@ -155,7 +165,7 @@ class MainFragment : LazyFragment(), StoryView {
         activity.runOnUiThread {
             SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false)
 
-            if(!loadView.isShown){
+            if (!loadView.isShown) {
                 loadView.visibility = View.VISIBLE
                 swipeRefreshLayout.visibility = View.GONE
             }

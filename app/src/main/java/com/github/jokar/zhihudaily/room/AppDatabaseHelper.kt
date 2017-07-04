@@ -42,6 +42,13 @@ class AppDatabaseHelper constructor(context: Context) {
     }
 
     /**
+     * 插入story
+     */
+    fun insertStory(story: StoryEntity) {
+        appDataBase.storyDao().insert(story)
+    }
+
+    /**
      * 插入topStory
      */
     fun insertTopStory(topStories: ArrayList<TopStoryEntity>) {
@@ -62,13 +69,14 @@ class AppDatabaseHelper constructor(context: Context) {
     /**
      *
      */
-    fun getTopStoryByDate(date: Long):ArrayList<TopStoryEntity>{
+    fun getTopStoryByDate(date: Long): ArrayList<TopStoryEntity> {
         return appDataBase.topStoryDao().getTopStoryByDate(date) as ArrayList<TopStoryEntity>
     }
+
     /**
      * 根据id获取story
      */
-    fun getStory(id: Int): StoryEntity{
+    fun getStory(id: Int): StoryEntity {
         return appDataBase.storyDao().selectStory(id)
     }
 
@@ -81,5 +89,12 @@ class AppDatabaseHelper constructor(context: Context) {
         } catch(e: Exception) {
             JLog.e(e)
         }
+    }
+
+    /**
+     * 获取所有收藏的story
+     */
+    fun getCollectionsStories(): ArrayList<StoryEntity> {
+        return appDataBase.storyDao().getAllCollectedStory() as ArrayList<StoryEntity>
     }
 }

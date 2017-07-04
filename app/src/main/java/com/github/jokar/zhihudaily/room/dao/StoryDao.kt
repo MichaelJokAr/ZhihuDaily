@@ -19,6 +19,11 @@ interface StoryDao {
     fun insert(stories: ArrayList<StoryEntity>)
 
     /**
+     * 插入
+     */
+    @Insert
+    fun insert(story: StoryEntity)
+    /**
      * 根据时间获取story
      */
     @Query("SELECT * FROM story WHERE date = :arg0 ")

@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".ui.activity.MainActivity"/>
         <activity android:name=".ui.activity.StoryDetailActivity"/>
+        <activity android:name=".ui.activity.CollectionActivity"/>
     </application>
 
 </manifest>

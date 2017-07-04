@@ -2,9 +2,12 @@ package com.github.jokar.zhihudaily.ui.activity
 
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
+import android.text.TextUtils
 import android.view.View
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
+import com.github.jokar.zhihudaily.model.rxbus.RxBus
+import com.github.jokar.zhihudaily.model.rxbus.event.UpdateCollectionEvent
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
@@ -76,13 +79,16 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
             override fun liked(p0: LikeButton?) {
                 data?.collection = 1
                 update()
+                //通知收藏页面刷新
+                RxBus.getInstance().post(UpdateCollectionEvent())
             }
 
             override fun unLiked(p0: LikeButton?) {
                 data?.collection = 0
                 update()
+                //通知收藏页面刷新
+                RxBus.getInstance().post(UpdateCollectionEvent())
             }
-
         })
 
         loadView.retryListener = LoadLayout.RetryListener { getData() }
@@ -115,12 +121,16 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
 
         runOnUiThread({
             data = result
-            ImageLoader.loadImage(this,
-                    data?.image!!,
-                    R.mipmap.image_small_default,
-                    image)
-            tvAuthor.text = data?.image_source
-            tvTiTle.text = data?.title
+            if (!TextUtils.isEmpty(data?.image)) {
+                ImageLoader.loadImage(this,
+                        data?.image!!,
+                        R.mipmap.image_small_default,
+                        image)
+                tvAuthor.text = data?.image_source
+                tvTiTle.text = data?.title
+            } else {
+                rlTop.visibility = View.GONE
+            }
             //判断是否已经喜欢了
             if (data?.like == 1) {
                 likeButton.isLiked = true

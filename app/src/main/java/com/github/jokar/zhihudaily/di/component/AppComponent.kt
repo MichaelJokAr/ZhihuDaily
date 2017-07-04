@@ -2,6 +2,7 @@ package com.github.jokar.zhihudaily.di.component
 
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.module.AppModule
+import com.github.jokar.zhihudaily.di.module.activity.CollectionActivityModule
 import com.github.jokar.zhihudaily.di.module.activity.MainActivityModule
 import com.github.jokar.zhihudaily.di.module.activity.StoryDetailActivityModule
 import com.github.jokar.zhihudaily.di.module.fragment.MainFragmentModule
@@ -19,7 +20,8 @@ import dagger.android.support.AndroidSupportInjectionModule
         MainActivityModule::class,
         MainFragmentModule::class,
         StoryDetailActivityModule::class,
-        ThemeFragmentModule::class
+        ThemeFragmentModule::class,
+        CollectionActivityModule::class
 ))
 interface AppComponent {
     fun inject(application: MyApplication)

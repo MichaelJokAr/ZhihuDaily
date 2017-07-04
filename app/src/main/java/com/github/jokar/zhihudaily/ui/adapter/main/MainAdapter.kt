@@ -71,7 +71,6 @@ class MainAdapter(var context: Context, transformer: LifecycleTransformer<Any>,
                     .subscribe({
                         adapterClickListener?.collectionClick()
                     })
-            adapterClickListener?.collectionClick()
         }
     }
 

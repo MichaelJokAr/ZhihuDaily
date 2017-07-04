@@ -20,6 +20,7 @@ import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -63,6 +64,12 @@ class StoryDetailModel(var context: Context) {
         Observable.create(ObservableOnSubscribe<StoryEntity> {
             e ->
             var story = mDatabaseHelper.getStory(id)
+            //判断本地是否有
+            if (story == null) {
+                story = StoryEntity(id)
+                story.images = arrayOf("")
+                mDatabaseHelper.insertStory(story)
+            }
             e.onNext(story)
         })
                 .filter {
@@ -79,19 +86,25 @@ class StoryDetailModel(var context: Context) {
                 .flatMap { service.getNews(id) }
                 .compose(transformer)
                 .compose(SchedulersUtil.applySchedulersIO())
-                .map { (body, image_source, _, image, share_url, js, _, _, css) ->
-                    //添加格式到body
-                    var story = mDatabaseHelper.getStory(id)
-                    story.body = HtmlUtil.createHtmlData(css,
-                            js, body)
-                    story.image_source = image_source
-                    story.image = image
-                    story.share_url = share_url
-                    //更新本地数据
-                    mDatabaseHelper.updateStory(story)
-                    //传递story
-                    story
-                }
+                .map(object : Function<StoryDetail, StoryEntity> {
+                    override fun apply(storyDetail: StoryDetail): StoryEntity {
+                        //添加格式到body
+                        var story = mDatabaseHelper.getStory(id)
+                        story.body = HtmlUtil.createHtmlData(storyDetail.css,
+                                storyDetail.js, storyDetail.body)
+                        story.image_source = storyDetail.image_source
+                        story.image = storyDetail.image
+                        story.share_url = storyDetail.share_url
+                        if (TextUtils.isEmpty(story.title)) {
+                            story.title = storyDetail.title
+                            story.images = storyDetail.images
+                        }
+                        //更新本地数据
+                        mDatabaseHelper.updateStory(story)
+                        //传递story
+                        return story
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(SingleResourceObserver(callBack))
     }

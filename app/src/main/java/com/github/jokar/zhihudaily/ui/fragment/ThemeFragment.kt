@@ -2,15 +2,13 @@ package com.github.jokar.zhihudaily.ui.fragment
 
 
 import android.app.Activity
-import android.support.v4.widget.NestedScrollView
+import android.content.Intent
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
@@ -19,6 +17,9 @@ import com.github.jokar.zhihudaily.model.entities.theme.ThemeEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateThemeEvent
 import com.github.jokar.zhihudaily.presenter.ThemePresenter
+import com.github.jokar.zhihudaily.ui.activity.StoryDetailActivity
+import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
+import com.github.jokar.zhihudaily.ui.adapter.main.ThemeAdapter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LazyFragment
@@ -35,12 +36,7 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
 
     @BindView(R.id.swipeRefreshLayout)
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    @BindView(R.id.nestedScrollView)
-    lateinit var nestedScrollView: NestedScrollView
-    @BindView(R.id.image)
-    lateinit var image: ImageView
-    @BindView(R.id.tvTiTle)
-    lateinit var tvTiTle: TextView
+
     @BindView(R.id.recyclerView)
     lateinit var recyclerView: RecyclerView
     @BindView(R.id.loadView)
@@ -51,6 +47,9 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
 
     var idValue: Int = 0
 
+    var adapter: ThemeAdapter? = null
+    var themeEntity: ThemeEntity? = null
+
     override fun onAttach(activity: Activity?) {
         AndroidSupportInjection.inject(this)
         super.onAttach(activity)
@@ -58,7 +57,7 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
 
     var bind: Unbinder? = null
     override fun getView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.fragment_theme, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun initViews(view: View) {
@@ -97,9 +96,23 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
             loadView.visibility = View.GONE
             swipeRefreshLayout.visibility = View.VISIBLE
         }
+
     }
 
     override fun loadData(data: ThemeEntity) {
+        themeEntity = data.copy()
+
+        adapter = ThemeAdapter(context, bindUntilEvent(FragmentEvent.DESTROY_VIEW), themeEntity!!)
+        recyclerView.adapter = adapter
+        adapter?.clickListener = object : AdapterItemClickListener {
+            override fun itemClickListener(position: Int) {
+                super.itemClickListener(position)
+                //跳转详情页
+                var intent = Intent(activity, StoryDetailActivity::class.java)
+                intent.putExtra("id", themeEntity!!.stories[position].id)
+                startActivity(intent)
+            }
+        }
 
     }
 
@@ -119,6 +132,8 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.destroy()
+        adapter = null
+        themeEntity = null
         bind?.unbind()
     }
 

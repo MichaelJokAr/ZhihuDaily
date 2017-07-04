@@ -14,7 +14,7 @@ abstract class BaseRecyclerAdapter<VH : BaseViewHolder>(context: Context,
                                                         var transformer: LifecycleTransformer<Any>) : RecyclerView.Adapter<VH>() {
 
     var inflater: LayoutInflater? = null
-    var clickListener: AdapterItemClickListener? = null
+   var clickListener: AdapterItemClickListener? = null
 
     init {
         inflater = LayoutInflater.from(context)

@@ -2,10 +2,7 @@ package com.github.jokar.zhihudaily.di.module
 
 import android.content.Context
 import com.github.jokar.zhihudaily.app.MyApplication
-import com.github.jokar.zhihudaily.di.subComponent.MainFragmentSubComponent
-import com.github.jokar.zhihudaily.di.subComponent.MainSubComponent
-import com.github.jokar.zhihudaily.di.subComponent.StoryDetailSubComponent
-import com.github.jokar.zhihudaily.di.subComponent.ThemeFragmentSubComponent
+import com.github.jokar.zhihudaily.di.subComponent.*
 import dagger.Module
 import dagger.Provides
 
@@ -16,7 +13,8 @@ import dagger.Provides
 @Module(subcomponents = arrayOf(MainSubComponent::class,
         MainFragmentSubComponent::class,
         StoryDetailSubComponent::class,
-        ThemeFragmentSubComponent::class))
+        ThemeFragmentSubComponent::class,
+        CollectionSubComponent::class))
 class AppModule {
 
     @Provides

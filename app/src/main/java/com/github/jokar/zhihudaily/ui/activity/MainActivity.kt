@@ -27,9 +27,7 @@ import kotlinx.android.synthetic.main.common_toolbar.*
 import javax.inject.Inject
 import android.content.Intent
 import android.support.v4.view.GravityCompat
-import com.github.jokar.zhihudaily.R.id.drawerLayout
-
-
+import com.github.jokar.zhihudaily.model.rxbus.event.UpdateStoryScrollEvent
 
 
 class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
@@ -101,17 +99,25 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
                     adapter?.notifyItemChanged(menuChooseIndex)
                     menuChooseIndex = position
                     if(position == 1){
+                        closeDrawaer()
+                        toolbar.title = "今日要闻"
                         viewPager.setCurrentItem(0,false)
-                        drawerLayout.closeDrawers()
+                        //让fragment滚动到顶部
+                        RxBus.getInstance().post(UpdateStoryScrollEvent())
                     }else{
-                        RxBus.getInstance().post(UpdateThemeEvent(menu?.id!!))
+                        closeDrawaer()
                         viewPager.setCurrentItem(1,false)
-                        drawerLayout.closeDrawers()
+                        toolbar.title = menu?.name
+                        //获取数据
+                        RxBus.getInstance().post(UpdateThemeEvent(menu?.id!!))
                     }
                 }
             }
 
             override fun collectionClick() {
+                closeDrawaer()
+                var intent = Intent(this@MainActivity,CollectionActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -119,6 +125,10 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         pagerAdapter?.addFragment(ThemeFragment(),"主题")
         viewPager.adapter = pagerAdapter
 
+    }
+
+    private fun closeDrawaer() {
+        drawerLayout.closeDrawers()
     }
 
     override fun onBackPressed() {
