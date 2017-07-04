@@ -94,4 +94,16 @@ object ImageLoader {
         }
 
     }
+
+    fun clearDiskCache(context: Context){
+        //清除硬盘缓存
+        Glide.get(context).clearDiskCache();
+    }
+
+    fun clearCache(context: Context){
+        //清除硬盘缓存
+        Thread { Glide.get(context).clearDiskCache() }
+        //清除缓存
+        Glide.get(context).clearMemory()
+    }
 }

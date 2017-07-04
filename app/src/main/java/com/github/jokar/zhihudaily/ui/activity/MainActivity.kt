@@ -27,7 +27,10 @@ import kotlinx.android.synthetic.main.common_toolbar.*
 import javax.inject.Inject
 import android.content.Intent
 import android.support.v4.view.GravityCompat
+import android.view.Menu
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateStoryScrollEvent
+import com.jakewharton.rxbinding2.view.RxMenuItem
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
@@ -75,6 +78,20 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
                     }
                 }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main,menu)
+
+        RxMenuItem.clicks(menu.getItem(0))
+                .throttleFirst(1,TimeUnit.SECONDS)
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe {
+                    val intent = Intent(this,SettingActivity::class.java)
+                    startActivity(intent)
+                }
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onWindowInitialized() {

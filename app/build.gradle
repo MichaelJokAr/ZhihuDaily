@@ -94,4 +94,6 @@ dependencies {
     implementation 'com.romandanylyk:pageindicatorview:0.2.0@aar'
     //likeButton
     implementation 'com.github.jd-alexander:LikeButton:0.2.1'
+    //aboutPage
+    implementation 'com.github.medyo:android-about-page:latest.release'
 }
