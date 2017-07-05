@@ -1,5 +1,5 @@
 ### ZhihuDaily 
-ZhihuDaily for Kotlin
+ZhihuDaily for Kotlin,[说明请看这里](http://www.jianshu.com/p/1114c471281b)
 
 ### Dev
 - Android-Studio: 3.0
@@ -34,6 +34,11 @@ ZhihuDaily for Kotlin
 <img src="art/img5.png" width="225" height="410" />
 </p>
 </body>
+
+
+### Download
+
+![qr_code](art/qr_code.png)
 
 ---
 
