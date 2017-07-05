@@ -29,6 +29,9 @@ android {
                 minifyEnabled true
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             }
+            debug{
+                signingConfig signingConfigs.config //签名证书
+            }
         }
     }
     //

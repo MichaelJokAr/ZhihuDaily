@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
+import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.adapter.base.LoadMoreAdapter
 import com.github.jokar.zhihudaily.ui.adapter.viewpager.TopStoryAdapter
@@ -30,6 +31,8 @@ class StoryAdapter(context: Context,
                    transformer: LifecycleTransformer<Any>,
                    var topStories: ArrayList<TopStoryEntity>)
     : LoadMoreAdapter<StoryEntity>(context, data, transformer) {
+
+    var headClickListener: HeadClickListener? = null
 
     override fun bindView(viewHolder: BaseViewHolder, position: Int) {
         val storyEntities = data[position]
@@ -105,7 +108,15 @@ class StoryAdapter(context: Context,
             viewList.add(view!!)
         })
         //
-        var pagerAdapter: TopStoryAdapter? = TopStoryAdapter(context, viewList, topStories)
+        var pagerAdapter: TopStoryAdapter? = TopStoryAdapter(context, viewList, transformer,
+                topStories)
+        //点击事件
+        pagerAdapter?.itemClickListener = object : AdapterItemClickListener {
+            override fun itemClickListener(position: Int) {
+                super.itemClickListener(position)
+                headClickListener?.itemClick(position)
+            }
+        }
         holder.viewPager.adapter = pagerAdapter
         holder.viewPager.offscreenPageLimit = topStories.size
 
@@ -150,5 +161,12 @@ class StoryAdapter(context: Context,
                 tvTitle.setTextColor(Color.parseColor("#777777"))
             }
         }
+    }
+
+    /**
+     * 头部viewPager点击事件
+     */
+    interface HeadClickListener {
+        fun itemClick(position: Int)
     }
 }

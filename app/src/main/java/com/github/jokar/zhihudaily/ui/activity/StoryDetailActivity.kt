@@ -168,11 +168,17 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
             if (lastY - y > 20) {
                 //上滑
                 lastY = y
+                if(toolbar.visibility == View.GONE){
+                    toolbar.visibility = View.VISIBLE
+                }
                 toolbar.alpha = 1f
             } else if (y - lastY > 20) {
                 //下滑
                 lastY = y
                 toolbar.alpha = 0f
+                if(toolbar.visibility == View.VISIBLE){
+                    toolbar.visibility = View.GONE
+                }
             }
         }
     }

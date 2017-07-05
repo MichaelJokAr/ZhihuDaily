@@ -110,6 +110,14 @@ class MainFragment : LazyFragment(), StoryView {
                 adapter = StoryAdapter(context, arrayList!!, bindUntilEvent(FragmentEvent.DESTROY_VIEW),
                         data.top_stories!!)
                 recyclerView.adapter = adapter
+                adapter?.headClickListener = object : StoryAdapter.HeadClickListener {
+                    override fun itemClick(position: Int) {
+                        //跳转详情页
+                        var intent = Intent(activity, StoryDetailActivity::class.java)
+                        intent.putExtra("id", data.top_stories!![position].id)
+                        startActivity(intent)
+                    }
+                }
                 adapter?.itemClickListener = object : LoadMoreAdapterItemClickListener {
                     override fun firstCompletelyVisibleItem(position: Int) {
                         super.firstCompletelyVisibleItem(position)

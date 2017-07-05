@@ -7,7 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
+import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
+import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
+import com.trello.rxlifecycle2.LifecycleTransformer
+import io.reactivex.functions.Consumer
 
 
 /**
@@ -15,16 +19,22 @@ import com.github.jokar.zhihudaily.utils.image.ImageLoader
  */
 class TopStoryAdapter(var context: Context,
                       var viewList: ArrayList<View>,
+                      var transformer: LifecycleTransformer<Any>,
                       var topStories: ArrayList<TopStoryEntity>) : PagerAdapter() {
+    var itemClickListener: AdapterItemClickListener? = null
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val view = viewList[position]
-        var image:ImageView = view.findViewById(R.id.image) as ImageView
+        var image: ImageView = view.findViewById(R.id.image) as ImageView
 
         ImageLoader.loadImage(context,
                 topStories[position].image,
                 R.mipmap.image_small_default,
                 image!!)
+        ViewUtils.viewClick(image, transformer,
+                Consumer<Any> {
+                    itemClickListener?.itemClickListener(position)
+                })
         collection.addView(view)
         return view
     }
