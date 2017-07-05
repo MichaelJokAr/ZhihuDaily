@@ -14,7 +14,8 @@ import dagger.Provides
         MainFragmentSubComponent::class,
         StoryDetailSubComponent::class,
         ThemeFragmentSubComponent::class,
-        CollectionSubComponent::class))
+        CollectionSubComponent::class,
+        SettingSubComponent::class))
 class AppModule {
 
     @Provides

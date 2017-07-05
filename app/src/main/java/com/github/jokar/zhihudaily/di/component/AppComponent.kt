@@ -4,6 +4,7 @@ import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.module.AppModule
 import com.github.jokar.zhihudaily.di.module.activity.CollectionActivityModule
 import com.github.jokar.zhihudaily.di.module.activity.MainActivityModule
+import com.github.jokar.zhihudaily.di.module.activity.SettingActivityModule
 import com.github.jokar.zhihudaily.di.module.activity.StoryDetailActivityModule
 import com.github.jokar.zhihudaily.di.module.fragment.MainFragmentModule
 import com.github.jokar.zhihudaily.di.module.fragment.ThemeFragmentModule
@@ -21,7 +22,8 @@ import dagger.android.support.AndroidSupportInjectionModule
         MainFragmentModule::class,
         StoryDetailActivityModule::class,
         ThemeFragmentModule::class,
-        CollectionActivityModule::class
+        CollectionActivityModule::class,
+        SettingActivityModule::class
 ))
 interface AppComponent {
     fun inject(application: MyApplication)
