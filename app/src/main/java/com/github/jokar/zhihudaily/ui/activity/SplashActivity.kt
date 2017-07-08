@@ -18,6 +18,17 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //某些手机release版本会在点击home键后再点击icon后会再走一遍app启动过程
+        if (!isTaskRoot) {
+            val intent = intent
+            if (intent != null) {
+                val action = intent.action
+                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN == action) {
+                    finish()
+                    return
+                }
+            }
+        }
         // 隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         // 隐藏状态栏
