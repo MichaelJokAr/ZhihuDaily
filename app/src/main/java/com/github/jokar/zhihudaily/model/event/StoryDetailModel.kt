@@ -86,25 +86,23 @@ class StoryDetailModel(var context: Context) {
                 .flatMap { service.getNews(id) }
                 .compose(transformer)
                 .compose(SchedulersUtil.applySchedulersIO())
-                .map(object : Function<StoryDetail, StoryEntity> {
-                    override fun apply(storyDetail: StoryDetail): StoryEntity {
-                        //添加格式到body
-                        var story = mDatabaseHelper.getStory(id)
-                        story.body = HtmlUtil.createHtmlData(storyDetail.css,
-                                storyDetail.js, storyDetail.body)
-                        story.image_source = storyDetail.image_source
-                        story.image = storyDetail.image
-                        story.share_url = storyDetail.share_url
-                        if (TextUtils.isEmpty(story.title)) {
-                            story.title = storyDetail.title
-                            story.images = storyDetail.images
-                        }
-                        //更新本地数据
-                        mDatabaseHelper.updateStory(story)
-                        //传递story
-                        return story
+                .map { (body, image_source, title, image, share_url, js, images, _, css) ->
+                    //添加格式到body
+                    var story = mDatabaseHelper.getStory(id)
+                    story.body = HtmlUtil.createHtmlData(css,
+                            js, body)
+                    story.image_source = image_source
+                    story.image = image
+                    story.share_url = share_url
+                    if (TextUtils.isEmpty(story.title)) {
+                        story.title = title
+                        story.images = images
                     }
-                })
+                    //更新本地数据
+                    mDatabaseHelper.updateStory(story)
+                    //传递story
+                    story
+                }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(SingleResourceObserver(callBack))
     }

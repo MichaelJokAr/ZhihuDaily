@@ -20,6 +20,7 @@ class SingleResourceObserver<T>(var callBack: SingleDataCallBack<T>) : ResourceO
 
     override fun onNext(t: T) {
         callBack.data(t)
+        onComplete()
     }
 
     override fun onError(e: Throwable) {

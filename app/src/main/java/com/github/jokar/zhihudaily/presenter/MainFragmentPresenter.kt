@@ -21,7 +21,6 @@ class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
                 object : SingleDataCallBack<LatestStory> {
                     override fun data(data: LatestStory) {
                         view?.loadData(data)
-                        view?.loadComplete()
                     }
 
                     override fun onStart() {
@@ -32,6 +31,11 @@ class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
                     override fun onError(e: Throwable) {
                         super.onError(e)
                         view?.fail(e)
+                    }
+
+                    override fun onComplete() {
+                        super.onComplete()
+                        view?.loadComplete()
                     }
                 })
     }
@@ -58,9 +62,10 @@ class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
      * 更新已读
      */
     fun updateStory(story: StoryEntity,
-                    @NonNull transformer: LifecycleTransformer<Any>){
-        model?.updateStory(story,transformer)
+                    @NonNull transformer: LifecycleTransformer<Any>) {
+        model?.updateStory(story, transformer)
     }
+
     override fun destroy() {
         model = null
         view = null

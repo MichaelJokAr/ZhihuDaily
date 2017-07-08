@@ -26,7 +26,6 @@ class CollectionPresenter @Inject constructor(var model: CollectionModel?,
 
                     override fun data(data: ArrayList<StoryEntity>) {
                         view?.loadData(data)
-                        view?.loadComplete()
                     }
 
                     override fun onComplete() {

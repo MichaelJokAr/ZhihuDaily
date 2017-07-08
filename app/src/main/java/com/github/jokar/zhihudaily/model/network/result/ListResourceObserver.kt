@@ -18,6 +18,7 @@ class ListResourceObserver<T>(var callBack: ListDataCallBack<T>) : ResourceObser
 
     override fun onNext(t: ArrayList<T>) {
         callBack.data(t)
+        onComplete()
     }
 
     override fun onError(e: Throwable) {

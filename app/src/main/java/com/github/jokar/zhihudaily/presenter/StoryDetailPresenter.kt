@@ -5,7 +5,6 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.event.StoryDetailModel
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
-import com.github.jokar.zhihudaily.utils.system.JLog
 import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
 
@@ -16,20 +15,26 @@ class StoryDetailPresenter @Inject constructor(var model: StoryDetailModel?,
                                                var view: SingleDataView<StoryEntity>?)
     : BasePresenter {
 
-    fun getStoryDetail(id:Int,transformer: LifecycleTransformer<StoryDetail>){
-        model?.getStoryDetail(id,transformer,
-                object :SingleDataCallBack<StoryEntity>{
+    fun getStoryDetail(id: Int, transformer: LifecycleTransformer<StoryDetail>) {
+        model?.getStoryDetail(id, transformer,
+                object : SingleDataCallBack<StoryEntity> {
                     override fun onStart() {
                         super.onStart()
                         view?.getDataStart()
                     }
+
                     override fun data(data: StoryEntity) {
                         view?.loadData(data)
-                        view?.loadComplete()
                     }
+
                     override fun onError(e: Throwable) {
                         super.onError(e)
                         view?.fail(e)
+                    }
+
+                    override fun onComplete() {
+                        super.onComplete()
+                        view?.loadComplete()
                     }
                 })
     }
@@ -37,8 +42,8 @@ class StoryDetailPresenter @Inject constructor(var model: StoryDetailModel?,
     /**
      * 更新story
      */
-    fun updateStory(story:StoryEntity,transformer: LifecycleTransformer<Any>){
-        model?.updateStory(story,transformer)
+    fun updateStory(story: StoryEntity, transformer: LifecycleTransformer<Any>) {
+        model?.updateStory(story, transformer)
     }
 
     override fun destroy() {
