@@ -67,6 +67,29 @@ dependencies {
     implementation "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:percent:$SUPPORT_LIBRARY_VERSION"
+    
+    // Anko Commons
+    implementation "org.jetbrains.anko:anko:$ANKO_VERSION"
+    // Appcompat-v7 (only Anko Commons)
+    implementation "org.jetbrains.anko:anko-appcompat-v7-commons:$ANKO_VERSION"
+    // Appcompat-v7 (Anko Layouts)
+    implementation "org.jetbrains.anko:anko-appcompat-v7:$ANKO_VERSION"
+    implementation "org.jetbrains.anko:anko-coroutines:$ANKO_VERSION"
+    // CardView-v7
+    implementation "org.jetbrains.anko:anko-cardview-v7:$ANKO_VERSION"
+    // Design
+    implementation "org.jetbrains.anko:anko-design:$ANKO_VERSION"
+    implementation "org.jetbrains.anko:anko-design-coroutines:$ANKO_VERSION"
+    // Percent
+    implementation "org.jetbrains.anko:anko-percent:$ANKO_VERSION"
+    // RecyclerView-v7
+    implementation "org.jetbrains.anko:anko-recyclerview-v7:$ANKO_VERSION"
+    implementation "org.jetbrains.anko:anko-recyclerview-v7-coroutines:$ANKO_VERSION"
+    // Support-v4 (only Anko Commons)
+    implementation "org.jetbrains.anko:anko-support-v4-commons:$ANKO_VERSION"
+    // Support-v4 (Anko Layouts)
+    implementation "org.jetbrains.anko:anko-support-v4:$ANKO_VERSION"
+
     //room
     implementation 'android.arch.persistence.room:runtime:latest.release'
     kapt 'android.arch.persistence.room:compiler:latest.release'

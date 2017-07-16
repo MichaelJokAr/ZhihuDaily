@@ -29,17 +29,18 @@ object ImageLoader {
     fun loadImage(context: Context,
                   url: String,
                   defaultImage: Int,
-                  imageView: ImageView) {
-        val options = RequestOptions()
-                .placeholder(defaultImage)
-                .error(defaultImage)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                  imageView: ImageView?) {
+        if(imageView != null) {
+            val options = RequestOptions()
+                    .placeholder(defaultImage)
+                    .error(defaultImage)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
 
-        Glide.with(context)
-                .load(url)
-                .apply(options)
-                .into(imageView)
-
+            Glide.with(context)
+                    .load(url)
+                    .apply(options)
+                    .into(imageView)
+        }
     }
 
     /**
@@ -62,7 +63,7 @@ object ImageLoader {
         Glide.with(context)
                 .load(url)
                 .apply(options)
-                .listener(object :RequestListener<Drawable>{
+                .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(e: GlideException?, model: Any?,
                                               target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
                         return false
@@ -95,12 +96,12 @@ object ImageLoader {
 
     }
 
-    fun clearDiskCache(context: Context){
+    fun clearDiskCache(context: Context) {
         //清除硬盘缓存
         Glide.get(context).clearDiskCache();
     }
 
-    fun clearCache(context: Context){
+    fun clearCache(context: Context) {
         //清除硬盘缓存
         Thread { Glide.get(context).clearDiskCache() }
         //清除缓存

@@ -11,13 +11,13 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 abstract class BaseActivity : RxAppCompatActivity() {
     private var isFirstFocused = true
 
-    fun initToolbar(toolbar: Toolbar, title: String) {
-        toolbar.title = title
-        toolbar.setTitleTextColor(Color.WHITE)
+    fun initToolbar(toolbar: Toolbar?, title: String) {
+        toolbar?.title = title
+        toolbar?.setTitleTextColor(Color.WHITE)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        toolbar.setNavigationOnClickListener { v -> finish() }
+        toolbar?.setNavigationOnClickListener { v -> finish() }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

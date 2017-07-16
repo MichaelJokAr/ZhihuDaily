@@ -1,9 +1,14 @@
 package com.github.jokar.zhihudaily.ui.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.LinearLayout
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
@@ -11,14 +16,18 @@ import com.github.jokar.zhihudaily.model.rxbus.event.UpdateCollectionEvent
 import com.github.jokar.zhihudaily.presenter.CollectionPresenter
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.main.CollectionAdapter
+import com.github.jokar.zhihudaily.ui.layout.CommonView
 import com.github.jokar.zhihudaily.ui.view.common.ListDataView
 import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LoadLayout
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_collection.*
 import kotlinx.android.synthetic.main.common_load.*
 import kotlinx.android.synthetic.main.common_toolbar.*
+import org.jetbrains.anko.*
+import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.recyclerview.v7.recyclerView
+import org.jetbrains.anko.support.v4.swipeRefreshLayout
 import javax.inject.Inject
 
 /**
@@ -33,13 +42,44 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
     var arrayList: ArrayList<StoryEntity>? = null
     var adapter: CollectionAdapter? = null
 
+    var swipeRefreshLayout: SwipeRefreshLayout? = null
+    var recyclerView: RecyclerView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_collection)
+        createView()
         initToolbar(toolbar, "我的收藏")
 
         init()
+    }
+
+    fun createView() {
+        coordinatorLayout {
+            include<View>(R.layout.common_toolbar)
+            linearLayout {
+                orientation = LinearLayout.VERTICAL
+
+                swipeRefreshLayout = swipeRefreshLayout {
+                    setColorSchemeResources(CommonView.getColorSchemeResources())
+                    setOnRefreshListener {
+                        getData()
+                    }
+                    //recyclerView
+                    recyclerView = recyclerView {
+                        id = R.id.recyclerView
+                        backgroundColor = Color.parseColor("#f3f3f3")
+                        isVerticalScrollBarEnabled = true
+                        layoutManager = LinearLayoutManager(this@CollectionActivity)
+                    }
+
+                }.lparams(width = matchParent, height = matchParent)
+
+                include<View>(R.layout.common_load)
+            }.lparams(width = matchParent, height = matchParent) {
+                behavior = AppBarLayout.ScrollingViewBehavior()
+            }
+        }
     }
 
     override fun onWindowInitialized() {
@@ -49,12 +89,6 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
 
 
     private fun init() {
-        SwipeRefreshLayoutUtil.setColor(swipeRefreshLayout)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        swipeRefreshLayout.setOnRefreshListener {
-            getData()
-        }
 
         loadView.retryListener = LoadLayout.RetryListener {
             getData()
@@ -80,7 +114,7 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
         SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, true)
         if (loadView.isShown) {
             loadView.visibility = View.GONE
-            swipeRefreshLayout.visibility = View.VISIBLE
+            swipeRefreshLayout?.visibility = View.VISIBLE
         }
     }
 
@@ -88,7 +122,7 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
         if (adapter == null) {
             arrayList = data.clone() as ArrayList<StoryEntity>
             adapter = CollectionAdapter(this, bindUntilEvent(ActivityEvent.DESTROY), arrayList)
-            recyclerView.adapter = adapter
+            recyclerView?.adapter = adapter
             adapter?.clickListener = object : AdapterItemClickListener {
                 override fun itemClickListener(position: Int) {
                     //跳转详情页
@@ -113,7 +147,7 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
         SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false)
         if (!loadView.isShown) {
             loadView.visibility = View.VISIBLE
-            swipeRefreshLayout.visibility = View.GONE
+            swipeRefreshLayout?.visibility = View.GONE
         }
         loadView.showError(e.message)
     }

@@ -7,14 +7,20 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
+import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
-import kotlinx.android.synthetic.main.activity_splash.*
+import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.imageResource
+import org.jetbrains.anko.imageView
+import org.jetbrains.anko.matchParent
 
 /**
  * 首页
  * Created by JokAr on 2017/6/14.
  */
 class SplashActivity : BaseActivity() {
+
+    var image: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +40,16 @@ class SplashActivity : BaseActivity() {
         // 隐藏状态栏
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_splash)
+        createView()
+    }
+
+    fun createView() {
+        coordinatorLayout {
+            image = imageView {
+                imageResource = R.mipmap.splash
+                scaleType = ImageView.ScaleType.FIT_XY
+            }.lparams(width = matchParent, height = matchParent)
+        }
     }
 
     override fun onWindowInitialized() {
@@ -66,6 +81,11 @@ class SplashActivity : BaseActivity() {
 
             }
         })
-        image.startAnimation(animation)
+        image?.startAnimation(animation)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        image = null
     }
 }
