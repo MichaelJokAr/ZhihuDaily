@@ -27,7 +27,7 @@ class TopStoryAdapter(var context: Context,
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val view = viewList[position]
         var image: ImageView = view.findViewById(R.id.image) as ImageView
-        JLog.w("url: ${topStories[position].image}")
+
         ImageLoader.loadImage(context,
                 topStories[position].image,
                 R.mipmap.image_small_default,

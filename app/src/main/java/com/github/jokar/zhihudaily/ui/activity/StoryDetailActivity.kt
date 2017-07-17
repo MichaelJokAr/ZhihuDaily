@@ -21,16 +21,14 @@ import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.widget.LoadLayout
+import com.github.jokar.zhihudaily.widget.likeButton
+import com.github.jokar.zhihudaily.widget.loadLayout
 import com.like.LikeButton
 import com.like.OnLikeListener
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.common_load.*
-import kotlinx.android.synthetic.main.layout_collect.*
-import kotlinx.android.synthetic.main.layout_like.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.themedToolbar
-import org.jetbrains.anko.appcompat.v7.toolbar
 import org.jetbrains.anko.design.coordinatorLayout
 import org.jetbrains.anko.support.v4.nestedScrollView
 import javax.inject.Inject
@@ -58,6 +56,9 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
     var tvAuthor: TextView? = null
     var webView: WebView? = null
     var toolbar: Toolbar? = null
+    var likeCollect: LikeButton? = null
+    var likeButton: LikeButton? = null
+    var loadView: LoadLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -113,7 +114,6 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
             }
         })
 
-        loadView.retryListener = LoadLayout.RetryListener { getData() }
     }
 
     /**
@@ -134,9 +134,9 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
     }
 
     override fun getDataStart() {
-        loadView.visibility = View.VISIBLE
+        loadView?.visibility = View.VISIBLE
         nestedScrollView?.visibility = View.GONE
-        loadView.showLoad()
+        loadView?.showLoad()
     }
 
     override fun loadData(result: StoryEntity) {
@@ -169,14 +169,14 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
 
     override fun loadComplete() {
         runOnUiThread {
-            loadView.visibility = View.GONE
+            loadView?.visibility = View.GONE
             nestedScrollView?.visibility = View.VISIBLE
         }
     }
 
     override fun fail(e: Throwable) {
         runOnUiThread {
-            loadView.showError(e.message!!)
+            loadView?.showError(e.message!!)
         }
     }
 
@@ -278,7 +278,10 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
 
             }.lparams(width = matchParent, height = matchParent)
             //loadLayout
-            include<View>(R.layout.common_load)
+            loadView = loadLayout {
+                backgroundColor = Color.parseColor("#eeeeee")
+                retryListener = LoadLayout.RetryListener { getData() }
+            }.lparams(width = matchParent, height = matchParent)
 
             //toolbar
             toolbar = themedToolbar(R.style.Base_ThemeOverlay_AppCompat_Dark_ActionBar) {
@@ -287,11 +290,23 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
                 linearLayout {
                     orientation = LinearLayout.HORIZONTAL
                     gravity = Gravity.RIGHT
-
-                    include<LikeButton>(R.layout.layout_collect)
-                    include<LikeButton>(R.layout.layout_like)
+                    //collect
+                    likeCollect = likeButton {
+                        setIconSizeDp(35)
+                        setLikeDrawableRes(R.mipmap.collected)
+                        setUnlikeDrawableRes(R.mipmap.collect)
+                    }.lparams(width = dip(50), height = matchParent)
+                    //like
+                    likeButton = likeButton {
+                        setIconSizeDp(25)
+                        setLikeDrawableRes(R.mipmap.ic_liked)
+                        setUnlikeDrawableRes(R.mipmap.ic_like)
+                    }.lparams(width = dip(50), height = matchParent) {
+                        rightMargin = dip(5)
+                    }
 
                 }.lparams(width = matchParent, height = matchParent)
+
             }.lparams(width = matchParent, height = dip(48))
 
         }

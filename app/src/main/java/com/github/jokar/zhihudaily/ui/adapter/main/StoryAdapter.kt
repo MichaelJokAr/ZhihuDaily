@@ -63,8 +63,7 @@ class StoryAdapter(context: Context,
     override fun createHolder(parent: ViewGroup, viewType: Int): BaseViewHolder? {
         when (viewType) {
             0 ->
-                return HeadHolder(inflater?.inflate(R.layout.item_story_head, parent,
-                        false)!!, context)
+                return HeadHolder(StoryAdapterItemView.createHeadItemView(context), context)
             1 ->
                 return TimeHolder(StoryAdapterItemView.createStoryTimeItemView(context), context)
             2 ->

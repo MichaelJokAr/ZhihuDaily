@@ -23,6 +23,7 @@ import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LazyFragment
 import com.github.jokar.zhihudaily.widget.LoadLayout
+import com.github.jokar.zhihudaily.widget.loadLayout
 import com.trello.rxlifecycle2.android.FragmentEvent
 import dagger.android.support.AndroidSupportInjection
 import org.jetbrains.anko.*
@@ -59,11 +60,6 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
     }
 
     override fun initViews(view: View) {
-        loadView = view.find(R.id.loadView)
-
-        loadView?.retryListener = LoadLayout.RetryListener {
-            getData()
-        }
 
         RxBus.getInstance()
                 .toMainThreadObservable(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -139,7 +135,11 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
                     }
                 }.lparams(width = matchParent, height = matchParent)
 
-                include<View>(R.layout.common_load)
+                //loadLayout
+                loadView = loadLayout {
+                    backgroundColor = Color.parseColor("#eeeeee")
+                    retryListener = LoadLayout.RetryListener { getData() }
+                }.lparams(width = matchParent, height = matchParent)
             }
         }.view
     }

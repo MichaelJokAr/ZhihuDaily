@@ -9,6 +9,7 @@ import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
+import com.github.jokar.zhihudaily.ui.layout.MainAdapterItemView
 import com.jakewharton.rxbinding2.view.RxView
 import com.trello.rxlifecycle2.LifecycleTransformer
 import java.util.concurrent.TimeUnit
@@ -24,15 +25,15 @@ class MainAdapter(var context: Context, transformer: LifecycleTransformer<Any>,
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder? {
         when (viewType) {
-            0 -> return HomeHolder(inflater?.inflate(R.layout.item_main_home, parent, false)!!,
+            0 -> return HomeHolder(MainAdapterItemView.createHomeItemView(context),
                     context, true)
-            1 -> return ViewHolder(inflater?.inflate(R.layout.item_main, parent, false)!!,
+            1 -> return ViewHolder(MainAdapterItemView.createMainItemView(context),
                     context, true)
-            2 -> return HomeHolder(inflater?.inflate(R.layout.item_main_home, parent, false)!!,
+            2 -> return HomeHolder(MainAdapterItemView.createHomeItemView(context),
                     context, false)
-            3 -> return ViewHolder(inflater?.inflate(R.layout.item_main, parent, false)!!,
+            3 -> return ViewHolder(MainAdapterItemView.createMainItemView(context),
                     context, false)
-            4 -> return HeadHolder(inflater?.inflate(R.layout.item_main_head, parent, false)!!,
+            4 -> return HeadHolder(MainAdapterItemView.createHeadItemView(context),
                     context)
         }
         return null
@@ -64,7 +65,7 @@ class MainAdapter(var context: Context, transformer: LifecycleTransformer<Any>,
                         adapterClickListener?.itemClickListener(position)
                     })
         } else {
-            var holder:HeadHolder = viewHolder as HeadHolder
+            var holder: HeadHolder = viewHolder as HeadHolder
             RxView.clicks(holder.tvCollection)
                     .compose(transformer)
                     .throttleFirst(1, TimeUnit.SECONDS)

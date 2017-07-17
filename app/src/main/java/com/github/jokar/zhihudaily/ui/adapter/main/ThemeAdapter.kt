@@ -2,7 +2,6 @@ package com.github.jokar.zhihudaily.ui.adapter.main
 
 import android.content.Context
 import android.support.percent.PercentFrameLayout
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -34,12 +33,10 @@ class ThemeAdapter(var context: Context,
         when (viewType) {
         //head
             0 ->
-                return HeadHolder(inflater?.inflate(R.layout.item_theme_head, parent,
-                        false)!!, context)
+                return HeadHolder(ThemeAdapterItemView.createHeadItemView(context), context)
         //编辑
             1 ->
-                return EditorHolder(inflater?.inflate(R.layout.item_theme_editor, parent,
-                        false)!!, context)
+                return EditorHolder(ThemeAdapterItemView.createEditorItemView(context), context)
         //有图片
             2 ->
                 return ViewHolderWithImage(StoryAdapterItemView.createStoryItemView(context), context)
@@ -137,7 +134,7 @@ class ThemeAdapter(var context: Context,
 
     class HeadHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context, false) {
         var image: ImageView = find(R.id.image)
-        var tvTiTle: TextView = find(R.id.tvTiTle)
+        var tvTiTle: TextView = find(R.id.tvTitle)
     }
 
     /**
@@ -145,10 +142,6 @@ class ThemeAdapter(var context: Context,
      */
     class EditorHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context) {
         var recyclerView: RecyclerView = find(R.id.recyclerView)
-
-        init {
-            recyclerView.layoutManager = GridLayoutManager(context, 7)
-        }
     }
 
     /**

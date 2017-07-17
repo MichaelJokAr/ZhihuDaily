@@ -7,4 +7,8 @@
     <item name="percentFrameLayout" type="id"/>
     <item name="tvTitle" type="id"/>
     <item name="text" type="id"/>
+    <item name="recyclerView" type="id"/>
+    <item name="viewPager" type="id"/>
+    <item name="pageIndicatorView" type="id"/>
+    <item name="tvCollection" type="id"/>
 </resources>

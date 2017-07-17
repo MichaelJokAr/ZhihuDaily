@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
@@ -24,9 +23,12 @@ import com.github.jokar.zhihudaily.ui.view.common.StoryView
 import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LazyFragment
 import com.github.jokar.zhihudaily.widget.LoadLayout
+import com.github.jokar.zhihudaily.widget.loadLayout
 import com.trello.rxlifecycle2.android.FragmentEvent
 import dagger.android.support.AndroidSupportInjection
-import org.jetbrains.anko.*
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.linearLayout
+import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.swipeRefreshLayout
@@ -54,8 +56,6 @@ class MainFragment : LazyFragment(), StoryView {
     }
 
     override fun initViews(view: View) {
-        loadView = view.find(R.id.loadView)
-        loadView?.retryListener = LoadLayout.RetryListener { getData() }
 
         RxBus.getInstance()
                 .toMainThreadObservable(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -219,7 +219,11 @@ class MainFragment : LazyFragment(), StoryView {
                     }
                 }.lparams(width = matchParent, height = matchParent)
 
-                include<View>(R.layout.common_load)
+                //loadLayout
+                loadView = loadLayout {
+                    backgroundColor = Color.parseColor("#eeeeee")
+                    retryListener = LoadLayout.RetryListener { getData() }
+                }.lparams(width = matchParent, height = matchParent)
             }
         }.view
     }

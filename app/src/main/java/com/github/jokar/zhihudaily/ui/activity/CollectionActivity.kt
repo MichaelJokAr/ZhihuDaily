@@ -20,12 +20,15 @@ import com.github.jokar.zhihudaily.ui.layout.CommonView
 import com.github.jokar.zhihudaily.ui.view.common.ListDataView
 import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LoadLayout
+import com.github.jokar.zhihudaily.widget.loadLayout
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.common_load.*
 import kotlinx.android.synthetic.main.common_toolbar.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.include
+import org.jetbrains.anko.linearLayout
+import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.swipeRefreshLayout
 import javax.inject.Inject
@@ -44,6 +47,7 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
 
     var swipeRefreshLayout: SwipeRefreshLayout? = null
     var recyclerView: RecyclerView? = null
+    var loadView: LoadLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -75,7 +79,11 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
 
                 }.lparams(width = matchParent, height = matchParent)
 
-                include<View>(R.layout.common_load)
+                loadView = loadLayout {
+                    backgroundColor = Color.parseColor("#eeeeee")
+                    retryListener = LoadLayout.RetryListener { getData() }
+                }.lparams(width = matchParent, height = matchParent)
+
             }.lparams(width = matchParent, height = matchParent) {
                 behavior = AppBarLayout.ScrollingViewBehavior()
             }
@@ -89,10 +97,6 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
 
 
     private fun init() {
-
-        loadView.retryListener = LoadLayout.RetryListener {
-            getData()
-        }
 
         //详细页面修改收藏操作
         RxBus.getInstance()
@@ -112,8 +116,8 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
 
     override fun getDataStart() {
         SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, true)
-        if (loadView.isShown) {
-            loadView.visibility = View.GONE
+        if (loadView?.isShown!!) {
+            loadView?.visibility = View.GONE
             swipeRefreshLayout?.visibility = View.VISIBLE
         }
     }
@@ -145,11 +149,11 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
 
     override fun fail(e: Throwable) {
         SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, false)
-        if (!loadView.isShown) {
-            loadView.visibility = View.VISIBLE
+        if (!loadView?.isShown!!) {
+            loadView?.visibility = View.VISIBLE
             swipeRefreshLayout?.visibility = View.GONE
         }
-        loadView.showError(e.message)
+        loadView?.showError(e.message)
     }
 
     override fun onDestroy() {

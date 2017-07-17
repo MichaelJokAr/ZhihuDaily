@@ -8,6 +8,7 @@ import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.theme.EditorEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
+import com.github.jokar.zhihudaily.ui.layout.EditorAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.widget.CircleImageView
 import com.trello.rxlifecycle2.LifecycleTransformer
@@ -24,8 +25,7 @@ class EditorAdapter(var context: Context,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        return ViewHolder(inflater?.inflate(R.layout.item_editor, parent,
-                false)!!, context)
+        return ViewHolder(EditorAdapterItemView.createItemView(context), context)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {

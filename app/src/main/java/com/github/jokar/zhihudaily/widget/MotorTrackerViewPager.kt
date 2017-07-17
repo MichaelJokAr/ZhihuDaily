@@ -30,7 +30,10 @@ import android.view.MotionEvent
  *  * mail: langzaitianyag@vip.qq.com
  *
  */
-class MotorTrackerViewPager(context: Context, attrs: AttributeSet) : ViewPager(context, attrs) {
+class MotorTrackerViewPager : ViewPager {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
     var value: Boolean = false
 
     init {

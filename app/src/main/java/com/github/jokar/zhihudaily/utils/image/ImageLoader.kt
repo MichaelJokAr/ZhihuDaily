@@ -40,22 +40,6 @@ object ImageLoader {
             Glide.with(context)
                     .load(url)
                     .apply(options)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onResourceReady(resource: Drawable?, model: Any?,
-                                                     target: Target<Drawable>?,
-                                                     dataSource: DataSource?,
-                                                     isFirstResource: Boolean): Boolean {
-                            return true
-                        }
-
-                        override fun onLoadFailed(e: GlideException?, model: Any?,
-                                                  target: Target<Drawable>?,
-                                                  isFirstResource: Boolean): Boolean {
-                            JLog.e(e?.message)
-                            return false
-                        }
-
-                    })
                     .into(imageView)
         }
     }
