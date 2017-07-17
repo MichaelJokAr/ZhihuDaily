@@ -26,7 +26,10 @@ import com.like.OnLikeListener
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.common_load.*
+import kotlinx.android.synthetic.main.layout_collect.*
+import kotlinx.android.synthetic.main.layout_like.*
 import org.jetbrains.anko.*
+import org.jetbrains.anko.appcompat.v7.themedToolbar
 import org.jetbrains.anko.appcompat.v7.toolbar
 import org.jetbrains.anko.design.coordinatorLayout
 import org.jetbrains.anko.support.v4.nestedScrollView
@@ -55,8 +58,6 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
     var tvAuthor: TextView? = null
     var webView: WebView? = null
     var toolbar: Toolbar? = null
-    var likeCollect: LikeButton? = null
-    var likeButton: LikeButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -234,9 +235,10 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
 
                     //view
                     view {
-                    }.lparams(width = matchParent, height = android.R.attr.actionBarSize)
+                    }.lparams(width = matchParent, height = dip(48))
                     //
                     rlTop = relativeLayout {
+                        gravity = Gravity.BOTTOM
                         //image
                         image = imageView {
                             imageResource = R.mipmap.splash
@@ -252,8 +254,8 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
                             gravity = Gravity.CENTER or Gravity.LEFT
                             textSize = 23f
                             textColor = Color.WHITE
-                        }.lparams(width = matchParent, height = wrapContent) {
                             setPadding(dip(10), dip(10), dip(10), dip(10))
+                        }.lparams(width = matchParent, height = wrapContent) {
                             above(R.id.tvAuthor)
                         }
                         //author
@@ -262,10 +264,11 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
                             gravity = Gravity.CENTER or Gravity.RIGHT
                             textSize = 13f
                             textColor = Color.WHITE
-                        }.lparams(width = matchParent, height = wrapContent) {
                             setPadding(dip(10), 0, dip(10), dip(10))
-                            addRule(RelativeLayout.ALIGN_PARENT_BOTTOM or RelativeLayout.ALIGN_PARENT_RIGHT)
+                        }.lparams(width = matchParent, height = wrapContent) {
+                            addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
                         }
+
                     }.lparams(width = matchParent, height = dip(200))
                     //webView
                     webView = webView {
@@ -278,16 +281,19 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
             include<View>(R.layout.common_load)
 
             //toolbar
-            toolbar = toolbar {
+            toolbar = themedToolbar(R.style.Base_ThemeOverlay_AppCompat_Dark_ActionBar) {
                 backgroundColor = ContextCompat.getColor(this@StoryDetailActivity, R.color.colorPrimary)
 
                 linearLayout {
                     orientation = LinearLayout.HORIZONTAL
                     gravity = Gravity.RIGHT
 
+                    include<LikeButton>(R.layout.layout_collect)
+                    include<LikeButton>(R.layout.layout_like)
 
                 }.lparams(width = matchParent, height = matchParent)
-            }.lparams(width = matchParent, height = android.R.attr.actionBarSize)
+            }.lparams(width = matchParent, height = dip(48))
+
         }
     }
 }

@@ -10,6 +10,7 @@ import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
+import com.github.jokar.zhihudaily.utils.system.JLog
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.functions.Consumer
 
@@ -26,7 +27,7 @@ class TopStoryAdapter(var context: Context,
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val view = viewList[position]
         var image: ImageView = view.findViewById(R.id.image) as ImageView
-
+        JLog.w("url: ${topStories[position].image}")
         ImageLoader.loadImage(context,
                 topStories[position].image,
                 R.mipmap.image_small_default,

@@ -15,6 +15,7 @@ import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.adapter.base.LoadMoreAdapter
 import com.github.jokar.zhihudaily.ui.adapter.viewpager.TopStoryAdapter
+import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
@@ -65,14 +66,11 @@ class StoryAdapter(context: Context,
                 return HeadHolder(inflater?.inflate(R.layout.item_story_head, parent,
                         false)!!, context)
             1 ->
-                return TimeHolder(inflater?.inflate(R.layout.item_story_time, parent,
-                        false)!!, context)
+                return TimeHolder(StoryAdapterItemView.createStoryTimeItemView(context), context)
             2 ->
-                return ViewHolder(inflater?.inflate(R.layout.item_story, parent,
-                        false)!!, context, true)
+                return ViewHolder(StoryAdapterItemView.createStoryItemView(context), context, true)
             3 ->
-                return ViewHolder(inflater?.inflate(R.layout.item_story, parent,
-                        false)!!, context, false)
+                return ViewHolder(StoryAdapterItemView.createStoryItemView(context), context, false)
         }
         return null
     }
@@ -104,8 +102,7 @@ class StoryAdapter(context: Context,
         var holder: HeadHolder = viewHolder as HeadHolder
         var viewList: ArrayList<View> = arrayListOf()
         topStories.forEach({
-            var view = inflater?.inflate(R.layout.item_top_story, null, false)
-            viewList.add(view!!)
+            viewList.add(StoryAdapterItemView.createTopHeadStoryItemView(context))
         })
         //
         var pagerAdapter: TopStoryAdapter? = TopStoryAdapter(context, viewList, transformer,
@@ -139,6 +136,7 @@ class StoryAdapter(context: Context,
         holder.pageIndicatorView.setViewPager(holder.viewPager)
     }
 
+
     class HeadHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context) {
         var viewPager: ViewPager = find(R.id.viewPager)
         var tvTitle: TextView = find(R.id.tvTitle)
@@ -152,8 +150,8 @@ class StoryAdapter(context: Context,
 
     class ViewHolder(itemView: View, context: Context, var read: Boolean)
         : BaseViewHolder(itemView, context, false) {
-        var tvTitle: TextView = find(R.id.tvTitle)
-        var image: ImageView = find(R.id.imageView)
+        var tvTitle: TextView = find(R.id.text)
+        var image: ImageView = find(R.id.image)
         var percentFrameLayout: PercentFrameLayout = find(R.id.percentFrameLayout)
 
         init {

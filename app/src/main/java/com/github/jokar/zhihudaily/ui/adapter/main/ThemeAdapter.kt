@@ -13,6 +13,8 @@ import com.github.jokar.zhihudaily.model.entities.theme.ThemeEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
+import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
+import com.github.jokar.zhihudaily.ui.layout.ThemeAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.trello.rxlifecycle2.LifecycleTransformer
 
@@ -40,12 +42,10 @@ class ThemeAdapter(var context: Context,
                         false)!!, context)
         //有图片
             2 ->
-                return ViewHolderWithImage(inflater?.inflate(R.layout.item_story, parent,
-                        false)!!, context)
+                return ViewHolderWithImage(StoryAdapterItemView.createStoryItemView(context), context)
         //无图片
             3 ->
-                return ViewHolder(inflater?.inflate(R.layout.item_story2, parent,
-                        false)!!, context)
+                return ViewHolder(ThemeAdapterItemView.createStoryItemView(context), context)
         }
         return null
     }
@@ -67,7 +67,7 @@ class ThemeAdapter(var context: Context,
 
     override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
         if (position != 0 && position != 1) {
-            super.onBindViewHolder(viewHolder, position-2)
+            super.onBindViewHolder(viewHolder, position - 2)
         }
         when (getItemViewType(position)) {
             0 -> {
@@ -156,8 +156,8 @@ class ThemeAdapter(var context: Context,
      */
     class ViewHolderWithImage(itemView: View, context: Context)
         : BaseViewHolder(itemView, context, false) {
-        var tvTitle: TextView = find(R.id.tvTitle)
-        var image: ImageView = find(R.id.imageView)
+        var tvTitle: TextView = find(R.id.text)
+        var image: ImageView = find(R.id.image)
         var percentFrameLayout: PercentFrameLayout = find(R.id.percentFrameLayout)
     }
 
@@ -165,6 +165,6 @@ class ThemeAdapter(var context: Context,
      * 内容-没有图片
      */
     class ViewHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context, false) {
-        var tvTitle: TextView = find(R.id.tvTitle)
+        var tvTitle: TextView = find(R.id.text)
     }
 }

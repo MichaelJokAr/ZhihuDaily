@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
     private val DEFAULT_TIMEOUT = 15
-    private val BASE_URL = "https://news-at.zhihu.com/api/4/"
+    private val BASE_URL = "http://news-at.zhihu.com/api/4/"
 
     @Singleton
     @Provides

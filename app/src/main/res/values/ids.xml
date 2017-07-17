@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="tvAuthor" type="id"/>
+    <item name="image" type="id"/>
+    <item name="toolbar" type="id"/>
+    <item name="linearLayout" type="id"/>
+    <item name="percentFrameLayout" type="id"/>
+    <item name="tvTitle" type="id"/>
+    <item name="text" type="id"/>
 </resources>

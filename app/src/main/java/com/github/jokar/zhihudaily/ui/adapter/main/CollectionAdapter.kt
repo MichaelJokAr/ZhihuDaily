@@ -10,6 +10,8 @@ import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
+import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
+import com.github.jokar.zhihudaily.ui.layout.ThemeAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.trello.rxlifecycle2.LifecycleTransformer
 
@@ -24,11 +26,9 @@ class CollectionAdapter(var context: Context,
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder? {
         when (viewType) {
             0 ->
-                return ViewHolderWithImage(inflater?.inflate(R.layout.item_story, parent,
-                        false)!!, context)
+                return ViewHolderWithImage(StoryAdapterItemView.createStoryItemView(context), context)
             1 ->
-                ViewHolder(inflater?.inflate(R.layout.item_story2, parent,
-                        false)!!, context)
+                ViewHolder(ThemeAdapterItemView.createStoryItemView(context), context)
         }
         return null
     }
@@ -81,8 +81,8 @@ class CollectionAdapter(var context: Context,
      */
     class ViewHolderWithImage(itemView: View, context: Context)
         : BaseViewHolder(itemView, context, false) {
-        var tvTitle: TextView = find(R.id.tvTitle)
-        var image: ImageView = find(R.id.imageView)
+        var tvTitle: TextView = find(R.id.text)
+        var image: ImageView = find(R.id.image)
         var percentFrameLayout: PercentFrameLayout = find(R.id.percentFrameLayout)
     }
 
@@ -90,6 +90,6 @@ class CollectionAdapter(var context: Context,
      * 内容-没有图片
      */
     class ViewHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context, false) {
-        var tvTitle: TextView = find(R.id.tvTitle)
+        var tvTitle: TextView = find(R.id.text)
     }
 }
