@@ -13,6 +13,7 @@ ZhihuDaily for Kotlin,[说明请看这里](http://www.jianshu.com/p/1114c471281b
 - dagger2(v2.11)
 - rx
 - room
+- Anko
 
 ### Screenshot
 
