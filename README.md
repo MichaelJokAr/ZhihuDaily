@@ -10,10 +10,10 @@ ZhihuDaily for Kotlin,[说明请看这里](http://www.jianshu.com/p/1114c471281b
 
 ### Points
 - MVP
-- dagger2(v2.11)
+- [dagger2(v2.11)](https://google.github.io/dagger/)
 - rx
-- room
-- Anko
+- [Room Persistence Library](https://developer.android.com/topic/libraries/architecture/room.html)
+- [anko](https://github.com/Kotlin/anko)
 
 ### Screenshot
 
