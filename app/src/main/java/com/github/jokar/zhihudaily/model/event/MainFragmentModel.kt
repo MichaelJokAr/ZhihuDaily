@@ -37,6 +37,7 @@ import kotlin.collections.ArrayList
  */
 class MainFragmentModel(var context: Context) {
 
+    val TODAYSNEWS = "今日热闻"
     @Inject
     lateinit var retrofit: Retrofit
 
@@ -96,11 +97,13 @@ class MainFragmentModel(var context: Context) {
 
             //本地有就直接返回本地数据
             if (stories != null && stories?.size > 0) {
+
                 //添加时间标题
                 var timeTitle: StoryEntity = StoryEntity(0)
                 timeTitle.date = date
-                timeTitle.dateString = DateUtils.judgmentTime(date)
+                timeTitle.dateString = TODAYSNEWS
                 stories.add(0, timeTitle)
+
                 //添加head
                 var head: StoryEntity = StoryEntity(-1)
                 head.dateString = context.getString(R.string.app_name)
@@ -118,6 +121,9 @@ class MainFragmentModel(var context: Context) {
         })
                 .filter { t ->
                     if (t.stories != null && t.top_stories != null) {
+                        t.stories?.forEach {
+                            it.dateString = TODAYSNEWS
+                        }
                         callBack.data(t)
                         callBack.onComplete()
                         return@filter false
@@ -137,17 +143,23 @@ class MainFragmentModel(var context: Context) {
                     })
                     latestStory.top_stories?.forEach({
                         it.date = date
-                        JLog.d(it.toString())
                     })
+
                     //保存到数据表
                     mDatabaseHelper.insertTopStory(latestStory.top_stories!!)
                     mDatabaseHelper.insertStory(latestStory.stories!!)
 
+                    //重新设置dataString
+                    latestStory.stories?.forEach({
+                        it.dateString = TODAYSNEWS
+                    })
+
                     //添加时间标题
                     var timeTitle: StoryEntity = StoryEntity(0)
                     timeTitle.date = date
-                    timeTitle.dateString = DateUtils.judgmentTime(date)
+                    timeTitle.dateString = TODAYSNEWS
                     latestStory.stories?.add(0, timeTitle)
+
                     //添加head
                     var head: StoryEntity = StoryEntity(-1)
                     head.dateString = context.getString(R.string.app_name)
@@ -176,6 +188,7 @@ class MainFragmentModel(var context: Context) {
             val stories: ArrayList<StoryEntity>? = mDatabaseHelper.getStoryByDate(beforeDate)
             //本地有就直接返回本地数据
             if (stories != null && stories?.size > 0) {
+
                 //添加时间标题
                 var timeTitle: StoryEntity = StoryEntity(0)
                 timeTitle.date = beforeDate
@@ -207,8 +220,10 @@ class MainFragmentModel(var context: Context) {
                         it.date = date
                         it.dateString = DateUtils.judgmentTime(date)
                     })
+
                     //保存到数据表
                     mDatabaseHelper.insertStory(stories!!)
+
                     //添加时间标题
                     var timeTitle: StoryEntity = StoryEntity(0)
                     timeTitle.date = date

@@ -87,7 +87,7 @@ object ImageLoader {
 
      * @param imageView
      */
-    fun clear(context: Context, imageView: ImageView) {
+    fun clear(context: Context, imageView: ImageView?) {
         // TODO: 2016/11/14 主动清除view,会导致频繁gc(暂未发现Bug)
         try {
             Glide.with(context).clear(imageView)

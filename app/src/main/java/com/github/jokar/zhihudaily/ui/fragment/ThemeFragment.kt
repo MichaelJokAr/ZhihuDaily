@@ -147,12 +147,14 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.destroy()
+
         adapter = null
         themeEntity = null
         //view
         swipeRefreshLayout?.setOnRefreshListener { null }
         swipeRefreshLayout = null
         recyclerView = null
+        loadView?.retryListener = null
         loadView = null
     }
 

@@ -233,8 +233,10 @@ class MainFragment : LazyFragment(), StoryView {
         swipeRefreshLayout?.setOnRefreshListener { null }
         swipeRefreshLayout = null
         recyclerView = null
+        loadView?.retryListener = null
         loadView = null
         arrayList = null
+        adapter = null
         presenter?.destroy()
     }
 }

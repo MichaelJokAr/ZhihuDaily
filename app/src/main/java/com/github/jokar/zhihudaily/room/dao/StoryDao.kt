@@ -32,7 +32,7 @@ interface StoryDao {
     /**
      * 获取所有收藏的story
      */
-    @Query("SELECT * FROM story WHERE collection = 1 ")
+    @Query("SELECT * FROM story WHERE collection = 1 order by date desc")
     fun getAllCollectedStory(): List<StoryEntity>
 
     /**

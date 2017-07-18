@@ -82,38 +82,6 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
 
     fun init() {
         imageHeight = resources.getDimensionPixelOffset(R.dimen.storyDetailImage)
-
-        //喜欢
-        likeButton?.setOnLikeListener(object : OnLikeListener {
-            override fun liked(p0: LikeButton?) {
-                data?.like = 1
-                update()
-            }
-
-            override fun unLiked(p0: LikeButton?) {
-                data?.like = 0
-                update()
-            }
-
-        })
-
-        //收藏
-        likeCollect?.setOnLikeListener(object : OnLikeListener {
-            override fun liked(p0: LikeButton?) {
-                data?.collection = 1
-                update()
-                //通知收藏页面刷新
-                RxBus.getInstance().post(UpdateCollectionEvent())
-            }
-
-            override fun unLiked(p0: LikeButton?) {
-                data?.collection = 0
-                update()
-                //通知收藏页面刷新
-                RxBus.getInstance().post(UpdateCollectionEvent())
-            }
-        })
-
     }
 
     /**
@@ -220,9 +188,24 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
 
     override fun onDestroy() {
         super.onDestroy()
+        ImageLoader.clear(this,image)
         data = null
         presenter?.destroy()
         webView?.destroy()
+        webView = null
+        loadView?.retryListener = null
+        loadView = null
+        nestedScrollView?.setOnClickListener { null }
+        nestedScrollView = null
+        rlTop = null
+        tvTiTle = null
+        tvAuthor = null
+        image = null
+        toolbar = null
+        likeButton?.setOnLikeListener(null)
+        likeButton = null
+        likeCollect?.setOnLikeListener(null)
+        likeCollect = null
     }
 
     fun createView() {
@@ -295,12 +278,38 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
                         setIconSizeDp(35)
                         setLikeDrawableRes(R.mipmap.collected)
                         setUnlikeDrawableRes(R.mipmap.collect)
+                        setOnLikeListener(object :OnLikeListener{
+                            override fun liked(p0: LikeButton?) {
+                                data?.collection = 1
+                                update()
+                                //通知收藏页面刷新
+                                RxBus.getInstance().post(UpdateCollectionEvent())
+                            }
+
+                            override fun unLiked(p0: LikeButton?) {
+                                data?.collection = 0
+                                update()
+                                //通知收藏页面刷新
+                                RxBus.getInstance().post(UpdateCollectionEvent())
+                            }
+                        })
                     }.lparams(width = dip(50), height = matchParent)
                     //like
                     likeButton = likeButton {
                         setIconSizeDp(25)
                         setLikeDrawableRes(R.mipmap.ic_liked)
                         setUnlikeDrawableRes(R.mipmap.ic_like)
+                        setOnLikeListener(object :OnLikeListener{
+                            override fun liked(p0: LikeButton?) {
+                                data?.like = 1
+                                update()
+                            }
+
+                            override fun unLiked(p0: LikeButton?) {
+                                data?.like = 0
+                                update()
+                            }
+                        })
                     }.lparams(width = dip(50), height = matchParent) {
                         rightMargin = dip(5)
                     }

@@ -1,5 +1,6 @@
 package com.github.jokar.zhihudaily.utils.system
 
+import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,13 +43,10 @@ object DateUtils {
      */
     fun judgmentTime(time: Long): String {
         var date: Date = changeToDate(time)
-        var string: String = "今日要闻"
-        //判断是不是今天
-        if (!isThisTime(date.time, "yyyy-MM-dd")) {
-            var format: SimpleDateFormat? = SimpleDateFormat("MM月dd日 EEEE")
-            string = format?.format(date)!!
-            format = null
-        }
+        @SuppressLint("SimpleDateFormat")
+        var format: SimpleDateFormat? = SimpleDateFormat("MM月dd日 EEEE")
+        var string = format?.format(date)!!
+        format = null
         return string
     }
 

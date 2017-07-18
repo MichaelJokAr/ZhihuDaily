@@ -26,7 +26,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.StoryDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:process=":webView"/>
         <activity
             android:name=".ui.activity.CollectionActivity"
             android:screenOrientation="portrait" />

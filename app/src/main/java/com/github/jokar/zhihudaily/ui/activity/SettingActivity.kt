@@ -116,6 +116,7 @@ class SettingActivity : BaseActivity(), SettingView {
     override fun onDestroy() {
         super.onDestroy()
         presenter.destroy()
+        tvClear?.setOnClickListener { null }
         tvClear = null
     }
 }

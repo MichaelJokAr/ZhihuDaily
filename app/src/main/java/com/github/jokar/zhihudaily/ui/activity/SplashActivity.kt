@@ -9,6 +9,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import org.jetbrains.anko.design.coordinatorLayout
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.imageView
@@ -86,6 +87,7 @@ class SplashActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        ImageLoader.clear(this, image)
         image = null
     }
 }

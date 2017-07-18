@@ -161,5 +161,10 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
         presenter.destroy()
         arrayList = null
         adapter = null
+        recyclerView = null
+        swipeRefreshLayout?.setOnRefreshListener { null }
+        swipeRefreshLayout = null
+        loadView?.retryListener = null
+        loadView = null
     }
 }
