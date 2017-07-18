@@ -44,6 +44,7 @@ class AboutActivity : BaseActivity() {
                 .setDescription("没天三次，每次七分钟")//介绍
                 .addGroup("与我联系")
                 .addEmail("1018875550@qq.com", "联系我")//邮箱
+                .addWebsite("https://fir.im/w4zk", "检测更新")//网站
                 .addWebsite("http://www.jianshu.com/p/1114c471281b", "关于此项目介绍")//网站
                 .addGitHub("a1018875550")//github
                 .create()
