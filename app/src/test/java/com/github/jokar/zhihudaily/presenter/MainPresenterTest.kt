@@ -1,5 +1,6 @@
 package com.github.jokar.zhihudaily.presenter
 
+import android.util.Log
 import com.github.jokar.zhihudaily.BuildConfig
 import com.github.jokar.zhihudaily.model.event.MainModel
 import com.github.jokar.zhihudaily.ui.activity.MainActivity
@@ -21,7 +22,8 @@ import org.robolectric.shadows.ShadowLog
  * Created by JokAr on 2017/7/20.
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class, sdk = intArrayOf(21))
+@Config(constants = BuildConfig::class,
+        sdk = intArrayOf(23))
 class MainPresenterTest {
     /**
      * 用于测试真实接口返回的数据
@@ -48,12 +50,16 @@ class MainPresenterTest {
         presenter = MainPresenter(model, view)
         mockPresenter = MainPresenter(model, view)
 
-        controller = Robolectric.buildActivity(MainActivity::class.java).create().start().resume()
+        controller = Robolectric.buildActivity(MainActivity::class.java)
+                .create()
+                .start()
+                .resume()
     }
 
     @Test
     fun getThemes() {
         presenter?.getThemes(controller?.get()?.bindUntilEvent(ActivityEvent.DESTROY)!!)
+        Log.d("test",controller?.get()?.menuList.toString())
     }
 
     @Test

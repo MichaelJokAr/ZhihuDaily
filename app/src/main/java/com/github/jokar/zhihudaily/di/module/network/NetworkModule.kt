@@ -29,7 +29,7 @@ class NetworkModule {
             interceptor.level = LoggingInterceptor.Level.NONE
 
         val client = OkHttpClient.Builder()
-//                .addInterceptor(interceptor)
+                .addInterceptor(interceptor)
                 .retryOnConnectionFailure(true)
                 .connectTimeout(DEFAULT_TIMEOUT.toLong(), TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_TIMEOUT.toLong(), TimeUnit.SECONDS)

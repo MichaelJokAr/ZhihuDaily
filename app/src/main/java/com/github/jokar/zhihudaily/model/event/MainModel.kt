@@ -53,7 +53,8 @@ open class MainModel {
                     result.add(0, menu)
                     callBack.data(result)
                 }, {
-                    _ ->
+                    e ->
+                    e.printStackTrace()
                     var array: ArrayList<MainMenu> = ArrayList()
                     var menu: MainMenu = MainMenu(null, "首页", null, null)
                     menu.isClick = true
