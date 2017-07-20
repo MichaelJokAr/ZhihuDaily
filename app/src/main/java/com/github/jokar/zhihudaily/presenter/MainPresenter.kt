@@ -12,7 +12,8 @@ import javax.inject.Inject
 /**
  * Created by JokAr on 2017/6/15.
  */
-class MainPresenter @Inject constructor(var mainModel: MainModel?, var view: MainView?) : BasePresenter {
+class MainPresenter @Inject constructor(var mainModel: MainModel?, var view: MainView?)
+    : BasePresenter {
 
     fun getThemes(@NonNull transformer: LifecycleTransformer<ThemeEntities>) {
 

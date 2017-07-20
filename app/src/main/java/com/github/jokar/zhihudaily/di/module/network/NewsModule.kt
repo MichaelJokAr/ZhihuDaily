@@ -9,7 +9,7 @@ import retrofit2.Retrofit
  * Created by JokAr on 2017/6/25.
  */
 @Module
-class NewsModule {
+open class NewsModule {
 
     @Provides
     fun provider(retrofit: Retrofit): NewsServices {

@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  * Created by JokAr on 2017/7/2.
  */
 class LoggingInterceptor : Interceptor {
-
+    val TAG = "OkHttp"
     @Volatile
     var level = Level.NONE
     val UTF8 = Charset.forName("UTF-8")
@@ -258,7 +258,7 @@ class LoggingInterceptor : Interceptor {
     }
 
     fun log(message: String) {
-        XLog.tag("OkHttp").d(message)
+        XLog.tag(TAG).d(message)
     }
 
     fun logJson(message: String) {
@@ -266,7 +266,7 @@ class LoggingInterceptor : Interceptor {
             //判断是不是json
             var json: JsonObject? = JsonParser().parse(message).asJsonObject
             if (!json?.isJsonNull!! && json?.isJsonObject!!)
-                XLog.tag("OkHttp").json(message)
+                XLog.tag(TAG).json(message)
             json = null
         } catch(e: Exception) {
             JLog.e(e)

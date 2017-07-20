@@ -10,7 +10,7 @@ import retrofit2.http.Path
  */
 interface NewsServices {
     /**
-     * 获取过往消息
+     * 获取消息内容
      */
     @GET("news/{id}")
     fun getNews(@Path("id") id: Int): Observable<StoryDetail>

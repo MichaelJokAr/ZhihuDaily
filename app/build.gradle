@@ -13,6 +13,11 @@ android {
         versionName VERSION_NAME
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
     //
     signingConfigs {
         config {
@@ -67,7 +72,7 @@ dependencies {
     implementation "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:percent:$SUPPORT_LIBRARY_VERSION"
-    
+
     // Anko Commons
     implementation "org.jetbrains.anko:anko:$ANKO_VERSION"
     // Appcompat-v7 (only Anko Commons)
@@ -115,12 +120,12 @@ dependencies {
     //tabLayout
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.0@aar'
     //内存检测-leakcanary
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$LEAKCANARY_VERSION"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAKCANARY_VERSION"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
     //dagger2
-    compile 'com.google.dagger:dagger-android:2.11'
-    compile 'com.google.dagger:dagger-android-support:2.11'
+    implementation 'com.google.dagger:dagger-android:2.11'
+    implementation 'com.google.dagger:dagger-android-support:2.11'
     kapt 'com.google.dagger:dagger-android-processor:2.11'
     kapt 'com.google.dagger:dagger-compiler:2.11'
     //xLog
@@ -130,4 +135,13 @@ dependencies {
     implementation 'com.github.jd-alexander:LikeButton:0.2.1'
     //aboutPage
     implementation 'com.github.medyo:android-about-page:latest.release'
+    //test
+
+    // Mockito
+    testCompile 'org.mockito:mockito-core:1.+'
+    // 如果你要使用Mockito 用于 Android instrumentation tests，那么需要你添加以下三条依赖库
+    androidTestCompile 'org.mockito:mockito-core:1.+'
+    androidTestCompile "com.google.dexmaker:dexmaker:1.2"
+    androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.2"
+    testImplementation "org.robolectric:robolectric:3.3.2"
 }
