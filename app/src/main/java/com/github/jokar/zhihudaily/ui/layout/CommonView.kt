@@ -10,6 +10,11 @@ import org.jetbrains.anko.design.themedAppBarLayout
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.toolbar
+import com.afollestad.aesthetic.Aesthetic
+import com.github.jokar.zhihudaily.utils.system.JLog
+import io.reactivex.functions.Consumer
+import java.util.concurrent.CountDownLatch
+
 
 /**
  * Created by JokAr on 2017/7/16.
@@ -22,9 +27,25 @@ object CommonView {
         return outValue.resourceId
     }
 
+    fun getThemeColorPrimary():Int{
+        var result = 0
+        var latch = CountDownLatch(1)
+        Aesthetic.get()
+                .colorPrimary()
+                .take(1)
+                .subscribe { color ->
+
+                    result = color
+                    latch.countDown()
+                }
+        latch.await()
+
+        JLog.d("color: "+result)
+        return result
+    }
 
     fun getColorSchemeResources(): Int {
-        return android.R.color.holo_blue_bright
+        return android.R.attr.colorPrimary
     }
 
     fun toolbar(context: Context): View {

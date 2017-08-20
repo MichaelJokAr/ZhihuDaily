@@ -88,6 +88,24 @@ class SettingActivity : BaseActivity(), SettingView {
                     }
                 }.lparams(width = matchParent, height = dip(48))
 
+                view {
+                    backgroundColor = Color.parseColor("#e0e0e0")
+                }.lparams(width = matchParent, height = dip(1))
+
+                //关于
+                textView {
+                    backgroundResource = CommonView.selectableItemBackground(this@SettingActivity)
+                    text = "变色龙"
+                    textSize = 15f
+                    textColor = Color.BLACK
+                    gravity = Gravity.CENTER or Gravity.LEFT
+                    setPadding(dip(18), 0, dip(18), 0)
+                    onClick {
+                        //跳转变色龙页面
+                        startActivity(Intent(this@SettingActivity, ChameleonActivity::class.java))
+                    }
+                }.lparams(width = matchParent, height = dip(48))
+
             }.lparams(width = matchParent, height = matchParent) {
                 behavior = AppBarLayout.ScrollingViewBehavior()
             }

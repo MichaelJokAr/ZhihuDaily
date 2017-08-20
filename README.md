@@ -34,6 +34,8 @@ ZhihuDaily for Kotlin,[说明请看这里](http://www.jianshu.com/p/1114c471281b
 </p>
 <p>
 <img src="art/img5.png" width="225" height="410" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="art/img7.png" width="225" height="410" />
 </p>
 </body>
 

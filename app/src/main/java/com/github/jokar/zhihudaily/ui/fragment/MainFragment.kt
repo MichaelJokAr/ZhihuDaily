@@ -208,7 +208,7 @@ class MainFragment : LazyFragment(), StoryView {
             linearLayout {
                 //swipeRefreshLayout
                 swipeRefreshLayout = swipeRefreshLayout {
-                    setColorSchemeResources(CommonView.getColorSchemeResources())
+                    setColorSchemeColors(CommonView.getColorSchemeResources())
                     setOnRefreshListener {
                         getData()
                     }

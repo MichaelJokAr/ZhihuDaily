@@ -6,4 +6,13 @@
         <attr name="border_overlay" format="boolean"/>
         <attr name="fill_color" format="color"/>
     </declare-styleable>
+
+    <declare-styleable name="ColorIndicatorView">
+        <attr name="showCheck" format="boolean"/>
+        <attr name="colorValue" format="color"/>
+        <attr name="colorName" format="string"/>
+        <attr name="colorNameSize" format="dimension"/>
+    </declare-styleable>
+
+
 </resources>

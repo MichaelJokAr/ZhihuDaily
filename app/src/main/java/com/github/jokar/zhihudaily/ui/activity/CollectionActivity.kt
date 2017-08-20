@@ -65,7 +65,6 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
                 orientation = LinearLayout.VERTICAL
 
                 swipeRefreshLayout = swipeRefreshLayout {
-                    setColorSchemeResources(CommonView.getColorSchemeResources())
                     setOnRefreshListener {
                         getData()
                     }
@@ -97,7 +96,7 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
 
 
     private fun init() {
-
+        SwipeRefreshLayoutUtil.setColor(swipeRefreshLayout, CommonView.getColorSchemeResources())
         //详细页面修改收藏操作
         RxBus.getInstance()
                 .toMainThreadObservable(bindUntilEvent(ActivityEvent.DESTROY))

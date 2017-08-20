@@ -25,7 +25,7 @@ object MainAdapterItemView {
                 textView {
                     id = R.id.text
                     text = "首页"
-                    textColor = ContextCompat.getColor(context, R.color.colorPrimary)
+                    textColor = CommonView.getThemeColorPrimary()
                     textSize = 17f
                     gravity = Gravity.CENTER or Gravity.LEFT
                     setPadding(dip(16), 0, dip(20), 0)
@@ -61,7 +61,7 @@ object MainAdapterItemView {
             linearLayout {
                 lparams(width = matchParent, height = dip(120))
                 orientation = LinearLayout.VERTICAL
-                backgroundColor = ContextCompat.getColor(context, R.color.colorPrimary)
+                backgroundColor = CommonView.getThemeColorPrimary()
                 setPadding(dip(16), 0, dip(16), 0)
 
                 linearLayout {

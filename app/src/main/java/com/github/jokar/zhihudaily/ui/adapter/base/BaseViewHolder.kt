@@ -30,6 +30,6 @@ open class BaseViewHolder : RecyclerView.ViewHolder {
 
     fun <T : View> find(@IdRes id: Int): T {
 
-        return itemView.findViewById(id) as T
+        return itemView.findViewById(id)
     }
 }

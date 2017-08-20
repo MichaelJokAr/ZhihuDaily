@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="storyDetailImage">200dp</dimen>
+    <dimen name="colorIndicatorMiniSize">60dp</dimen>
 </resources>

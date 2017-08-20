@@ -1,7 +1,9 @@
 package com.github.jokar.zhihudaily.ui.activity
 
 import android.graphics.Color
+import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import com.afollestad.aesthetic.Aesthetic
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
@@ -31,4 +33,21 @@ abstract class BaseActivity : RxAppCompatActivity() {
     open fun onWindowInitialized() {
         JLog.d("onWindowInitialized")
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Aesthetic.attach(this)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        Aesthetic.resume(this)
+        super.onResume()
+    }
+
+    override fun onPause() {
+        Aesthetic.pause(this)
+        super.onPause()
+    }
+
+
 }

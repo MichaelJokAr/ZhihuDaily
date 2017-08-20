@@ -124,7 +124,7 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
             linearLayout {
                 //swipeRefreshLayout
                 swipeRefreshLayout = swipeRefreshLayout {
-                    setColorSchemeResources(CommonView.getColorSchemeResources())
+                    setColorSchemeColors(CommonView.getColorSchemeResources())
                     setOnRefreshListener {
                         getData()
                     }

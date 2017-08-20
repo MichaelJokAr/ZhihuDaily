@@ -28,4 +28,13 @@ object SwipeRefreshLayoutUtil {
         }
 
     }
+
+    fun setColor(swipeRefreshLayout: SwipeRefreshLayout?,color:Int) {
+        try {
+            swipeRefreshLayout?.setColorSchemeColors(color)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
 }

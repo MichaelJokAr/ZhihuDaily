@@ -2,6 +2,7 @@ package com.github.jokar.zhihudaily.ui.activity
 
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
@@ -12,6 +13,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Gravity
 import android.view.Menu
 import android.view.View
+import com.afollestad.aesthetic.Aesthetic
+import com.afollestad.aesthetic.BottomNavBgMode
+import com.afollestad.aesthetic.BottomNavIconTextMode
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
@@ -35,6 +39,8 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import org.jetbrains.anko.design.coordinatorLayout
 import org.jetbrains.anko.design.navigationView
@@ -63,21 +69,42 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
 
     var menuChooseIndex: Int = 1
 
-    var drawerLayout: DrawerLayout? = null
-    var viewPager: MotorTrackerViewPager? = null
-    var recyclerView: VerticalRecyclerView? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        createView()
+        setContentView(R.layout.activity_main)
+        window.statusBarColor = Color.TRANSPARENT
+        //set Default Theme
+        setDefaultTheme()
         initView()
+    }
+
+    /**
+     * default theme
+     */
+    private fun setDefaultTheme() {
+        if(Aesthetic.isFirstTime()){
+            Aesthetic.get()
+                    .activityTheme(R.style.AppTheme)
+                    .colorPrimaryRes(R.color.colorPrimary)
+                    .colorPrimaryDarkRes(R.color.colorPrimaryDark)
+                    .colorAccentRes(R.color.colorAccent)
+                    .textColorSecondaryInverse(Color.WHITE)
+                    .colorStatusBarAuto()
+                    .colorNavigationBarAuto()
+                    .bottomNavigationBackgroundMode(BottomNavBgMode.PRIMARY_DARK)
+                    .bottomNavigationIconTextMode(BottomNavIconTextMode.BLACK_WHITE_AUTO)
+                    .apply()
+        }
     }
 
     fun initView() {
         //initToolBar
         setSupportActionBar(toolbar)
+        viewPager.setPagingEnabled(false)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
         val toggle = ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close)
@@ -183,30 +210,34 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         menuList = null
     }
 
-    fun createView() {
-        drawerLayout = drawerLayout {
-            lparams(width = matchParent, height = matchParent)
-
-            coordinatorLayout {
-                include<View>(R.layout.common_toolbar)
-
-                viewPager = motorTrackerViewPager {
-                    id = R.id.viewPager
-                    setPagingEnabled(false)
-                }.lparams(width = matchParent, height = matchParent) {
-                    behavior = AppBarLayout.ScrollingViewBehavior()
-                }
-            }.lparams(width = matchParent, height = matchParent)
-
-            navigationView {
-                fitsSystemWindows = true
-
-                recyclerView = verticalRecyclerView {
-                    layoutManager = LinearLayoutManager(this@MainActivity)
-                }
-            }.lparams(width = wrapContent, height = matchParent) {
-                gravity = Gravity.START
-            }
-        }
-    }
+//    fun createView() {
+//        drawerLayout = drawerLayout {
+//            fitsSystemWindows = true
+//            lparams(width = matchParent, height = matchParent)
+//
+//            coordinatorLayout {
+//
+//                include<View>(R.layout.common_toolbar)
+//
+//                viewPager = motorTrackerViewPager {
+//                    id = R.id.viewPager
+//                    setPagingEnabled(false)
+//                }.lparams(width = matchParent, height = matchParent) {
+//                    behavior = AppBarLayout.ScrollingViewBehavior()
+//                }
+//            }.lparams(width = matchParent, height = matchParent){
+//                fitsSystemWindows = true
+//            }
+//
+//            navigationView {
+//                fitsSystemWindows = true
+//
+//                recyclerView = verticalRecyclerView {
+//                    layoutManager = LinearLayoutManager(this@MainActivity)
+//                }
+//            }.lparams(width = wrapContent, height = matchParent) {
+//                gravity = Gravity.START
+//            }
+//        }
+//    }
 }

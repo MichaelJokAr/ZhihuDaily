@@ -26,7 +26,7 @@ class TopStoryAdapter(var context: Context,
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val view = viewList[position]
-        var image: ImageView = view.findViewById(R.id.image) as ImageView
+        var image: ImageView = view.findViewById(R.id.image)
 
         ImageLoader.loadImage(context,
                 topStories[position].image,

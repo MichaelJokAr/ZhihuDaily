@@ -26,8 +26,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.StoryDetailActivity"
-            android:screenOrientation="portrait"
-            android:process=":webView"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.CollectionActivity"
             android:screenOrientation="portrait" />
@@ -36,6 +35,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.activity.ChameleonActivity"
             android:screenOrientation="portrait" />
     </application>
 

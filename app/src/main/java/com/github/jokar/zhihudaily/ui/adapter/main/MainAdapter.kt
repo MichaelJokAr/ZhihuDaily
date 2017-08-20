@@ -33,8 +33,8 @@ class MainAdapter(var context: Context, transformer: LifecycleTransformer<Any>,
                     context, false)
             3 -> return ViewHolder(MainAdapterItemView.createMainItemView(context),
                     context, false)
-            4 -> return HeadHolder(MainAdapterItemView.createHeadItemView(context),
-                    context)
+            4 -> return HeadHolder(inflater?.inflate(R.layout.item_main_head,parent,
+                    false)!!, context)
         }
         return null
     }

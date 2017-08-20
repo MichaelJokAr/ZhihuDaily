@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/common_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_red"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="红色"
+                app:colorNameSize="10dp"
+                app:colorValue="#d22222" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_orange"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="橘红"
+                app:colorNameSize="10dp"
+                app:colorValue="#f44836" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_orangeYellow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="橘黄"
+                app:colorNameSize="10dp"
+                app:colorValue="#f2821e" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_grassGreen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="草绿"
+                app:colorNameSize="10dp"
+                app:colorValue="#7bb736" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_green"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="翠绿"
+                app:colorNameSize="10dp"
+                app:colorValue="#16c24b" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_hatsune"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="初音"
+                app:colorNameSize="10dp"
+                app:colorValue="#39c5bb" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_lightBlue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="青色"
+                app:colorNameSize="10dp"
+                app:colorValue="#16a8c2" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_skyBlue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="天蓝"
+                app:colorNameSize="10dp"
+                app:colorValue="#2b86e3" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_blue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="蓝色"
+                app:colorNameSize="10dp"
+                app:colorValue="#3f51b5" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_purple"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="紫色"
+                app:colorNameSize="10dp"
+                app:colorValue="#9c27b0" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_purpleRed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="紫红"
+                app:colorNameSize="10dp"
+                app:colorValue="#cc268f" />
+
+            <com.github.jokar.zhihudaily.widget.ColorIndicatorView
+                android:id="@+id/colorView_defaultColor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:colorName="默认"
+                app:colorNameSize="10dp"
+                app:colorValue="@color/colorPrimary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center|left"
+                    android:text="16进制:"
+                    android:textColor="@android:color/black"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tv_Hexadecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#f0f0f0"
+                    android:gravity="center"
+                    android:text="#c6c6c6"
+                    android:textColor="#999999"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center|left"
+                        android:text="RGB:"
+                        android:textColor="@android:color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/tv_RGB"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#f0f0f0"
+                        android:gravity="center"
+                        android:text="210,34,34"
+                        android:textColor="#999999"
+                        android:textSize="14dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
+
+            <com.madrapps.pikolo.HSLColorPicker
+                android:id="@+id/colorPicker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:arc_length="110"
+                app:hue_start_angle="30"
+                app:lightness_start_angle="270"
+                app:radius_offset="20dp"
+                app:saturation_start_angle="150" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_circle" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
