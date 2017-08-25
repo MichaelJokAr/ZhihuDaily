@@ -3,13 +3,12 @@ package com.github.jokar.zhihudaily.utils.image
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.github.jokar.zhihudaily.app.GlideApp
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.github.jokar.zhihudaily.widget.CircleImageView
 
@@ -32,14 +31,11 @@ object ImageLoader {
                   imageView: ImageView?) {
         if (imageView != null) {
 
-            val options = RequestOptions()
+            GlideApp.with(context)
+                    .load(url)
                     .placeholder(defaultImage)
                     .error(defaultImage)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-
-            Glide.with(context)
-                    .load(url)
-                    .apply(options)
                     .into(imageView)
         }
     }
@@ -56,14 +52,11 @@ object ImageLoader {
                   defaultImage: Int,
                   imageView: CircleImageView) {
 
-        val options = RequestOptions()
+        GlideApp.with(context)
+                .load(url)
                 .placeholder(defaultImage)
                 .error(defaultImage)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-
-        Glide.with(context)
-                .load(url)
-                .apply(options)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(e: GlideException?, model: Any?,
                                               target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
@@ -90,7 +83,7 @@ object ImageLoader {
     fun clear(context: Context, imageView: ImageView?) {
         // TODO: 2016/11/14 主动清除view,会导致频繁gc(暂未发现Bug)
         try {
-            Glide.with(context).clear(imageView)
+            GlideApp.with(context).clear(imageView)
         } catch (e: Exception) {
             JLog.e(e)
         }
@@ -99,13 +92,13 @@ object ImageLoader {
 
     fun clearDiskCache(context: Context) {
         //清除硬盘缓存
-        Glide.get(context).clearDiskCache();
+        GlideApp.get(context).clearDiskCache();
     }
 
     fun clearCache(context: Context) {
         //清除硬盘缓存
-        Thread { Glide.get(context).clearDiskCache() }
+        Thread { GlideApp.get(context).clearDiskCache() }
         //清除缓存
-        Glide.get(context).clearMemory()
+        GlideApp.get(context).clearMemory()
     }
 }
