@@ -1,6 +1,8 @@
 package com.github.jokar.zhihudaily.widget
 
 import android.view.ViewManager
+import com.github.jokar.zhihudaily.widget.viewpager.AutoScrollViewPager
+import com.github.jokar.zhihudaily.widget.viewpager.MotorTrackerViewPager
 import com.like.LikeButton
 import com.rd.PageIndicatorView
 import org.jetbrains.anko.custom.ankoView
@@ -36,3 +38,8 @@ inline fun ViewManager.verticalRecyclerView(theme: Int = 0, init: VerticalRecycl
 inline fun ViewManager.loadLayout(theme: Int = 0) = loadLayout(theme) {}
 
 inline fun ViewManager.loadLayout(theme: Int = 0, init: LoadLayout.() -> Unit) = ankoView({ LoadLayout(it) }, theme, init)
+
+//autoScrollViewPager
+inline fun ViewManager.autoScrollViewPager(theme: Int = 0) = autoScrollViewPager(theme) {}
+
+inline fun ViewManager.autoScrollViewPager(theme: Int = 0, init: AutoScrollViewPager.() -> Unit) = ankoView({ AutoScrollViewPager(it) }, theme, init)

@@ -9,12 +9,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.widget.autoScrollViewPager
 import com.github.jokar.zhihudaily.widget.pageIndicatorView
 import com.rd.animation.type.AnimationType
 import org.jetbrains.anko.*
 import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.percent.percentFrameLayout
-import org.jetbrains.anko.support.v4.viewPager
 
 /**
  * Created by JokAr on 2017/7/17.
@@ -95,21 +95,22 @@ object StoryAdapterItemView {
     }
 
 
-    fun createHeadItemView(context: Context):View{
-        return with(context){
+    fun createHeadItemView(context: Context): View {
+        return with(context) {
             relativeLayout {
-                lparams(width = matchParent,height = dip(230))
+                lparams(width = matchParent, height = dip(230))
                 backgroundColor = Color.WHITE
                 gravity = Gravity.BOTTOM
 
-                viewPager {
+                autoScrollViewPager {
                     id = R.id.viewPager
-                }.lparams(width = matchParent,height = matchParent)
+                    duration = 5000
+                }.lparams(width = matchParent, height = matchParent)
 
                 view {
                     backgroundColor = Color.BLACK
                     alpha = 0.15f
-                }.lparams(width = matchParent,height = matchParent)
+                }.lparams(width = matchParent, height = matchParent)
 
                 linearLayout {
                     gravity = Gravity.CENTER
@@ -121,7 +122,7 @@ object StoryAdapterItemView {
                         textColor = Color.WHITE
                         maxLines = 2
                         ellipsize = TextUtils.TruncateAt.END
-                    }.lparams(width = matchParent,height = wrapContent){
+                    }.lparams(width = matchParent, height = wrapContent) {
                         setPadding(dip(10), dip(10), dip(10), dip(10))
                     }
 
@@ -130,11 +131,11 @@ object StoryAdapterItemView {
                         setAnimationType(AnimationType.DROP)
                         padding = 5
                         radius = 4
-                    }.lparams(width = wrapContent,height = wrapContent){
+                    }.lparams(width = wrapContent, height = wrapContent) {
                         bottomMargin = dip(10)
                     }
 
-                }.lparams(width = matchParent,height = wrapContent){
+                }.lparams(width = matchParent, height = wrapContent) {
                     addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
                 }
             }

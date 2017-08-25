@@ -14,5 +14,9 @@
         <attr name="colorNameSize" format="dimension"/>
     </declare-styleable>
 
-
+    <declare-styleable name="AutoScrollViewPager">
+        <attr format="boolean" name="indeterminate"/>
+        <attr format="boolean" name="autoScroll"/>
+        <attr format="integer" name="duration"/>
+    </declare-styleable>
 </resources>

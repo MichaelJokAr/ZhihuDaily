@@ -53,6 +53,10 @@ android {
         javaMaxHeapSize '4g'
         preDexLibraries = false
     }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 //使用生成文件

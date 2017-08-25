@@ -19,6 +19,7 @@ import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
+import com.github.jokar.zhihudaily.widget.viewpager.AutoScrollViewPager
 import com.rd.PageIndicatorView
 import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.functions.Consumer
@@ -34,6 +35,21 @@ class StoryAdapter(context: Context,
     : LoadMoreAdapter<StoryEntity>(context, data, transformer) {
 
     var headClickListener: HeadClickListener? = null
+
+
+    override fun createHolder(parent: ViewGroup, viewType: Int): BaseViewHolder? {
+        when (viewType) {
+            0 ->
+                return HeadHolder(StoryAdapterItemView.createHeadItemView(context), context)
+            1 ->
+                return TimeHolder(StoryAdapterItemView.createStoryTimeItemView(context), context)
+            2 ->
+                return ViewHolder(StoryAdapterItemView.createStoryItemView(context), context, true)
+            3 ->
+                return ViewHolder(StoryAdapterItemView.createStoryItemView(context), context, false)
+        }
+        return null
+    }
 
     override fun bindView(viewHolder: BaseViewHolder, position: Int) {
         val storyEntities = data[position]
@@ -57,21 +73,6 @@ class StoryAdapter(context: Context,
                         Consumer<Any> { itemClickListener?.itemClickListener(position) })
             }
         }
-    }
-
-
-    override fun createHolder(parent: ViewGroup, viewType: Int): BaseViewHolder? {
-        when (viewType) {
-            0 ->
-                return HeadHolder(StoryAdapterItemView.createHeadItemView(context), context)
-            1 ->
-                return TimeHolder(StoryAdapterItemView.createStoryTimeItemView(context), context)
-            2 ->
-                return ViewHolder(StoryAdapterItemView.createStoryItemView(context), context, true)
-            3 ->
-                return ViewHolder(StoryAdapterItemView.createStoryItemView(context), context, false)
-        }
-        return null
     }
 
     override fun getViewType(position: Int): Int {
@@ -137,7 +138,7 @@ class StoryAdapter(context: Context,
 
 
     class HeadHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context) {
-        var viewPager: ViewPager = find(R.id.viewPager)
+        var viewPager: AutoScrollViewPager = find(R.id.viewPager)
         var tvTitle: TextView = find(R.id.tvTitle)
         var pageIndicatorView: PageIndicatorView = find(R.id.pageIndicatorView)
 

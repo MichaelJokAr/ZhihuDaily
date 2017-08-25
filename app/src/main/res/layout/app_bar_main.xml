@@ -6,7 +6,7 @@
 
     <include layout="@layout/common_toolbar" />
 
-    <com.github.jokar.zhihudaily.widget.MotorTrackerViewPager
+    <com.github.jokar.zhihudaily.widget.viewpager.MotorTrackerViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

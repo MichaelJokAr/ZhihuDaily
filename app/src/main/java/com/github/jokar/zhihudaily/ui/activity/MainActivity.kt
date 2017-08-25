@@ -4,15 +4,11 @@ package com.github.jokar.zhihudaily.ui.activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Gravity
 import android.view.Menu
-import android.view.View
 import com.afollestad.aesthetic.Aesthetic
 import com.afollestad.aesthetic.BottomNavBgMode
 import com.afollestad.aesthetic.BottomNavIconTextMode
@@ -28,11 +24,6 @@ import com.github.jokar.zhihudaily.ui.adapter.viewpager.ViewPagerAdapter
 import com.github.jokar.zhihudaily.ui.fragment.MainFragment
 import com.github.jokar.zhihudaily.ui.fragment.ThemeFragment
 import com.github.jokar.zhihudaily.ui.view.MainView
-import com.github.jokar.zhihudaily.utils.system.JLog
-import com.github.jokar.zhihudaily.widget.MotorTrackerViewPager
-import com.github.jokar.zhihudaily.widget.VerticalRecyclerView
-import com.github.jokar.zhihudaily.widget.motorTrackerViewPager
-import com.github.jokar.zhihudaily.widget.verticalRecyclerView
 import com.jakewharton.rxbinding2.view.RxMenuItem
 import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
@@ -42,12 +33,6 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
-import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.design.navigationView
-import org.jetbrains.anko.include
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.support.v4.drawerLayout
-import org.jetbrains.anko.wrapContent
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.github.jokar.zhihudaily.widget
+package com.github.jokar.zhihudaily.widget.viewpager
 
 import android.content.Context
 import android.support.v4.view.ViewPager
