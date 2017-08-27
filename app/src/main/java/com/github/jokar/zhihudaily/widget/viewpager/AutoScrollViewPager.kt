@@ -14,7 +14,6 @@ import com.github.jokar.zhihudaily.utils.system.JLog
 open class AutoScrollViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet?)
     : ViewPager(context, attrs) {
 
-
     private val default_duration = 2000
     var duration = default_duration
     //是否自动滚动
@@ -34,14 +33,10 @@ open class AutoScrollViewPager @JvmOverloads constructor(context: Context, attrs
         indeterminate = typeArray.getBoolean(R.styleable.AutoScrollViewPager_indeterminate, true)
 
         typeArray.recycle()
-
     }
 
     private val autoScrollRunnable = object : Runnable {
         override fun run() {
-            if (!isShown) {
-                return
-            }
             if (currentItem == adapter.count - 1) {
 //                currentItem = 0
                 setCurrentItem(0, false)
@@ -53,7 +48,6 @@ open class AutoScrollViewPager @JvmOverloads constructor(context: Context, attrs
     }
 
     internal fun setAutoScrollEnabled(value: Boolean) {
-
         autoScroll = value
 
         if (autoScroll) {
@@ -80,40 +74,35 @@ open class AutoScrollViewPager @JvmOverloads constructor(context: Context, attrs
         }
     }
 
-    override fun onInterceptHoverEvent(event: MotionEvent): Boolean {
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         try {
-            var action = event.actionMasked
-            when (action) {
-                MotionEvent.ACTION_DOWN -> startX = event.x
-            }
-            return super.onInterceptHoverEvent(event)
-        } catch (e: Exception) {
-            JLog.e(e)
-        }
-        return false
-    }
-
-    override fun onTouchEvent(ev: MotionEvent): Boolean {
-        val action = ev.action
-
-        try {
-            when (action) {
+            when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
                     //按下手指停止自动滚动
                     stopAutoScroll()
-                    startX = ev.x
+                    startX = event.x
                 }
+            }
+            return super.onInterceptTouchEvent(event)
+        } catch (e: Exception) {
+            JLog.e(e)
+        }
+        return true
+    }
+
+    override fun onTouchEvent(ev: MotionEvent): Boolean {
+        try {
+            when (ev.action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_UP -> {
+                    //如果indeterminate为true则手指滑动到最后一个时再滑动则跳到一个view
                     if (indeterminate
                             && (currentItem == 0 || currentItem == adapter.count - 1)) {
 
                         if (currentItem == adapter.count - 1
-                                && (ev.x < startX && Math.abs(ev.x - startX) > 50)) {
+                                && (ev.x < startX && startX - ev.x > 50)) {
                             postDelayed({ setCurrentItem(0, false) },
                                     100)
                         }
-                    } else {
-                        startX = 0f
                     }
                     //移开手指开始自动滚动
                     startAutoScroll()
@@ -123,9 +112,9 @@ open class AutoScrollViewPager @JvmOverloads constructor(context: Context, attrs
         } catch (e: Exception) {
             JLog.e(e)
         }
-
         return false
     }
+
 
     private fun startAutoScroll() {
         stopAutoScroll()

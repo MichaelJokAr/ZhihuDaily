@@ -18,7 +18,6 @@ import com.github.jokar.zhihudaily.ui.adapter.viewpager.TopStoryAdapter
 import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
-import com.github.jokar.zhihudaily.utils.system.JLog
 import com.github.jokar.zhihudaily.widget.viewpager.AutoScrollViewPager
 import com.rd.PageIndicatorView
 import com.trello.rxlifecycle2.LifecycleTransformer
@@ -129,7 +128,6 @@ class StoryAdapter(context: Context,
 
             override fun onPageSelected(position: Int) {
                 holder.tvTitle.text = topStories[position].title
-                JLog.d("onPageSelected: ${holder.pageIndicatorView.selection}")
             }
         })
 
