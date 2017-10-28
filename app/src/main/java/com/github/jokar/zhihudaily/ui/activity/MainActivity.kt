@@ -84,7 +84,7 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         }
     }
 
-    fun initView() {
+    private fun initView() {
         //initToolBar
         setSupportActionBar(toolbar)
         viewPager.setPagingEnabled(false)
@@ -195,34 +195,4 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         menuList = null
     }
 
-//    fun createView() {
-//        drawerLayout = drawerLayout {
-//            fitsSystemWindows = true
-//            lparams(width = matchParent, height = matchParent)
-//
-//            coordinatorLayout {
-//
-//                include<View>(R.layout.common_toolbar)
-//
-//                viewPager = motorTrackerViewPager {
-//                    id = R.id.viewPager
-//                    setPagingEnabled(false)
-//                }.lparams(width = matchParent, height = matchParent) {
-//                    behavior = AppBarLayout.ScrollingViewBehavior()
-//                }
-//            }.lparams(width = matchParent, height = matchParent){
-//                fitsSystemWindows = true
-//            }
-//
-//            navigationView {
-//                fitsSystemWindows = true
-//
-//                recyclerView = verticalRecyclerView {
-//                    layoutManager = LinearLayoutManager(this@MainActivity)
-//                }
-//            }.lparams(width = wrapContent, height = matchParent) {
-//                gravity = Gravity.START
-//            }
-//        }
-//    }
 }

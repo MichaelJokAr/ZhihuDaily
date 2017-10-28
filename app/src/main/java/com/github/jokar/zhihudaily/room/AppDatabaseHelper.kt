@@ -12,7 +12,7 @@ import com.github.jokar.zhihudaily.utils.system.JLog
 class AppDatabaseHelper constructor(context: Context) {
 
     val appDataBase = Room.databaseBuilder(context, AppDatabase::class.java,
-            "daily").build()!!
+            "daily").build()
 
     companion object {
         @Volatile

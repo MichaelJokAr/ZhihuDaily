@@ -153,6 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -184,36 +185,30 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_weight="1"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center|left"
+                    android:text="RGB:"
+                    android:textColor="@android:color/black"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tv_RGB"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center|left"
-                        android:text="RGB:"
-                        android:textColor="@android:color/black"
-                        android:textSize="14dp" />
-
-                    <TextView
-                        android:id="@+id/tv_RGB"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="#f0f0f0"
-                        android:gravity="center"
-                        android:text="210,34,34"
-                        android:textColor="#999999"
-                        android:textSize="14dp" />
-                </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#f0f0f0"
+                    android:gravity="center"
+                    android:text="210,34,34"
+                    android:textColor="#999999"
+                    android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -238,6 +233,7 @@
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:contentDescription="@string/about_image"
                 android:background="@drawable/bg_circle" />
         </RelativeLayout>
 

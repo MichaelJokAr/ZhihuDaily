@@ -75,8 +75,8 @@ class StoryDetailModel(var context: Context) {
                 .filter {
                     story ->
                     //判断本地是否有详细数据
-                    if (!TextUtils.isEmpty(story?.body)) {
-                        callBack.data(story!!)
+                    if (!TextUtils.isEmpty(story.body)) {
+                        callBack.data(story)
                         callBack.onComplete()
                         return@filter false
                     }

@@ -99,7 +99,7 @@ abstract class LoadMoreAdapter<T>(var context: Context,
             RxView.clicks(mFootViewHolder?.llFoot!!)
                     .compose<Any>(transformer)
                     .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe { o ->
+                    .subscribe { _ ->
                         if (itemClickListener != null) {
                             mFootViewHolder?.showProgress()
                             itemClickListener?.footViewClick()

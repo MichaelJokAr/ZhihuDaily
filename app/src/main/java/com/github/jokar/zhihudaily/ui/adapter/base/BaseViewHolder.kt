@@ -25,6 +25,7 @@ open class BaseViewHolder : RecyclerView.ViewHolder {
         val attrs = intArrayOf(R.attr.selectableItemBackground)
         val typedArray = context.obtainStyledAttributes(attrs)
         val backgroundResource = typedArray.getResourceId(0, 0)
+        typedArray.recycle()
         this.itemView.setBackgroundResource(backgroundResource)
     }
 

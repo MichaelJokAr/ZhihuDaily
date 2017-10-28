@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="144dp"
-    android:background="?attr/colorPrimary"
+    android:background="?android:attr/colorPrimary"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
@@ -18,6 +18,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
+            android:contentDescription="@string/about_image"
             android:src="@mipmap/ic_logo"/>
 
         <TextView
@@ -36,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
-        android:background="?attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@mipmap/collect"
         android:drawablePadding="15dp"
         android:gravity="center|left"

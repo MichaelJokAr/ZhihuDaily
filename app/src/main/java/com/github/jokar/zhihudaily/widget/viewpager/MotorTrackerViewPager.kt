@@ -30,7 +30,7 @@ import android.view.MotionEvent
  *  * mail: langzaitianyag@vip.qq.com
  *
  */
-open class MotorTrackerViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet?)
+open class MotorTrackerViewPager constructor(context: Context, attrs: AttributeSet?)
     : ViewPager(context, attrs) {
     constructor(context: Context) : this(context, null)
 

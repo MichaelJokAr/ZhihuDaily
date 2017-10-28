@@ -31,7 +31,7 @@ class TopStoryAdapter(var context: Context,
         ImageLoader.loadImage(context,
                 topStories[position].image,
                 R.mipmap.image_small_default,
-                image!!)
+                image)
         ViewUtils.viewClick(image, transformer,
                 Consumer<Any> {
                     itemClickListener?.itemClickListener(position)

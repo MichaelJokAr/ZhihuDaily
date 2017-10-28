@@ -19,10 +19,10 @@ import java.util.concurrent.TimeUnit
  * Created by JokAr on 2017/7/2.
  */
 class LoggingInterceptor : Interceptor {
-    val TAG = "OkHttp"
+    private val TAG = "OkHttp"
     @Volatile
     var level = Level.NONE
-    val UTF8 = Charset.forName("UTF-8")
+    private val UTF8 = Charset.forName("UTF-8")
 
     enum class Level {
         /** No logs.  */

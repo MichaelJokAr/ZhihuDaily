@@ -79,7 +79,7 @@ class MainFragmentModel(var context: Context) {
         var month = calendar.get(Calendar.MONTH) + 1
         var day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        var date: Long = 0
+        var date: Long
         date = year * 10000L
         month *= 100
         date += month
@@ -96,10 +96,10 @@ class MainFragmentModel(var context: Context) {
             var topStories: ArrayList<TopStoryEntity>? = mDatabaseHelper.getTopStoryByDate(date)
 
             //本地有就直接返回本地数据
-            if (stories != null && stories?.size > 0) {
+            if (stories != null && stories.size > 0) {
 
                 //添加时间标题
-                var timeTitle: StoryEntity = StoryEntity(0)
+                var timeTitle = StoryEntity(0)
                 timeTitle.date = date
                 timeTitle.dateString = TODAYSNEWS
                 stories.add(0, timeTitle)
@@ -187,22 +187,22 @@ class MainFragmentModel(var context: Context) {
 
             val stories: ArrayList<StoryEntity>? = mDatabaseHelper.getStoryByDate(beforeDate)
             //本地有就直接返回本地数据
-            if (stories != null && stories?.size > 0) {
+            if (stories != null && stories.size > 0) {
 
                 //添加时间标题
-                var timeTitle: StoryEntity = StoryEntity(0)
+                var timeTitle = StoryEntity(0)
                 timeTitle.date = beforeDate
                 timeTitle.dateString = DateUtils.judgmentTime(beforeDate)
                 stories.add(0, timeTitle)
-                e?.onNext(stories)
-                e?.onComplete()
+                e.onNext(stories)
+                e.onComplete()
             } else {
                 //本地没有再请求网络
-                e?.onNext(ArrayList())
+                e.onNext(ArrayList())
             }
         })
                 .filter { t ->
-                    if (t != null && t.size > 0) {
+                    if (t.size > 0) {
                         callBack.data(t)
                         callBack.onComplete()
                         return@filter false

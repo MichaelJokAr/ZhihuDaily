@@ -17,7 +17,7 @@ import javax.inject.Inject
 /**
  * Created by JokAr on 2017/6/15.
  */
-open class MainModel {
+class MainModel {
     @Inject
     lateinit var retrofit: Retrofit
     @Inject

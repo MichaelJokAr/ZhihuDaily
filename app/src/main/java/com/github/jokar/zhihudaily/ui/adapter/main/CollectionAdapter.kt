@@ -40,24 +40,25 @@ class CollectionAdapter(var context: Context,
     override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
         val storyEntity = arrayList?.get(position)
-        when(getItemViewType(position)){
-            0 ->{
+        when (getItemViewType(position)) {
+            0 -> {
                 //有图片
                 var holder: ViewHolderWithImage = viewHolder as ViewHolderWithImage
                 loadImage(holder.image, storyEntity?.images!![0])
-                setTitle(holder.tvTitle, storyEntity?.title!!)
+                setTitle(holder.tvTitle, storyEntity?.title)
             }
-            1 ->{
+            1 -> {
                 //无图片
                 var holder: ViewHolder = viewHolder as ViewHolder
-                setTitle(holder.tvTitle, storyEntity?.title!!)
+                setTitle(holder.tvTitle, storyEntity?.title)
             }
         }
     }
+
     override fun getItemViewType(position: Int): Int {
         val storyEntity = arrayList?.get(position)
 
-        if (storyEntity?.images != null && storyEntity?.images!!.size > 0) {
+        if (storyEntity?.images != null && storyEntity?.images!!.isNotEmpty()) {
             return 0
         }
         return 1
@@ -71,8 +72,8 @@ class CollectionAdapter(var context: Context,
                 imageView)
     }
 
-    fun setTitle(tvTitle: TextView, title: String) {
-        tvTitle.text = title
+    fun setTitle(tvTitle: TextView, title: String?) {
+        tvTitle.text = title ?: ""
     }
 
 

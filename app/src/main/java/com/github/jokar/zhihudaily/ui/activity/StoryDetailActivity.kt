@@ -35,16 +35,6 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
     var data: StoryEntity? = null
     var imageHeight: Int? = null
 
-//    var nestedScrollView: NestedScrollView? = null
-//    var rlTop: RelativeLayout? = null
-//    var image: ImageView? = null
-//    var tvTiTle: TextView? = null
-//    var tvAuthor: TextView? = null
-//    var webView: WebView? = null
-//    var toolbar: Toolbar? = null
-//    var likeCollect: LikeButton? = null
-//    var likeButton: LikeButton? = null
-//    var loadView: LoadLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -206,7 +196,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         super.onDestroy()
         ImageLoader.clear(this, image)
         data = null
-        presenter?.destroy()
+        presenter.destroy()
         webView?.destroy()
         loadView?.retryListener = null
         nestedScrollView?.setOnClickListener { null }
@@ -215,119 +205,6 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         likeCollect?.setOnLikeListener(null)
     }
 
-//    fun createView() {
-//        coordinatorLayout {
-//            nestedScrollView = nestedScrollView {
-//                fitsSystemWindows = true
-//                setOnScrollChangeListener(this@StoryDetailActivity)
-//
-//                linearLayout {
-//                    orientation = LinearLayout.VERTICAL
-//
-//                    //view
-//                    view {
-//                    }.lparams(width = matchParent, height = dip(48))
-//                    //
-//                    rlTop = relativeLayout {
-//                        gravity = Gravity.BOTTOM
-//                        //image
-//                        image = imageView {
-//                            imageResource = R.mipmap.splash
-//                            scaleType = ImageView.ScaleType.FIT_XY
-//                        }.lparams(width = matchParent, height = matchParent)
-//                        //
-//                        view {
-//                            backgroundColor = Color.parseColor("#000000")
-//                            alpha = 0.15f
-//                        }.lparams(width = matchParent, height = matchParent)
-//                        //title
-//                        tvTiTle = textView {
-//                            gravity = Gravity.CENTER or Gravity.LEFT
-//                            textSize = 23f
-//                            textColor = Color.WHITE
-//                            setPadding(dip(10), dip(10), dip(10), dip(10))
-//                        }.lparams(width = matchParent, height = wrapContent) {
-//                            above(R.id.tvAuthor)
-//                        }
-//                        //author
-//                        tvAuthor = textView {
-//                            id = R.id.tvAuthor
-//                            gravity = Gravity.CENTER or Gravity.RIGHT
-//                            textSize = 13f
-//                            textColor = Color.WHITE
-//                            setPadding(dip(10), 0, dip(10), dip(10))
-//                        }.lparams(width = matchParent, height = wrapContent) {
-//                            addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-//                        }
-//
-//                    }.lparams(width = matchParent, height = dip(200))
-//                    //webView
-//                    webView = webView {
-//                    }.lparams(width = matchParent, height = matchParent)
-//
-//                }.lparams(width = matchParent, height = matchParent)
-//
-//            }.lparams(width = matchParent, height = matchParent)
-//            //loadLayout
-//            loadView = loadLayout {
-//                backgroundColor = Color.parseColor("#eeeeee")
-//                retryListener = LoadLayout.RetryListener { getData() }
-//            }.lparams(width = matchParent, height = matchParent)
-//
-//            //toolbar
-//            toolbar = themedToolbar(R.style.Base_ThemeOverlay_AppCompat_Dark_ActionBar) {
-//                backgroundColor = CommonView.getThemeColorPrimary()
-//
-//                linearLayout {
-//                    orientation = LinearLayout.HORIZONTAL
-//                    gravity = Gravity.RIGHT
-//                    //collect
-//                    likeCollect = likeButton {
-//                        setIconSizeDp(35)
-//                        setLikeDrawableRes(R.mipmap.collected)
-//                        setUnlikeDrawableRes(R.mipmap.collect)
-//                        setOnLikeListener(object :OnLikeListener{
-//                            override fun liked(p0: LikeButton?) {
-//                                data?.collection = 1
-//                                update()
-//                                //通知收藏页面刷新
-//                                RxBus.getInstance().post(UpdateCollectionEvent())
-//                            }
-//
-//                            override fun unLiked(p0: LikeButton?) {
-//                                data?.collection = 0
-//                                update()
-//                                //通知收藏页面刷新
-//                                RxBus.getInstance().post(UpdateCollectionEvent())
-//                            }
-//                        })
-//                    }.lparams(width = dip(50), height = matchParent)
-//                    //like
-//                    likeButton = likeButton {
-//                        setIconSizeDp(25)
-//                        setLikeDrawableRes(R.mipmap.ic_liked)
-//                        setUnlikeDrawableRes(R.mipmap.ic_like)
-//                        setOnLikeListener(object :OnLikeListener{
-//                            override fun liked(p0: LikeButton?) {
-//                                data?.like = 1
-//                                update()
-//                            }
-//
-//                            override fun unLiked(p0: LikeButton?) {
-//                                data?.like = 0
-//                                update()
-//                            }
-//                        })
-//                    }.lparams(width = dip(50), height = matchParent) {
-//                        rightMargin = dip(5)
-//                    }
-//
-//                }.lparams(width = matchParent, height = matchParent)
-//
-//            }.lparams(width = matchParent, height = dip(48))
-//
-//        }
-//    }
 }
 
 

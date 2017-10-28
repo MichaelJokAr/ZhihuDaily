@@ -90,8 +90,6 @@ object HtmlUtil {
     /**
      * 根据News
      * 生成完整的HTML文档
-
-     * @param news news
      * *
      * @return String
      */

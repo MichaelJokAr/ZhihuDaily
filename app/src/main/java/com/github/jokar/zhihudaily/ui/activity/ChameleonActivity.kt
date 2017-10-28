@@ -50,52 +50,40 @@ class ChameleonActivity : BaseActivity(), View.OnClickListener {
 
         when (themeColorPrimary) {
             colorView_blue.colorValue -> {
-                colorView_blue.setShowCheck(true)
-                chooseViewRes = colorView_blue.id
+                setDefaultChooseTheme(colorView_blue)
             }
             colorView_red.colorValue -> {
-                colorView_red.setShowCheck(true)
-                chooseViewRes = colorView_red.id
+                setDefaultChooseTheme(colorView_red)
             }
             colorView_orange.colorValue -> {
-                colorView_orange.setShowCheck(true)
-                chooseViewRes = colorView_orange.id
+                setDefaultChooseTheme(colorView_orange)
             }
             colorView_orangeYellow.colorValue -> {
-                colorView_orangeYellow.setShowCheck(true)
-                chooseViewRes = colorView_orangeYellow.id
+                setDefaultChooseTheme(colorView_orangeYellow)
             }
             colorView_grassGreen.colorValue -> {
-                colorView_grassGreen.setShowCheck(true)
-                chooseViewRes = colorView_grassGreen.id
+                setDefaultChooseTheme(colorView_grassGreen)
             }
             colorView_hatsune.colorValue -> {
-                colorView_hatsune.setShowCheck(true)
-                chooseViewRes = colorView_hatsune.id
+               setDefaultChooseTheme(colorView_hatsune)
             }
             colorView_lightBlue.colorValue -> {
-                colorView_lightBlue.setShowCheck(true)
-                chooseViewRes = colorView_lightBlue.id
+                setDefaultChooseTheme(colorView_lightBlue)
             }
             colorView_skyBlue.colorValue -> {
-                colorView_skyBlue.setShowCheck(true)
-                chooseViewRes = colorView_skyBlue.id
+                setDefaultChooseTheme(colorView_skyBlue)
             }
             colorView_blue.colorValue -> {
-                colorView_blue.setShowCheck(true)
-                chooseViewRes = colorView_blue.id
+                setDefaultChooseTheme(colorView_blue)
             }
             colorView_purple.colorValue -> {
-                colorView_purple.setShowCheck(true)
-                chooseViewRes = colorView_purple.id
+                setDefaultChooseTheme(colorView_purple)
             }
             colorView_purpleRed.colorValue -> {
-                colorView_purpleRed.setShowCheck(true)
-                chooseViewRes = colorView_purpleRed.id
+               setDefaultChooseTheme(colorView_purpleRed)
             }
             colorView_defaultColor.colorValue -> {
-                colorView_defaultColor.setShowCheck(true)
-                chooseViewRes = colorView_defaultColor.id
+                setDefaultChooseTheme(colorView_defaultColor)
             }
         }
 
@@ -124,6 +112,12 @@ class ChameleonActivity : BaseActivity(), View.OnClickListener {
         chooseViewRes = view.id
     }
 
+    private fun setDefaultChooseTheme(colorIndicatorView: ColorIndicatorView){
+        colorIndicatorView.setShowCheck(true)
+        chooseViewRes = colorIndicatorView.id
+    }
+
+
     private fun applyTheme(color: Int) {
         Aesthetic.get()
                 .colorPrimary(color)
@@ -139,7 +133,7 @@ class ChameleonActivity : BaseActivity(), View.OnClickListener {
         setShowColor(color)
     }
 
-    fun setShowColor(color: Int) {
+    private fun setShowColor(color: Int) {
         colorPicker.setColor(color)
         imageView.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
         //Hex
