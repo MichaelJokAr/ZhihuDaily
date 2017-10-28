@@ -19,7 +19,7 @@ abstract class BaseActivity : RxAppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        toolbar?.setNavigationOnClickListener { v -> finish() }
+        toolbar?.setNavigationOnClickListener { _ -> finish() }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

@@ -186,8 +186,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         } else if (scrollY < minDist) {
             return 0f
         } else {
-            var alpha = 0f
-            alpha = 1f - (1f / maxHeight * scrollY)
+            var alpha = 1f - (1f / maxHeight * scrollY)
             return alpha
         }
     }

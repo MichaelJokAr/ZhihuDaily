@@ -2,7 +2,7 @@
 ZhihuDaily for Kotlin,[说明请看这里](http://www.jianshu.com/p/1114c471281b)
 
 ### Dev
-- Android-Studio: 3.0 
+- Android-Studio: 3.0
 - Java version: 1.8
 - Kotlin version: 1.1.3
 - SDK Tool: 25.0.2

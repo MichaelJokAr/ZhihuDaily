@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
@@ -34,7 +35,7 @@ android {
                 minifyEnabled true
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             }
-            debug{
+            debug {
                 signingConfig signingConfigs.config //签名证书
             }
         }
@@ -62,6 +63,13 @@ android {
 //使用生成文件
 kapt {
     generateStubs = true
+}
+
+kotlin {
+    experimental {
+        //启用协程
+        coroutines 'enable'
+    }
 }
 
 dependencies {

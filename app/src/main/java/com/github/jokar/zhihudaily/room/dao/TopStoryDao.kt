@@ -18,6 +18,6 @@ interface TopStoryDao {
     /**
      * 根据时间获取
      */
-    @Query("SELECT * FROM topStory where date = :arg0")
+    @Query("SELECT * FROM topStory where date = :date")
     fun getTopStoryByDate(date:Long):List<TopStoryEntity>
 }

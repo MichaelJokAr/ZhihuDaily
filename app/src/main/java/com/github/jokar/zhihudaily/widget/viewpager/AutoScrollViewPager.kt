@@ -11,7 +11,7 @@ import com.github.jokar.zhihudaily.utils.system.JLog
 /**
  * Created by JokAr on 2017/6/22.
  */
-open class AutoScrollViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet?)
+open class AutoScrollViewPager constructor(context: Context, attrs: AttributeSet?)
     : ViewPager(context, attrs) {
 
     private val default_duration = 2000

@@ -26,7 +26,7 @@ interface StoryDao {
     /**
      * 根据时间获取story
      */
-    @Query("SELECT * FROM story WHERE date = :arg0 ")
+    @Query("SELECT * FROM story WHERE date = :date ")
     fun getStoryByDate(date: Long): List<StoryEntity>
 
     /**
@@ -44,6 +44,6 @@ interface StoryDao {
     /**
      * 根据id获取story
      */
-    @Query("SELECT * FROM story where id = :arg0 ")
+    @Query("SELECT * FROM story where id = :id ")
     fun selectStory(id: Int): StoryEntity
 }

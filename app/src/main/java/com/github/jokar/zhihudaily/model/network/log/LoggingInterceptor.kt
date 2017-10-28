@@ -265,7 +265,7 @@ class LoggingInterceptor : Interceptor {
         try {
             //判断是不是json
             var json: JsonObject? = JsonParser().parse(message).asJsonObject
-            if (!json?.isJsonNull!! && json?.isJsonObject!!)
+            if (!json?.isJsonNull!! && json?.isJsonObject)
                 XLog.tag(TAG).json(message)
             json = null
         } catch(e: Exception) {
