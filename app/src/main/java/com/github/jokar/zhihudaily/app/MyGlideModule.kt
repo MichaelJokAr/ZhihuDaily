@@ -10,6 +10,7 @@ import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.bumptech.glide.load.engine.executor.GlideExecutor
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
+import com.github.jokar.zhihudaily.utils.system.JLog
 import java.io.InputStream
 
 /**
@@ -19,7 +20,7 @@ import java.io.InputStream
 class MyGlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)
-        builder.setMemoryCache(LruResourceCache(50 * 1024 * 1024))
+        builder.setMemoryCache(LruResourceCache(20 * 1024 * 1024))
 
         //自定义UncaughtThrowableStrategy
         val glideUncaughtThrowableStrategy = GlideUncaughtThrowableStrategy()
@@ -31,5 +32,11 @@ class MyGlideModule : AppGlideModule() {
         super.registerComponents(context, glide, registry)
         registry.replace(GlideUrl::class.java, InputStream::class.java,
                 OkHttpUrlLoader.Factory())
+    }
+}
+
+class GlideUncaughtThrowableStrategy :GlideExecutor.UncaughtThrowableStrategy {
+    override fun handle(e: Throwable) {
+        JLog.e(e)
     }
 }

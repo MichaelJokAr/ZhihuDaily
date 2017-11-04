@@ -35,16 +35,19 @@ abstract class BaseActivity : RxAppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //change theme
         Aesthetic.attach(this)
         super.onCreate(savedInstanceState)
     }
 
     override fun onResume() {
+        //change theme
         Aesthetic.resume(this)
         super.onResume()
     }
 
     override fun onPause() {
+        //change theme
         Aesthetic.pause(this)
         super.onPause()
     }

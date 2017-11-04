@@ -3,7 +3,8 @@ package com.github.jokar.zhihudaily.presenter
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.event.CollectionModel
-import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
+import com.github.jokar.zhihudaily.presenter.base.ListDataViewCallBack
 import com.github.jokar.zhihudaily.ui.view.common.ListDataView
 import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
@@ -17,27 +18,7 @@ class CollectionPresenter @Inject constructor(var model: CollectionModel?,
 
     fun getCollections(@NonNull transformer: LifecycleTransformer<ArrayList<StoryEntity>>) {
 
-        model?.getCollectionsStories(transformer,
-                object : ListDataCallBack<StoryEntity> {
-                    override fun onStart() {
-                        super.onStart()
-                        view?.getDataStart()
-                    }
-
-                    override fun data(data: ArrayList<StoryEntity>) {
-                        view?.loadData(data)
-                    }
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        view?.loadComplete()
-                    }
-
-                    override fun onError(e: Throwable) {
-                        super.onError(e)
-                        view?.fail(e)
-                    }
-                })
+        model?.getCollectionsStories(transformer, ListDataViewCallBack(view))
     }
 
     override fun destroy() {

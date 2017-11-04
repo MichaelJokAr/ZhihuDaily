@@ -6,26 +6,7 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 /**
  * Created by JokAr on 2017/6/21.
  */
-interface StoryView {
-    /**
-     * 请求数据开始
-     */
-    fun getDataStart()
-
-    /**
-     * 加载数据
-     */
-    fun loadData(data:LatestStory)
-
-    /**
-     * 加载完成
-     */
-    fun loadComplete()
-
-    /**
-     * 请求/加载失败
-     */
-    fun fail(e:Throwable)
+interface StoryView : SingleDataView<LatestStory> {
 
     /**
      * 加载更多数据
@@ -35,7 +16,7 @@ interface StoryView {
     /**
      * 请求/加载更多失败
      */
-    fun loadMoreFail(e:Throwable)
+    fun loadMoreFail(e: Throwable)
 
 
 }

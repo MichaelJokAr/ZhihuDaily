@@ -91,7 +91,7 @@ class MainFragmentModel(var context: Context) {
         Observable.create(ObservableOnSubscribe<LatestStory> { e ->
 
             //先检测本地是否有
-            var latestStory: LatestStory = LatestStory(date, null, null)
+            var latestStory = LatestStory(date, null, null)
             var stories: ArrayList<StoryEntity>? = mDatabaseHelper.getStoryByDate(date)
             var topStories: ArrayList<TopStoryEntity>? = mDatabaseHelper.getTopStoryByDate(date)
 
@@ -105,7 +105,7 @@ class MainFragmentModel(var context: Context) {
                 stories.add(0, timeTitle)
 
                 //添加head
-                var head: StoryEntity = StoryEntity(-1)
+                var head = StoryEntity(-1)
                 head.dateString = context.getString(R.string.app_name)
                 stories.add(0, head)
                 latestStory.stories = stories
@@ -116,8 +116,6 @@ class MainFragmentModel(var context: Context) {
             }
 
             e.onNext(latestStory)
-
-
         })
                 .filter { t ->
                     if (t.stories != null && t.top_stories != null) {
@@ -155,13 +153,13 @@ class MainFragmentModel(var context: Context) {
                     })
 
                     //添加时间标题
-                    var timeTitle: StoryEntity = StoryEntity(0)
+                    var timeTitle = StoryEntity(0)
                     timeTitle.date = date
                     timeTitle.dateString = TODAYSNEWS
                     latestStory.stories?.add(0, timeTitle)
 
                     //添加head
-                    var head: StoryEntity = StoryEntity(-1)
+                    var head = StoryEntity(-1)
                     head.dateString = context.getString(R.string.app_name)
                     latestStory.stories?.add(0, head)
 

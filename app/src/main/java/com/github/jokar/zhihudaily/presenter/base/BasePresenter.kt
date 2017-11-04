@@ -1,4 +1,4 @@
-package com.github.jokar.zhihudaily.presenter
+package com.github.jokar.zhihudaily.presenter.base
 
 /**
  * Created by JokAr on 2017/6/15.

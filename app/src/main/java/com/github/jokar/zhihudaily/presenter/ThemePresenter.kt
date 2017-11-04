@@ -3,7 +3,8 @@ package com.github.jokar.zhihudaily.presenter
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.model.entities.theme.ThemeEntity
 import com.github.jokar.zhihudaily.model.event.ThemeModel
-import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
+import com.github.jokar.zhihudaily.presenter.base.SingleDataViewCallBack
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
@@ -13,31 +14,12 @@ import javax.inject.Inject
  */
 class ThemePresenter @Inject constructor(var model: ThemeModel?,
                                          var view: SingleDataView<ThemeEntity>?)
-    :BasePresenter{
+    : BasePresenter {
 
 
     fun getTheme(id: Int,
                  @NonNull transformer: LifecycleTransformer<ThemeEntity>) {
-        model?.getTheme(id,transformer,
-                object :SingleDataCallBack<ThemeEntity>{
-                    override fun onStart() {
-                        super.onStart()
-                        view?.getDataStart()
-                    }
-                    override fun data(data: ThemeEntity) {
-                        view?.loadData(data)
-                    }
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        view?.loadComplete()
-                    }
-
-                    override fun onError(e: Throwable) {
-                        super.onError(e)
-                        view?.fail(e)
-                    }
-                })
+        model?.getTheme(id, transformer, SingleDataViewCallBack(view))
     }
 
     override fun destroy() {

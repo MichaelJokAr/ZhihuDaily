@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION
+    compileSdkVersion COMPILE_SDK_VERSION as int
     buildToolsVersion BUILD_TOOL_SVERSION
     defaultConfig {
         applicationId APPLICATIONID

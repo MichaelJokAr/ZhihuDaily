@@ -3,6 +3,7 @@ package com.github.jokar.zhihudaily.presenter
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.model.event.SettingModel
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.view.SettingView
 import com.trello.rxlifecycle2.LifecycleTransformer
 import java.io.File

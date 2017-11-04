@@ -5,6 +5,7 @@ import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.model.entities.ThemeEntities
 import com.github.jokar.zhihudaily.model.event.MainModel
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.view.MainView
 import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
