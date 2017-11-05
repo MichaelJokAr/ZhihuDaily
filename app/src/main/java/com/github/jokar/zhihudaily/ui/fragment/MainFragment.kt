@@ -15,6 +15,7 @@ import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateStoryScrollEvent
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateToolbarTitleEvent
 import com.github.jokar.zhihudaily.presenter.MainFragmentPresenter
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.activity.StoryDetailActivity
 import com.github.jokar.zhihudaily.ui.adapter.base.LoadMoreAdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.main.StoryAdapter
@@ -69,6 +70,10 @@ class MainFragment : LazyFragment(), StoryView {
 
     override fun getView(inflater: LayoutInflater, container: ViewGroup): View {
         return createView()
+    }
+
+    override fun getPresent(): BasePresenter? {
+        return presenter
     }
 
     override fun loadData() {
@@ -237,6 +242,5 @@ class MainFragment : LazyFragment(), StoryView {
         loadView = null
         arrayList = null
         adapter = null
-        presenter?.destroy()
     }
 }

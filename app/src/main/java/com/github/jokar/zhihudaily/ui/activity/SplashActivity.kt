@@ -9,6 +9,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import org.jetbrains.anko.design.coordinatorLayout
 import org.jetbrains.anko.imageResource
@@ -51,6 +52,10 @@ class SplashActivity : BaseActivity() {
                 scaleType = ImageView.ScaleType.FIT_XY
             }.lparams(width = matchParent, height = matchParent)
         }
+    }
+
+    override fun getPresent(): BasePresenter? {
+        return null
     }
 
     override fun onWindowInitialized() {

@@ -14,6 +14,7 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateCollectionEvent
 import com.github.jokar.zhihudaily.presenter.CollectionPresenter
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.main.CollectionAdapter
 import com.github.jokar.zhihudaily.ui.layout.CommonView
@@ -56,6 +57,10 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
         initToolbar(toolbar, "我的收藏")
 
         init()
+    }
+
+    override fun getPresent(): BasePresenter? {
+        return presenter
     }
 
     fun createView() {
@@ -157,7 +162,6 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.destroy()
         arrayList = null
         adapter = null
         recyclerView = null

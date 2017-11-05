@@ -8,6 +8,7 @@ import com.afollestad.aesthetic.Aesthetic
 import com.afollestad.aesthetic.BottomNavBgMode
 import com.afollestad.aesthetic.BottomNavIconTextMode
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.layout.CommonView
 import com.github.jokar.zhihudaily.widget.ColorIndicatorView
 import com.madrapps.pikolo.listeners.SimpleColorSelectionListener
@@ -28,6 +29,7 @@ class ChameleonActivity : BaseActivity(), View.OnClickListener {
 
         init()
     }
+
 
     private fun init() {
         colorView_blue.setOnClickListener(this)
@@ -98,6 +100,10 @@ class ChameleonActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         })
+    }
+
+    override fun getPresent(): BasePresenter? {
+        return null
     }
 
     override fun onClick(p0: View?) {

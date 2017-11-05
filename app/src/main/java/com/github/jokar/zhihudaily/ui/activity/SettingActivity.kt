@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.github.jokar.zhihudaily.BuildConfig
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.presenter.SettingPresenter
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.layout.CommonView
 import com.github.jokar.zhihudaily.ui.view.SettingView
 import com.github.jokar.zhihudaily.utils.system.JToast
@@ -117,6 +118,9 @@ class SettingActivity : BaseActivity(), SettingView {
         presenter.getImageCacheSize(bindUntilEvent(ActivityEvent.DESTROY))
     }
 
+    override fun getPresent(): BasePresenter? {
+        return presenter
+    }
     /**
      * 显示图片缓存
      */
@@ -133,7 +137,6 @@ class SettingActivity : BaseActivity(), SettingView {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.destroy()
         tvClear?.setOnClickListener { null }
         tvClear = null
     }

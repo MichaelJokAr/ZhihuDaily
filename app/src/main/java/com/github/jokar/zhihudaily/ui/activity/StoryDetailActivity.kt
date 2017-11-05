@@ -9,6 +9,7 @@ import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateCollectionEvent
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.like.LikeButton
@@ -47,6 +48,9 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         init()
     }
 
+    override fun getPresent(): BasePresenter? {
+        return presenter
+    }
 
     override fun onWindowInitialized() {
         super.onWindowInitialized()
@@ -195,7 +199,6 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         super.onDestroy()
         ImageLoader.clear(this, image)
         data = null
-        presenter.destroy()
         webView?.destroy()
         loadView?.retryListener = null
         nestedScrollView?.setOnClickListener { null }

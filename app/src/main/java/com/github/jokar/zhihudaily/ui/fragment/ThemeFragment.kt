@@ -15,6 +15,7 @@ import com.github.jokar.zhihudaily.model.entities.theme.ThemeEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateThemeEvent
 import com.github.jokar.zhihudaily.presenter.ThemePresenter
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.activity.StoryDetailActivity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.main.ThemeAdapter
@@ -57,6 +58,10 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
 
     override fun getView(inflater: LayoutInflater, container: ViewGroup): View {
         return createView()
+    }
+
+    override fun getPresent(): BasePresenter? {
+        return presenter
     }
 
     override fun initViews(view: View) {
@@ -146,7 +151,6 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        presenter.destroy()
 
         adapter = null
         themeEntity = null

@@ -19,6 +19,7 @@ import com.github.jokar.zhihudaily.model.rxbus.event.UpdateStoryScrollEvent
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateThemeEvent
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateToolbarTitleEvent
 import com.github.jokar.zhihudaily.presenter.MainPresenter
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.adapter.main.MainAdapter
 import com.github.jokar.zhihudaily.ui.adapter.viewpager.ViewPagerAdapter
 import com.github.jokar.zhihudaily.ui.fragment.MainFragment
@@ -65,6 +66,9 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         initView()
     }
 
+    override fun getPresent(): BasePresenter? {
+        return presenter
+    }
     /**
      * default theme
      */

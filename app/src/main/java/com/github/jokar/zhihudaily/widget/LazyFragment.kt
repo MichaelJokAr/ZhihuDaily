@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.trello.rxlifecycle2.components.support.RxFragment
 
 /**
@@ -22,6 +23,8 @@ abstract class LazyFragment : RxFragment() {
     abstract fun getView(inflater: LayoutInflater, container: ViewGroup): View
 
     abstract fun initViews(view: View)
+
+    abstract fun getPresent(): BasePresenter?
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,5 +53,10 @@ abstract class LazyFragment : RxFragment() {
         if (!isLoadData) {
             isLoadData = true
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        getPresent()?.destroy()
     }
 }

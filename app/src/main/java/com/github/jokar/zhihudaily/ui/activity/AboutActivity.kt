@@ -5,6 +5,7 @@ import android.support.design.widget.AppBarLayout
 import android.view.View
 import android.widget.LinearLayout
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import kotlinx.android.synthetic.main.common_toolbar.*
 import mehdi.sakout.aboutpage.AboutPage
 import org.jetbrains.anko.design.coordinatorLayout
@@ -26,7 +27,11 @@ class AboutActivity : BaseActivity() {
     }
 
 
-    fun createView() {
+    override fun getPresent(): BasePresenter? {
+        return null
+    }
+
+    private fun createView() {
         coordinatorLayout {
             include<View>(R.layout.common_toolbar)
             linearLayout = linearLayout {
@@ -37,7 +42,7 @@ class AboutActivity : BaseActivity() {
         }
     }
 
-    fun getPage(): View {
+    private fun getPage(): View {
         return AboutPage(this)
                 .isRTL(false)
                 .setImage(R.mipmap.ic_launcher)//图片

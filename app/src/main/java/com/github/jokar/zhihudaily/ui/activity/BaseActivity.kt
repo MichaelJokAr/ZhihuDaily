@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import com.afollestad.aesthetic.Aesthetic
+import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
@@ -12,6 +13,8 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
  */
 abstract class BaseActivity : RxAppCompatActivity() {
     private var isFirstFocused = true
+
+    abstract fun getPresent():BasePresenter?
 
     fun initToolbar(toolbar: Toolbar?, title: String) {
         toolbar?.title = title
@@ -52,5 +55,8 @@ abstract class BaseActivity : RxAppCompatActivity() {
         super.onPause()
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        getPresent()?.destroy()
+    }
 }
