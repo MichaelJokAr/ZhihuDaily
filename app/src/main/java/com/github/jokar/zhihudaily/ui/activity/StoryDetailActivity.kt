@@ -14,7 +14,6 @@ import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.like.LikeButton
 import com.like.OnLikeListener
-import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_story_detail.*
 import kotlinx.android.synthetic.main.common_load.*
@@ -58,7 +57,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
     }
 
     private fun getData() {
-        presenter.getStoryDetail(id, bindUntilEvent(ActivityEvent.DESTROY))
+        presenter.getStoryDetail(id)
     }
 
     fun init() {
@@ -98,7 +97,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
      * 更新数据
      */
     fun update() {
-        presenter.updateStory(data!!, bindUntilEvent(ActivityEvent.DESTROY))
+        presenter.updateStory(data!!)
     }
 
     override fun onResume() {

@@ -1,5 +1,6 @@
 package com.github.jokar.zhihudaily.ui.activity
 
+import android.arch.lifecycle.Lifecycle
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -22,7 +23,6 @@ import com.github.jokar.zhihudaily.ui.view.common.ListDataView
 import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LoadLayout
 import com.github.jokar.zhihudaily.widget.loadLayout
-import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.common_toolbar.*
 import org.jetbrains.anko.backgroundColor
@@ -104,9 +104,8 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
         SwipeRefreshLayoutUtil.setColor(swipeRefreshLayout, CommonView.getColorSchemeResources())
         //详细页面修改收藏操作
         RxBus.getInstance()
-                .toMainThreadObservable(bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe {
-                    event ->
+                .toMainThreadObservable(this, Lifecycle.Event.ON_DESTROY)
+                .subscribe { event ->
                     if (event is UpdateCollectionEvent) {
                         SwipeRefreshLayoutUtil.setRefreshing(swipeRefreshLayout, true)
                         getData()
@@ -115,7 +114,7 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
     }
 
     fun getData() {
-        presenter.getCollections(bindUntilEvent(ActivityEvent.DESTROY))
+        presenter.getCollections()
     }
 
     override fun getDataStart() {
@@ -129,7 +128,8 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
     override fun loadData(data: ArrayList<StoryEntity>) {
         if (adapter == null) {
             arrayList = data.clone() as ArrayList<StoryEntity>
-            adapter = CollectionAdapter(this, bindUntilEvent(ActivityEvent.DESTROY), arrayList)
+            adapter = CollectionAdapter(this, Lifecycle.Event.ON_DESTROY,
+                    arrayList)
             recyclerView?.adapter = adapter
             adapter?.clickListener = object : AdapterItemClickListener {
                 override fun itemClickListener(position: Int) {
@@ -141,7 +141,7 @@ class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
             }
         } else {
             arrayList?.clear()
-            arrayList?.addAll(data.clone() as ArrayList<StoryEntity>)
+            arrayList?.addAll(data.clone() as Collection<StoryEntity>)
             adapter?.notifyDataSetChanged()
         }
 

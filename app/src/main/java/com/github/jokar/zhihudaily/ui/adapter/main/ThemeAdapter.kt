@@ -1,7 +1,10 @@
 package com.github.jokar.zhihudaily.ui.adapter.main
 
+import android.arch.lifecycle.Lifecycle
 import android.content.Context
 import android.support.percent.PercentFrameLayout
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +18,14 @@ import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
 import com.github.jokar.zhihudaily.ui.layout.ThemeAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.trello.rxlifecycle2.LifecycleTransformer
 
 /**
  * Created by JokAr on 2017/7/4.
  */
-class ThemeAdapter(var context: Context,
-                   transformer: LifecycleTransformer<Any>,
+class ThemeAdapter(var fragment: Fragment,
+                   event: Lifecycle.Event,
                    var data: ThemeEntity)
-    : BaseRecyclerAdapter<BaseViewHolder>(context, transformer) {
+    : BaseRecyclerAdapter<BaseViewHolder>(fragment.context, fragment, event) {
 
     override fun getItemCount(): Int {
         return data.stories.size + 2
@@ -33,16 +35,16 @@ class ThemeAdapter(var context: Context,
         when (viewType) {
         //head
             0 ->
-                return HeadHolder(ThemeAdapterItemView.createHeadItemView(context), context)
+                return HeadHolder(ThemeAdapterItemView.createHeadItemView(fragment.context), fragment.context)
         //编辑
             1 ->
-                return EditorHolder(ThemeAdapterItemView.createEditorItemView(context), context)
+                return EditorHolder(ThemeAdapterItemView.createEditorItemView(fragment.context), fragment.context)
         //有图片
             2 ->
-                return ViewHolderWithImage(StoryAdapterItemView.createStoryItemView(context), context)
+                return ViewHolderWithImage(StoryAdapterItemView.createStoryItemView(fragment.context), fragment.context)
         //无图片
             3 ->
-                return ViewHolder(ThemeAdapterItemView.createStoryItemView(context), context)
+                return ViewHolder(ThemeAdapterItemView.createStoryItemView(fragment.context), fragment.context)
         }
         return null
     }
@@ -94,7 +96,7 @@ class ThemeAdapter(var context: Context,
     override fun onViewRecycled(holder: BaseViewHolder?) {
         super.onViewRecycled(holder)
         if (holder is ViewHolderWithImage) {
-            ImageLoader.clear(context, holder.image)
+            ImageLoader.clear(fragment.context, holder.image)
         }
     }
 
@@ -108,7 +110,7 @@ class ThemeAdapter(var context: Context,
     }
 
     fun loadImage(imageView: ImageView, url: String) {
-        ImageLoader.loadImage(context,
+        ImageLoader.loadImage(fragment.context,
                 url,
                 R.mipmap.image_small_default,
                 imageView)
@@ -122,7 +124,7 @@ class ThemeAdapter(var context: Context,
      * 编辑
      */
     private fun setEditorData(holder: EditorHolder) {
-        var adapter: EditorAdapter = EditorAdapter(context, transformer, data.editors)
+        var adapter = EditorAdapter(fragment.context, lifecycle, event, data.editors)
         holder.recyclerView.adapter = adapter
         adapter.clickListener = object : AdapterItemClickListener {
             override fun itemClickListener(position: Int) {

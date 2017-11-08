@@ -1,16 +1,16 @@
 package com.github.jokar.zhihudaily.widget
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.jokar.zhihudaily.presenter.base.BasePresenter
-import com.trello.rxlifecycle2.components.support.RxFragment
 
 /**
  * Created by JokAr on 2017/6/21.
  */
-abstract class LazyFragment : RxFragment() {
+abstract class LazyFragment : Fragment() {
     /**
      * 判断是否已经初始化
      */

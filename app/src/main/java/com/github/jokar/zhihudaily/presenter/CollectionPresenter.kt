@@ -1,12 +1,10 @@
 package com.github.jokar.zhihudaily.presenter
 
-import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.event.CollectionModel
 import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.presenter.base.ListDataViewCallBack
 import com.github.jokar.zhihudaily.ui.view.common.ListDataView
-import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
 
 /**
@@ -16,9 +14,9 @@ class CollectionPresenter @Inject constructor(var model: CollectionModel?,
                                               var view: ListDataView<StoryEntity>?) : BasePresenter {
 
 
-    fun getCollections(@NonNull transformer: LifecycleTransformer<ArrayList<StoryEntity>>) {
+    fun getCollections() {
 
-        model?.getCollectionsStories(transformer, ListDataViewCallBack(view))
+        model?.getCollectionsStories(ListDataViewCallBack(view))
     }
 
     override fun destroy() {

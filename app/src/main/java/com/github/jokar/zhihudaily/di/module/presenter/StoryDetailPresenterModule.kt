@@ -15,7 +15,7 @@ class StoryDetailPresenterModule {
 
     @Provides
     fun modelProvider(activity: StoryDetailActivity): StoryDetailModel {
-        return StoryDetailModel(activity.applicationContext)
+        return StoryDetailModel(activity)
     }
 
     @Provides

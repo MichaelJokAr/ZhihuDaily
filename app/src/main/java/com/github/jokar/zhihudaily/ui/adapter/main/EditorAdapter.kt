@@ -1,5 +1,7 @@
 package com.github.jokar.zhihudaily.ui.adapter.main
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
@@ -11,15 +13,15 @@ import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.layout.EditorAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.widget.CircleImageView
-import com.trello.rxlifecycle2.LifecycleTransformer
 
 /**
  * Created by JokAr on 2017/7/4.
  */
 class EditorAdapter(var context: Context,
-                    transformer: LifecycleTransformer<Any>,
-                    var editors: ArrayList<EditorEntity>?)
-    : BaseRecyclerAdapter<EditorAdapter.ViewHolder>(context, transformer) {
+                    lifecycle: LifecycleOwner,
+                    event: Lifecycle.Event,
+                    private var editors: ArrayList<EditorEntity>?)
+    : BaseRecyclerAdapter<EditorAdapter.ViewHolder>(context, lifecycle, event) {
     override fun getItemCount(): Int {
         return editors?.size ?: 0
     }

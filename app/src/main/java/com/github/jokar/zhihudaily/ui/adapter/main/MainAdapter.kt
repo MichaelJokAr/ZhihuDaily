@@ -1,7 +1,10 @@
 package com.github.jokar.zhihudaily.ui.adapter.main
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Color
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -11,30 +14,31 @@ import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.layout.MainAdapterItemView
 import com.jakewharton.rxbinding2.view.RxView
-import com.trello.rxlifecycle2.LifecycleTransformer
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import java.util.concurrent.TimeUnit
 
 /**
  * Created by JokAr on 2017/6/19.
  */
-class MainAdapter(var context: Context, transformer: LifecycleTransformer<Any>,
+class MainAdapter(var activity: AppCompatActivity,
+                  event: Lifecycle.Event,
                   var arrayList: ArrayList<MainMenu>)
-    : BaseRecyclerAdapter<BaseViewHolder>(context, transformer) {
+    : BaseRecyclerAdapter<BaseViewHolder>(activity, activity, event) {
 
     var adapterClickListener: AdapterClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder? {
         when (viewType) {
-            0 -> return HomeHolder(MainAdapterItemView.createHomeItemView(context),
-                    context, true)
-            1 -> return ViewHolder(MainAdapterItemView.createMainItemView(context),
-                    context, true)
-            2 -> return HomeHolder(MainAdapterItemView.createHomeItemView(context),
-                    context, false)
-            3 -> return ViewHolder(MainAdapterItemView.createMainItemView(context),
-                    context, false)
-            4 -> return HeadHolder(inflater?.inflate(R.layout.item_main_head,parent,
-                    false)!!, context)
+            0 -> return HomeHolder(MainAdapterItemView.createHomeItemView(activity),
+                    activity, true)
+            1 -> return ViewHolder(MainAdapterItemView.createMainItemView(activity),
+                    activity, true)
+            2 -> return HomeHolder(MainAdapterItemView.createHomeItemView(activity),
+                    activity, false)
+            3 -> return ViewHolder(MainAdapterItemView.createMainItemView(activity),
+                    activity, false)
+            4 -> return HeadHolder(inflater?.inflate(R.layout.item_main_head, parent,
+                    false)!!, activity)
         }
         return null
     }
@@ -59,7 +63,7 @@ class MainAdapter(var context: Context, transformer: LifecycleTransformer<Any>,
             }
 
             RxView.clicks(viewHolder.itemView)
-                    .compose(transformer)
+                    .bindUntilEvent(lifecycle, event)
                     .throttleFirst(1, TimeUnit.SECONDS)
                     .subscribe({
                         adapterClickListener?.itemClickListener(position)
@@ -67,7 +71,7 @@ class MainAdapter(var context: Context, transformer: LifecycleTransformer<Any>,
         } else {
             var holder: HeadHolder = viewHolder as HeadHolder
             RxView.clicks(holder.tvCollection)
-                    .compose(transformer)
+                    .bindUntilEvent(lifecycle, event)
                     .throttleFirst(1, TimeUnit.SECONDS)
                     .subscribe({
                         adapterClickListener?.collectionClick()

@@ -1,5 +1,6 @@
 package com.github.jokar.zhihudaily.presenter
 
+import android.arch.lifecycle.LifecycleOwner
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.model.event.SettingModel
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
@@ -16,16 +17,16 @@ class SettingPresenter @Inject constructor(var model: SettingModel?,
                                            var view: SettingView?) : BasePresenter {
 
 
-    fun getImageCacheSize(@NonNull transformer: LifecycleTransformer<File>) {
-        model?.getImageCacheSize(transformer, object : SingleDataCallBack<String> {
+    fun getImageCacheSize(@NonNull lifecycle: LifecycleOwner) {
+        model?.getImageCacheSize(lifecycle, object : SingleDataCallBack<String> {
             override fun data(data: String) {
                 view?.showImageCacheSize(data)
             }
         })
     }
 
-    fun clearImageCache(@NonNull transformer: LifecycleTransformer<Any>) {
-        model?.clearImageCache(transformer, object : SingleDataCallBack<String> {
+    fun clearImageCache() {
+        model?.clearImageCache(object : SingleDataCallBack<String> {
             override fun data(data: String) {
                 view?.showClearSuccess()
                 view?.showImageCacheSize(data)

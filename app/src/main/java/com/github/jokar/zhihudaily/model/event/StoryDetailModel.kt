@@ -1,26 +1,28 @@
 package com.github.jokar.zhihudaily.model.event
 
+import android.arch.lifecycle.Lifecycle
 import android.content.Context
 import android.support.annotation.NonNull
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.component.network.DaggerNewsComponent
 import com.github.jokar.zhihudaily.di.component.room.DaggerAppDatabaseComponent
 import com.github.jokar.zhihudaily.di.module.network.NewsModule
 import com.github.jokar.zhihudaily.di.module.room.AppDatabaseModule
-import com.github.jokar.zhihudaily.model.entities.story.StoryDetail
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.event.callback.SingleDataCallBack
 import com.github.jokar.zhihudaily.model.network.result.SingleResourceObserver
 import com.github.jokar.zhihudaily.model.network.services.NewsServices
 import com.github.jokar.zhihudaily.room.AppDatabaseHelper
 import com.github.jokar.zhihudaily.utils.HtmlUtil
+import com.github.jokar.zhihudaily.utils.system.JLog
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.LifecycleTransformer
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -28,7 +30,7 @@ import javax.inject.Inject
 /**
  * Created by JokAr on 2017/6/25.
  */
-class StoryDetailModel(var context: Context) {
+class StoryDetailModel(var activity: AppCompatActivity) {
 
     @Inject
     lateinit var retrofit: Retrofit
@@ -42,7 +44,7 @@ class StoryDetailModel(var context: Context) {
     init {
 
         val component = DaggerAppDatabaseComponent.builder()
-                .appDatabaseModule(AppDatabaseModule(context))
+                .appDatabaseModule(AppDatabaseModule(activity.applicationContext))
                 .build()
 
         DaggerNewsComponent
@@ -55,14 +57,11 @@ class StoryDetailModel(var context: Context) {
     }
 
     fun getStoryDetail(id: Int,
-                       @NonNull transformer: LifecycleTransformer<StoryDetail>,
                        @NonNull callBack: SingleDataCallBack<StoryEntity>) {
 
-        checkNotNull(transformer)
         checkNotNull(callBack)
 
-        Observable.create(ObservableOnSubscribe<StoryEntity> {
-            e ->
+        Observable.create(ObservableOnSubscribe<StoryEntity> { e ->
             var story = mDatabaseHelper.getStory(id)
             //判断本地是否有
             if (story == null) {
@@ -72,8 +71,7 @@ class StoryDetailModel(var context: Context) {
             }
             e.onNext(story)
         })
-                .filter {
-                    story ->
+                .filter { story ->
                     //判断本地是否有详细数据
                     if (!TextUtils.isEmpty(story.body)) {
                         callBack.data(story)
@@ -84,7 +82,10 @@ class StoryDetailModel(var context: Context) {
                 }
                 //没有从网络获取
                 .flatMap { service.getNews(id) }
-                .compose(transformer)
+                .doOnDispose {
+                    JLog.d("getStoryDetail dispose")
+                }
+                .bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY)
                 .compose(SchedulersUtil.applySchedulersIO())
                 .map { (body, image_source, title, image, share_url, js, images, _, css) ->
                     //添加格式到body
@@ -111,9 +112,9 @@ class StoryDetailModel(var context: Context) {
     /**
      * 更新story
      */
-    fun updateStory(story: StoryEntity, transformer: LifecycleTransformer<Any>) {
+    fun updateStory(story: StoryEntity) {
         Observable.just(story)
-                .compose(transformer)
+                .bindUntilEvent(activity,Lifecycle.Event.ON_DESTROY)
                 .subscribeOn(Schedulers.newThread())
                 .unsubscribeOn(Schedulers.newThread())
                 .subscribe { mDatabaseHelper.updateStory(story) }

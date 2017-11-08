@@ -1,8 +1,10 @@
 package com.github.jokar.zhihudaily.utils.rxjava
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
 import android.view.View
 import com.jakewharton.rxbinding2.view.RxView
-import com.trello.rxlifecycle2.LifecycleTransformer
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.functions.Consumer
 import java.util.concurrent.TimeUnit
 
@@ -11,11 +13,13 @@ import java.util.concurrent.TimeUnit
  */
 object ViewUtils {
 
-    fun viewClick(view:View,transformer: LifecycleTransformer<Any>,
-                  consumer: Consumer<Any>){
+    fun viewClick(view: View,
+                  lifecycle: LifecycleOwner,
+                  event: Lifecycle.Event,
+                  consumer: Consumer<Any>) {
         RxView.clicks(view)
-                .compose(transformer)
-                .throttleFirst(1,TimeUnit.SECONDS)
+                .bindUntilEvent(lifecycle, event)
+                .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(consumer)
     }
 }

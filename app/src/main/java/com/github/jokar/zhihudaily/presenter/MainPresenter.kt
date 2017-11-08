@@ -1,13 +1,12 @@
 package com.github.jokar.zhihudaily.presenter
 
+import android.arch.lifecycle.LifecycleOwner
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.model.entities.MainMenu
-import com.github.jokar.zhihudaily.model.entities.ThemeEntities
 import com.github.jokar.zhihudaily.model.event.MainModel
 import com.github.jokar.zhihudaily.model.event.callback.ListDataCallBack
 import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.view.MainView
-import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
 
 /**
@@ -16,9 +15,9 @@ import javax.inject.Inject
 class MainPresenter @Inject constructor(var mainModel: MainModel?, var view: MainView?)
     : BasePresenter {
 
-    fun getThemes(@NonNull transformer: LifecycleTransformer<ThemeEntities>) {
+    fun getThemes(@NonNull lifecycle: LifecycleOwner) {
 
-        mainModel?.getThemes(transformer,
+        mainModel?.getThemes(lifecycle,
                 object : ListDataCallBack<MainMenu> {
                     override fun data(data: ArrayList<MainMenu>) {
                         view?.loadThemes(data)

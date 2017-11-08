@@ -42,31 +42,7 @@ class MainModelTest {
 
     @Test
     fun getThemes() {
-        var latch = CountDownLatch(1)
-        model.getThemes(activity.bindUntilEvent(ActivityEvent.DESTROY),
-                object : ListDataCallBack<MainMenu> {
-                    override fun onStart() {
-                        super.onStart()
-                        Log.d("test", "onStart")
-                    }
 
-                    override fun onComplete() {
-                        super.onComplete()
-                    }
-
-                    override fun data(data: ArrayList<MainMenu>) {
-                        Log.d("test", data.toString())
-                        latch.countDown()
-                    }
-
-                    override fun onError(e: Throwable) {
-                        super.onError(e)
-                        e.printStackTrace()
-                        latch.countDown()
-                    }
-                })
-
-        latch.await()
 
     }
 

@@ -1,5 +1,7 @@
 package com.github.jokar.zhihudaily.ui.adapter.base
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,7 +13,7 @@ import android.widget.TextView
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.widget.recyclerView.RecyclerOnScrollListener
 import com.jakewharton.rxbinding2.view.RxView
-import com.trello.rxlifecycle2.LifecycleTransformer
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import java.util.concurrent.TimeUnit
 
 
@@ -20,7 +22,8 @@ import java.util.concurrent.TimeUnit
  */
 abstract class LoadMoreAdapter<T>(var context: Context,
                                   var data: ArrayList<T>,
-                                  var transformer: LifecycleTransformer<Any>)
+                                  var lifecycle: LifecycleOwner,
+                                  var event: Lifecycle.Event)
     : RecyclerView.Adapter<BaseViewHolder>() {
     val TYPE_FOOT_VIEW: Int = 100
 
@@ -97,7 +100,7 @@ abstract class LoadMoreAdapter<T>(var context: Context,
     final override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
         if (getItemViewType(position) == TYPE_FOOT_VIEW) {
             RxView.clicks(mFootViewHolder?.llFoot!!)
-                    .compose<Any>(transformer)
+                    .bindUntilEvent(lifecycle, event)
                     .throttleFirst(1, TimeUnit.SECONDS)
                     .subscribe { _ ->
                         if (itemClickListener != null) {

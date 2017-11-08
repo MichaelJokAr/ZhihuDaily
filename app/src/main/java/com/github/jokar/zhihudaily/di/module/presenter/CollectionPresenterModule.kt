@@ -15,7 +15,7 @@ class CollectionPresenterModule {
 
     @Provides
     fun modelProvider(activity: CollectionActivity): CollectionModel {
-        return CollectionModel(activity.applicationContext)
+        return CollectionModel(activity)
     }
 
     @Provides

@@ -15,7 +15,7 @@ class SettingPresenterModule {
 
     @Provides
     fun modelProvider(activity: SettingActivity): SettingModel {
-        return SettingModel(activity.applicationContext)
+        return SettingModel(activity)
     }
 
     @Provides

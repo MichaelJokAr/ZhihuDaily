@@ -1,5 +1,7 @@
 package com.github.jokar.zhihudaily.ui.adapter.viewpager
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.support.v4.view.PagerAdapter
 import android.view.View
@@ -10,8 +12,6 @@ import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
-import com.github.jokar.zhihudaily.utils.system.JLog
-import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.functions.Consumer
 
 
@@ -20,7 +20,8 @@ import io.reactivex.functions.Consumer
  */
 class TopStoryAdapter(var context: Context,
                       var viewList: ArrayList<View>,
-                      var transformer: LifecycleTransformer<Any>,
+                      val lifecycle: LifecycleOwner,
+                      val event: Lifecycle.Event,
                       var topStories: ArrayList<TopStoryEntity>) : PagerAdapter() {
     var itemClickListener: AdapterItemClickListener? = null
 
@@ -32,7 +33,7 @@ class TopStoryAdapter(var context: Context,
                 topStories[position].image,
                 R.mipmap.image_small_default,
                 image)
-        ViewUtils.viewClick(image, transformer,
+        ViewUtils.viewClick(image, lifecycle, event,
                 Consumer<Any> {
                     itemClickListener?.itemClickListener(position)
                 })

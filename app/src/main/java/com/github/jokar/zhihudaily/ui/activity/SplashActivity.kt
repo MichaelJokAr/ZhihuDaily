@@ -40,8 +40,7 @@ class SplashActivity : BaseActivity() {
         // 隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         // 隐藏状态栏
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         createView()
     }
 

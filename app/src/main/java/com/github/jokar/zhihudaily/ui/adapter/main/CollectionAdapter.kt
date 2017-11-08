@@ -1,7 +1,8 @@
 package com.github.jokar.zhihudaily.ui.adapter.main
 
+import android.arch.lifecycle.Lifecycle
 import android.content.Context
-import android.support.percent.PercentFrameLayout
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -13,22 +14,21 @@ import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
 import com.github.jokar.zhihudaily.ui.layout.ThemeAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.trello.rxlifecycle2.LifecycleTransformer
 
 /**
  * Created by JokAr on 2017/7/4.
  */
-class CollectionAdapter(var context: Context,
-                        transformer: LifecycleTransformer<Any>,
-                        var arrayList: ArrayList<StoryEntity>?)
-    : BaseRecyclerAdapter<BaseViewHolder>(context, transformer) {
+class CollectionAdapter(var activity: AppCompatActivity,
+                        event: Lifecycle.Event,
+                        private var arrayList: ArrayList<StoryEntity>?)
+    : BaseRecyclerAdapter<BaseViewHolder>(activity, activity, event) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder? {
         when (viewType) {
             0 ->
-                return ViewHolderWithImage(StoryAdapterItemView.createStoryItemView(context), context)
+                return ViewHolderWithImage(StoryAdapterItemView.createStoryItemView(activity), activity)
             1 ->
-                ViewHolder(ThemeAdapterItemView.createStoryItemView(context), context)
+                ViewHolder(ThemeAdapterItemView.createStoryItemView(activity), activity)
         }
         return null
     }
@@ -45,7 +45,7 @@ class CollectionAdapter(var context: Context,
                 //有图片
                 var holder: ViewHolderWithImage = viewHolder as ViewHolderWithImage
                 loadImage(holder.image, storyEntity?.images!![0])
-                setTitle(holder.tvTitle, storyEntity?.title)
+                setTitle(holder.tvTitle, storyEntity.title)
             }
             1 -> {
                 //无图片
@@ -58,21 +58,21 @@ class CollectionAdapter(var context: Context,
     override fun getItemViewType(position: Int): Int {
         val storyEntity = arrayList?.get(position)
 
-        if (storyEntity?.images != null && storyEntity?.images!!.isNotEmpty()) {
+        if (storyEntity?.images != null && storyEntity.images!!.isNotEmpty()) {
             return 0
         }
         return 1
     }
 
 
-    fun loadImage(imageView: ImageView, url: String) {
-        ImageLoader.loadImage(context,
+    private fun loadImage(imageView: ImageView, url: String) {
+        ImageLoader.loadImage(activity,
                 url,
                 R.mipmap.image_small_default,
                 imageView)
     }
 
-    fun setTitle(tvTitle: TextView, title: String?) {
+    private fun setTitle(tvTitle: TextView, title: String?) {
         tvTitle.text = title ?: ""
     }
 
@@ -84,7 +84,6 @@ class CollectionAdapter(var context: Context,
         : BaseViewHolder(itemView, context, false) {
         var tvTitle: TextView = find(R.id.text)
         var image: ImageView = find(R.id.image)
-        var percentFrameLayout: PercentFrameLayout = find(R.id.percentFrameLayout)
     }
 
     /**

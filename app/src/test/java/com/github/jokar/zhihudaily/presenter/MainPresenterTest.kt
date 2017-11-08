@@ -58,8 +58,7 @@ class MainPresenterTest {
 
     @Test
     fun getThemes() {
-        presenter?.getThemes(controller?.get()?.bindUntilEvent(ActivityEvent.DESTROY)!!)
-        Log.d("test",controller?.get()?.menuList.toString())
+
     }
 
     @Test

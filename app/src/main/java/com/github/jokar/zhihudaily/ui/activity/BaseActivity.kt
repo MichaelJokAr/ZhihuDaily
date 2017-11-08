@@ -2,19 +2,19 @@ package com.github.jokar.zhihudaily.ui.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import com.afollestad.aesthetic.Aesthetic
 import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.utils.system.JLog
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
 /**
  * Created by JokAr on 2017/6/14.
  */
-abstract class BaseActivity : RxAppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
     private var isFirstFocused = true
 
-    abstract fun getPresent():BasePresenter?
+    abstract fun getPresent(): BasePresenter?
 
     fun initToolbar(toolbar: Toolbar?, title: String) {
         toolbar?.title = title

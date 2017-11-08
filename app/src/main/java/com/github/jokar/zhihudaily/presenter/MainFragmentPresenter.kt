@@ -1,6 +1,7 @@
 package com.github.jokar.zhihudaily.presenter
 
 import android.support.annotation.NonNull
+import android.support.v4.app.Fragment
 import com.github.jokar.zhihudaily.model.entities.story.LatestStory
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.event.MainFragmentModel
@@ -17,14 +18,13 @@ import javax.inject.Inject
 class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
                                                 var view: StoryView?) : BasePresenter {
 
-    fun getLatestStory(@NonNull transformer: LifecycleTransformer<LatestStory>) {
-        model?.getLatestStory(transformer, SingleDataViewCallBack(view))
+    fun getLatestStory() {
+        model?.getLatestStory( SingleDataViewCallBack(view))
     }
 
-    fun getNextDayStory(date: Long,
-                        @NonNull transformer: LifecycleTransformer<LatestStory>) {
+    fun getNextDayStory(date: Long) {
 
-        model?.getBeforeStory(date, transformer,
+        model?.getBeforeStory(date,
                 object : ListDataCallBack<StoryEntity> {
 
                     override fun data(data: ArrayList<StoryEntity>) {
@@ -42,9 +42,8 @@ class MainFragmentPresenter @Inject constructor(var model: MainFragmentModel?,
     /**
      * 更新已读
      */
-    fun updateStory(story: StoryEntity,
-                    @NonNull transformer: LifecycleTransformer<Any>) {
-        model?.updateStory(story, transformer)
+    fun updateStory(story: StoryEntity) {
+        model?.updateStory(story)
     }
 
     override fun destroy() {

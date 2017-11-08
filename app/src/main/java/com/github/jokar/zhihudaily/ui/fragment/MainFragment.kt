@@ -1,6 +1,7 @@
 package com.github.jokar.zhihudaily.ui.fragment
 
 import android.app.Activity
+import android.arch.lifecycle.Lifecycle
 import android.content.Intent
 import android.graphics.Color
 import android.support.v4.widget.SwipeRefreshLayout
@@ -25,7 +26,6 @@ import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LazyFragment
 import com.github.jokar.zhihudaily.widget.LoadLayout
 import com.github.jokar.zhihudaily.widget.loadLayout
-import com.trello.rxlifecycle2.android.FragmentEvent
 import dagger.android.support.AndroidSupportInjection
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.linearLayout
@@ -59,9 +59,8 @@ class MainFragment : LazyFragment(), StoryView {
     override fun initViews(view: View) {
 
         RxBus.getInstance()
-                .toMainThreadObservable(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .subscribe {
-                    event ->
+                .toMainThreadObservable(this, Lifecycle.Event.ON_DESTROY)
+                .subscribe { event ->
                     if (event is UpdateStoryScrollEvent) {
                         recyclerView?.scrollToPosition(0)
                     }
@@ -82,7 +81,7 @@ class MainFragment : LazyFragment(), StoryView {
     }
 
     private fun getData() {
-        presenter.getLatestStory(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+        presenter.getLatestStory()
     }
 
     /**
@@ -104,7 +103,8 @@ class MainFragment : LazyFragment(), StoryView {
         activity.runOnUiThread {
             if (adapter == null) {
                 arrayList = data.stories?.clone() as ArrayList<StoryEntity>
-                adapter = StoryAdapter(context, arrayList!!, bindUntilEvent(FragmentEvent.DESTROY_VIEW),
+                adapter = StoryAdapter(context, arrayList!!,
+                        this, Lifecycle.Event.ON_DESTROY,
                         data.top_stories!!)
                 recyclerView?.adapter = adapter
                 adapter?.headClickListener = object : StoryAdapter.HeadClickListener {
@@ -126,7 +126,7 @@ class MainFragment : LazyFragment(), StoryView {
                         //更新已读
                         if (arrayList!![position].read == 0) {
                             arrayList!![position].read = 1
-                            presenter.updateStory(arrayList!![position], bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                            presenter.updateStory(arrayList!![position])
                             adapter?.notifyItemChanged(position)
                         }
                         //跳转详情页
@@ -202,7 +202,7 @@ class MainFragment : LazyFragment(), StoryView {
      */
     fun getMoreData() {
 
-        presenter?.getNextDayStory(arrayList?.get(arrayList?.size!! - 1)?.date!!, bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+        presenter?.getNextDayStory(arrayList?.get(arrayList?.size!! - 1)?.date!!)
     }
 
     /**

@@ -1,7 +1,8 @@
 package com.github.jokar.zhihudaily.model.event
 
-import android.content.Context
+import android.arch.lifecycle.Lifecycle
 import android.support.annotation.NonNull
+import android.support.v4.app.Fragment
 import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.component.network.DaggerLatestAndBeforeComponent
@@ -22,7 +23,7 @@ import com.github.jokar.zhihudaily.room.AppDatabaseHelper
 import com.github.jokar.zhihudaily.utils.system.DateUtils
 import com.github.jokar.zhihudaily.utils.system.JLog
 import com.sunagy.mazcloud.utlis.rxjava.SchedulersUtil
-import com.trello.rxlifecycle2.LifecycleTransformer
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +36,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by JokAr on 2017/6/20.
  */
-class MainFragmentModel(var context: Context) {
+class MainFragmentModel(var fragment: Fragment) {
 
     val TODAYSNEWS = "今日热闻"
     @Inject
@@ -53,7 +54,7 @@ class MainFragmentModel(var context: Context) {
 
     init {
         val component = DaggerAppDatabaseComponent.builder()
-                .appDatabaseModule(AppDatabaseModule(context))
+                .appDatabaseModule(AppDatabaseModule(fragment.context))
                 .build()
 
         DaggerLatestAndBeforeComponent.builder()
@@ -68,10 +69,8 @@ class MainFragmentModel(var context: Context) {
     /**
      * 获取最新story
      */
-    fun getLatestStory(@NonNull transformer: LifecycleTransformer<LatestStory>,
-                       @NonNull callBack: SingleDataCallBack<LatestStory>) {
+    fun getLatestStory(@NonNull callBack: SingleDataCallBack<LatestStory>) {
 
-        checkNotNull(transformer)
         checkNotNull(callBack)
 
         var calendar = Calendar.getInstance()
@@ -106,7 +105,7 @@ class MainFragmentModel(var context: Context) {
 
                 //添加head
                 var head = StoryEntity(-1)
-                head.dateString = context.getString(R.string.app_name)
+                head.dateString = fragment.context.getString(R.string.app_name)
                 stories.add(0, head)
                 latestStory.stories = stories
             }
@@ -131,7 +130,7 @@ class MainFragmentModel(var context: Context) {
                 .flatMap {
                     latestService.getStories()
                 }
-                .compose(transformer)
+                .bindUntilEvent(fragment, Lifecycle.Event.ON_DESTROY)
                 .compose(SchedulersUtil.applySchedulersIO())
                 .map { latestStory ->
                     //遍历，赋值时间
@@ -160,7 +159,7 @@ class MainFragmentModel(var context: Context) {
 
                     //添加head
                     var head = StoryEntity(-1)
-                    head.dateString = context.getString(R.string.app_name)
+                    head.dateString = fragment.context.getString(R.string.app_name)
                     latestStory.stories?.add(0, head)
 
                     latestStory
@@ -173,10 +172,8 @@ class MainFragmentModel(var context: Context) {
      * 获取过往的story
      */
     fun getBeforeStory(date: Long,
-                       @NonNull transformer: LifecycleTransformer<LatestStory>,
                        @NonNull callBack: ListDataCallBack<StoryEntity>) {
 
-        checkNotNull(transformer)
         checkNotNull(callBack)
 
         Observable.create(ObservableOnSubscribe<ArrayList<StoryEntity>> { e ->
@@ -210,7 +207,7 @@ class MainFragmentModel(var context: Context) {
                 .flatMap {
                     beforeService.getStories(date)
                 }
-                .compose(transformer)
+                .bindUntilEvent(fragment, Lifecycle.Event.ON_DESTROY)
                 .compose(SchedulersUtil.applySchedulersIO())
                 .map { (date, stories) ->
                     //遍历，赋值时间
@@ -237,10 +234,9 @@ class MainFragmentModel(var context: Context) {
     /**
      * 更新为已读
      */
-    fun updateStory(story:StoryEntity,
-                    @NonNull transformer: LifecycleTransformer<Any>){
+    fun updateStory(story: StoryEntity) {
         Observable.just(story)
-                .compose(transformer)
+                .bindUntilEvent(fragment, Lifecycle.Event.ON_DESTROY)
                 .subscribeOn(Schedulers.newThread())
                 .unsubscribeOn(Schedulers.newThread())
                 .subscribe { mDatabaseHelper.updateStory(story) }

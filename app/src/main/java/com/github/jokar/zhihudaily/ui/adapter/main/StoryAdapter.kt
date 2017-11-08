@@ -1,5 +1,7 @@
 package com.github.jokar.zhihudaily.ui.adapter.main
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Color
 import android.support.percent.PercentFrameLayout
@@ -20,7 +22,6 @@ import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
 import com.github.jokar.zhihudaily.widget.viewpager.AutoScrollViewPager
 import com.rd.PageIndicatorView
-import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.functions.Consumer
 
 
@@ -29,9 +30,10 @@ import io.reactivex.functions.Consumer
  */
 class StoryAdapter(context: Context,
                    data: ArrayList<StoryEntity>,
-                   transformer: LifecycleTransformer<Any>,
+                   lifecycle: LifecycleOwner,
+                   event: Lifecycle.Event,
                    var topStories: ArrayList<TopStoryEntity>)
-    : LoadMoreAdapter<StoryEntity>(context, data, transformer) {
+    : LoadMoreAdapter<StoryEntity>(context, data, lifecycle, event) {
 
     var headClickListener: HeadClickListener? = null
 
@@ -68,7 +70,7 @@ class StoryAdapter(context: Context,
                         R.mipmap.image_small_default,
                         holder.image)
 
-                ViewUtils.viewClick(holder.percentFrameLayout, transformer,
+                ViewUtils.viewClick(holder.percentFrameLayout, lifecycle, event,
                         Consumer<Any> { itemClickListener?.itemClickListener(position) })
             }
         }
@@ -104,7 +106,7 @@ class StoryAdapter(context: Context,
             viewList.add(StoryAdapterItemView.createTopHeadStoryItemView(context))
         })
         //
-        var pagerAdapter: TopStoryAdapter? = TopStoryAdapter(context, viewList, transformer,
+        var pagerAdapter: TopStoryAdapter? = TopStoryAdapter(context, viewList,  lifecycle, event,
                 topStories)
         //点击事件
         pagerAdapter?.itemClickListener = object : AdapterItemClickListener {

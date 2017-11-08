@@ -1,12 +1,12 @@
 package com.github.jokar.zhihudaily.presenter
 
+import android.arch.lifecycle.LifecycleOwner
 import android.support.annotation.NonNull
 import com.github.jokar.zhihudaily.model.entities.theme.ThemeEntity
 import com.github.jokar.zhihudaily.model.event.ThemeModel
 import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.presenter.base.SingleDataViewCallBack
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
-import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
 
 /**
@@ -18,8 +18,8 @@ class ThemePresenter @Inject constructor(var model: ThemeModel?,
 
 
     fun getTheme(id: Int,
-                 @NonNull transformer: LifecycleTransformer<ThemeEntity>) {
-        model?.getTheme(id, transformer, SingleDataViewCallBack(view))
+                 @NonNull lifecycle: LifecycleOwner) {
+        model?.getTheme(id, lifecycle, SingleDataViewCallBack(view))
     }
 
     override fun destroy() {

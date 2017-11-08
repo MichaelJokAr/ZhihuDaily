@@ -15,7 +15,6 @@ import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.layout.CommonView
 import com.github.jokar.zhihudaily.ui.view.SettingView
 import com.github.jokar.zhihudaily.utils.system.JToast
-import com.trello.rxlifecycle2.android.ActivityEvent
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.common_toolbar.*
 import org.jetbrains.anko.*
@@ -54,7 +53,7 @@ class SettingActivity : BaseActivity(), SettingView {
                     gravity = Gravity.CENTER or Gravity.LEFT
                     setPadding(dip(18), 0, dip(18), 0)
                     onClick {
-                        presenter.clearImageCache(bindUntilEvent(ActivityEvent.DESTROY))
+                        presenter.clearImageCache()
                     }
                 }.lparams(width = matchParent, height = dip(48))
 
@@ -115,12 +114,13 @@ class SettingActivity : BaseActivity(), SettingView {
 
     override fun onWindowInitialized() {
         super.onWindowInitialized()
-        presenter.getImageCacheSize(bindUntilEvent(ActivityEvent.DESTROY))
+        presenter.getImageCacheSize(this)
     }
 
     override fun getPresent(): BasePresenter? {
         return presenter
     }
+
     /**
      * 显示图片缓存
      */

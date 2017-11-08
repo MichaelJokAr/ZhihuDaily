@@ -2,6 +2,7 @@ package com.github.jokar.zhihudaily.ui.fragment
 
 
 import android.app.Activity
+import android.arch.lifecycle.Lifecycle
 import android.content.Intent
 import android.graphics.Color
 import android.support.v4.widget.SwipeRefreshLayout
@@ -10,7 +11,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.jokar.zhihudaily.R
 import com.github.jokar.zhihudaily.model.entities.theme.ThemeEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateThemeEvent
@@ -25,9 +25,10 @@ import com.github.jokar.zhihudaily.utils.view.SwipeRefreshLayoutUtil
 import com.github.jokar.zhihudaily.widget.LazyFragment
 import com.github.jokar.zhihudaily.widget.LoadLayout
 import com.github.jokar.zhihudaily.widget.loadLayout
-import com.trello.rxlifecycle2.android.FragmentEvent
 import dagger.android.support.AndroidSupportInjection
-import org.jetbrains.anko.*
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.linearLayout
+import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.swipeRefreshLayout
@@ -67,9 +68,8 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
     override fun initViews(view: View) {
 
         RxBus.getInstance()
-                .toMainThreadObservable(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .subscribe {
-                    event ->
+                .toMainThreadObservable(this, Lifecycle.Event.ON_DESTROY)
+                .subscribe { event ->
                     if (event is UpdateThemeEvent) {
                         idValue = event.id
                         getData()
@@ -78,7 +78,7 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
     }
 
     fun getData() {
-        presenter.getTheme(idValue, bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+        presenter.getTheme(idValue, this)
     }
 
     override fun getDataStart() {
@@ -94,7 +94,7 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
     override fun loadData(data: ThemeEntity) {
         themeEntity = data.copy()
 
-        adapter = ThemeAdapter(context, bindUntilEvent(FragmentEvent.DESTROY_VIEW), themeEntity!!)
+        adapter = ThemeAdapter(this, Lifecycle.Event.ON_DESTROY, themeEntity!!)
         recyclerView?.adapter = adapter
         adapter?.clickListener = object : AdapterItemClickListener {
             override fun itemClickListener(position: Int) {

@@ -1,6 +1,9 @@
 package com.github.jokar.zhihudaily.model.rxbus
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
 import com.trello.rxlifecycle2.LifecycleTransformer
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.processors.FlowableProcessor
@@ -63,10 +66,10 @@ class RxBus {
      * *
      * @return
      */
-    fun toMainThreadObservable(lifecycleTransformer: LifecycleTransformer<Any>): Flowable<Any> {
+    fun toMainThreadObservable(lifecycle: LifecycleOwner, event: Lifecycle.Event): Flowable<Any> {
         return _bus
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.compose(lifecycleTransformer)
+                ?.bindUntilEvent(lifecycle, event)
                 ?.onBackpressureBuffer()!!
     }
 

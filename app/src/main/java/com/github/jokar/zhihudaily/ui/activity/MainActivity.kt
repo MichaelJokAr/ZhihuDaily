@@ -1,6 +1,7 @@
 package com.github.jokar.zhihudaily.ui.activity
 
 
+import android.arch.lifecycle.Lifecycle
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -26,7 +27,7 @@ import com.github.jokar.zhihudaily.ui.fragment.MainFragment
 import com.github.jokar.zhihudaily.ui.fragment.ThemeFragment
 import com.github.jokar.zhihudaily.ui.view.MainView
 import com.jakewharton.rxbinding2.view.RxMenuItem
-import com.trello.rxlifecycle2.android.ActivityEvent
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -69,11 +70,12 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
     override fun getPresent(): BasePresenter? {
         return presenter
     }
+
     /**
      * default theme
      */
     private fun setDefaultTheme() {
-        if(Aesthetic.isFirstTime()){
+        if (Aesthetic.isFirstTime()) {
             Aesthetic.get()
                     .activityTheme(R.style.AppTheme)
                     .colorPrimaryRes(R.color.colorPrimary)
@@ -97,13 +99,13 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
         val toggle = ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close)
-        drawerLayout?.setDrawerListener(toggle)
+        drawerLayout?.addDrawerListener(toggle)
         toggle.syncState()
         //
         pagerAdapter = ViewPagerAdapter(supportFragmentManager)
 
         RxBus.getInstance()
-                .toMainThreadObservable(bindUntilEvent(ActivityEvent.DESTROY))
+                .toMainThreadObservable(this, Lifecycle.Event.ON_DESTROY)
                 .subscribe { event ->
                     if (event is UpdateToolbarTitleEvent) {
                         toolbar.title = event.title
@@ -117,7 +119,7 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
 
         RxMenuItem.clicks(menu.getItem(0))
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .bindUntilEvent(this, Lifecycle.Event.ON_DESTROY)
                 .subscribe {
                     val intent = Intent(this, SettingActivity::class.java)
                     startActivity(intent)
@@ -128,13 +130,13 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
 
     override fun onWindowInitialized() {
         super.onWindowInitialized()
-        presenter.getThemes(bindUntilEvent(ActivityEvent.DESTROY))
+        presenter.getThemes(this)
     }
 
     override fun loadThemes(data: ArrayList<MainMenu>) {
         menuList = data
 
-        adapter = MainAdapter(this, bindUntilEvent(ActivityEvent.DESTROY),
+        adapter = MainAdapter(this, Lifecycle.Event.ON_DESTROY,
                 menuList!!)
         recyclerView?.adapter = adapter
         adapter?.adapterClickListener = object : MainAdapter.AdapterClickListener {
@@ -172,7 +174,7 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
 
         pagerAdapter?.addFragment(MainFragment(), "主页")
         pagerAdapter?.addFragment(ThemeFragment(), "主题")
-        
+
         viewPager?.adapter = pagerAdapter
 
     }

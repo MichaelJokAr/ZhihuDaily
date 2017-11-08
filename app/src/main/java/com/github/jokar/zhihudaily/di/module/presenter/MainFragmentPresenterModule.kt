@@ -14,7 +14,7 @@ class MainFragmentPresenterModule {
 
     @Provides
     fun modelProvider(fragment: MainFragment): MainFragmentModel {
-        return MainFragmentModel(fragment.context)
+        return MainFragmentModel(fragment)
     }
 
     @Provides
