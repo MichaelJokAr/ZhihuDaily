@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.View
 import android.widget.LinearLayout
 import com.github.jokar.zhihudaily.R
-import com.github.jokar.zhihudaily.widget.circleImageView
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.imageView
 import org.jetbrains.anko.linearLayout
 import org.jetbrains.anko.matchParent
 
@@ -19,7 +19,7 @@ object EditorAdapterItemView {
                 lparams(width = matchParent, height = dip(55))
                 orientation = LinearLayout.VERTICAL
                 setPadding(dip(5), dip(5), dip(5), dip(5))
-                circleImageView {
+                imageView {
                     id = R.id.image
                 }.lparams(width = matchParent, height = matchParent)
             }

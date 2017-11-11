@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.extension.load
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
@@ -65,10 +66,7 @@ class StoryAdapter(context: Context,
             2, 3 -> {
                 var holder: ViewHolder = viewHolder as ViewHolder
                 holder.tvTitle.text = storyEntities.title
-                ImageLoader.loadImage(context,
-                        storyEntities.images!![0],
-                        R.mipmap.image_small_default,
-                        holder.image)
+                holder.image.load(storyEntities.images?.get(0))
 
                 ViewUtils.viewClick(holder.percentFrameLayout, lifecycle, event,
                         Consumer<Any> { itemClickListener?.itemClickListener(position) })
@@ -106,7 +104,7 @@ class StoryAdapter(context: Context,
             viewList.add(StoryAdapterItemView.createTopHeadStoryItemView(context))
         })
         //
-        var pagerAdapter: TopStoryAdapter? = TopStoryAdapter(context, viewList,  lifecycle, event,
+        var pagerAdapter: TopStoryAdapter? = TopStoryAdapter(context, viewList, lifecycle, event,
                 topStories)
         //点击事件
         pagerAdapter?.itemClickListener = object : AdapterItemClickListener {

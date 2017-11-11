@@ -18,62 +18,6 @@ import com.github.jokar.zhihudaily.widget.CircleImageView
  */
 object ImageLoader {
 
-    /**
-     * 加载图片
-     * @param context
-     * @param url
-     * @param defaultImage
-     * @param imageView
-     */
-    fun loadImage(context: Context,
-                  url: String,
-                  defaultImage: Int,
-                  imageView: ImageView?) {
-        if (imageView != null) {
-
-            GlideApp.with(context)
-                    .load(url)
-                    .placeholder(defaultImage)
-                    .error(defaultImage)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imageView)
-        }
-    }
-
-    /**
-     * 加载图片
-     * @param context
-     * @param url
-     * @param defaultImage
-     * @param imageView
-     */
-    fun loadImage(context: Context,
-                  url: String,
-                  defaultImage: Int,
-                  imageView: CircleImageView) {
-
-        GlideApp.with(context)
-                .load(url)
-                .placeholder(defaultImage)
-                .error(defaultImage)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?,
-                                              target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        return false
-                    }
-
-                    override fun onResourceReady(resource: Drawable?, model: Any?,
-                                                 target: Target<Drawable>?, dataSource: DataSource?,
-                                                 isFirstResource: Boolean): Boolean {
-                        imageView.setImageDrawable(resource)
-                        return true
-                    }
-
-                })
-                .into(imageView)
-
-    }
 
     /**
      * 清除

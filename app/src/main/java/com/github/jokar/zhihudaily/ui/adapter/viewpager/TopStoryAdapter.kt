@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.extension.load
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
@@ -29,10 +30,8 @@ class TopStoryAdapter(var context: Context,
         val view = viewList[position]
         var image: ImageView = view.findViewById(R.id.image)
 
-        ImageLoader.loadImage(context,
-                topStories[position].image,
-                R.mipmap.image_small_default,
-                image)
+        image.load(topStories[position].image)
+        //
         ViewUtils.viewClick(image, lifecycle, event,
                 Consumer<Any> {
                     itemClickListener?.itemClickListener(position)

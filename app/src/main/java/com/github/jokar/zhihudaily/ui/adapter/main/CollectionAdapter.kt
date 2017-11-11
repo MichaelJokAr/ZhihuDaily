@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.extension.load
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
 import com.github.jokar.zhihudaily.ui.layout.ThemeAdapterItemView
-import com.github.jokar.zhihudaily.utils.image.ImageLoader
 
 /**
  * Created by JokAr on 2017/7/4.
@@ -66,10 +66,7 @@ class CollectionAdapter(var activity: AppCompatActivity,
 
 
     private fun loadImage(imageView: ImageView, url: String) {
-        ImageLoader.loadImage(activity,
-                url,
-                R.mipmap.image_small_default,
-                imageView)
+        imageView.load(url)
     }
 
     private fun setTitle(tvTitle: TextView, title: String?) {

@@ -4,13 +4,13 @@ import android.arch.lifecycle.Lifecycle
 import android.content.Context
 import android.support.percent.PercentFrameLayout
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.extension.load
 import com.github.jokar.zhihudaily.model.entities.theme.ThemeEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
@@ -109,11 +109,8 @@ class ThemeAdapter(var fragment: Fragment,
         setTitle(holder.tvTiTle, data.description)
     }
 
-    fun loadImage(imageView: ImageView, url: String) {
-        ImageLoader.loadImage(fragment.context,
-                url,
-                R.mipmap.image_small_default,
-                imageView)
+    private fun loadImage(imageView: ImageView, url: String) {
+        imageView.load(url)
     }
 
     fun setTitle(tvTitle: TextView, title: String) {

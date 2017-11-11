@@ -3,16 +3,16 @@ package com.github.jokar.zhihudaily.ui.adapter.main
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
-import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.extension.loadCircle
 import com.github.jokar.zhihudaily.model.entities.theme.EditorEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.layout.EditorAdapterItemView
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.github.jokar.zhihudaily.widget.CircleImageView
 
 /**
  * Created by JokAr on 2017/7/4.
@@ -33,12 +33,7 @@ class EditorAdapter(var context: Context,
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
         val url = editors?.get(position)?.avatar
-        if (!TextUtils.isEmpty(url)) {
-            ImageLoader.loadImage(context,
-                    url!!,
-                    R.mipmap.image_small_default,
-                    viewHolder.image)
-        }
+        viewHolder.image.loadCircle(url)
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -47,6 +42,6 @@ class EditorAdapter(var context: Context,
     }
 
     inner class ViewHolder(itemView: View, context: Context) : BaseViewHolder(itemView, context) {
-        var image: CircleImageView = find(R.id.image)
+        var image: ImageView = find(R.id.image)
     }
 }

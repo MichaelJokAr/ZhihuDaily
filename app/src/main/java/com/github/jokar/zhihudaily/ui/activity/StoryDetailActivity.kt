@@ -5,6 +5,7 @@ import android.support.v4.widget.NestedScrollView
 import android.text.TextUtils
 import android.view.View
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.extension.load
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateCollectionEvent
@@ -121,10 +122,7 @@ class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         runOnUiThread({
             data = result
             if (!TextUtils.isEmpty(data?.image)) {
-                ImageLoader.loadImage(this,
-                        data?.image!!,
-                        R.mipmap.image_small_default,
-                        image)
+                image.load(data?.image)
                 tvAuthor?.text = data?.image_source
                 tvTiTle?.text = data?.title
             } else {
