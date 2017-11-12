@@ -11,10 +11,8 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.github.jokar.zhihudaily.R
+import com.github.jokar.zhihudaily.utils.extension.click
 import com.github.jokar.zhihudaily.widget.recyclerView.RecyclerOnScrollListener
-import com.jakewharton.rxbinding2.view.RxView
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -99,15 +97,12 @@ abstract class LoadMoreAdapter<T>(var context: Context,
 
     final override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
         if (getItemViewType(position) == TYPE_FOOT_VIEW) {
-            RxView.clicks(mFootViewHolder?.llFoot!!)
-                    .bindUntilEvent(lifecycle, event)
-                    .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe { _ ->
-                        if (itemClickListener != null) {
-                            mFootViewHolder?.showProgress()
-                            itemClickListener?.footViewClick()
-                        }
-                    }
+            mFootViewHolder?.llFoot?.click(lifecycle, event) {
+                if (itemClickListener != null) {
+                    mFootViewHolder?.showProgress()
+                    itemClickListener?.footViewClick()
+                }
+            }
 
         } else {
             bindView(viewHolder, position)

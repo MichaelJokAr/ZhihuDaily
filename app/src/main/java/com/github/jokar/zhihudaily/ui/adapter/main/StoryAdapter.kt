@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.github.jokar.zhihudaily.R
-import com.github.jokar.zhihudaily.extension.load
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
@@ -19,11 +18,11 @@ import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.adapter.base.LoadMoreAdapter
 import com.github.jokar.zhihudaily.ui.adapter.viewpager.TopStoryAdapter
 import com.github.jokar.zhihudaily.ui.layout.StoryAdapterItemView
+import com.github.jokar.zhihudaily.utils.extension.click
+import com.github.jokar.zhihudaily.utils.extension.load
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
 import com.github.jokar.zhihudaily.widget.viewpager.AutoScrollViewPager
 import com.rd.PageIndicatorView
-import io.reactivex.functions.Consumer
 
 
 /**
@@ -68,8 +67,9 @@ class StoryAdapter(context: Context,
                 holder.tvTitle.text = storyEntities.title
                 holder.image.load(storyEntities.images?.get(0))
 
-                ViewUtils.viewClick(holder.percentFrameLayout, lifecycle, event,
-                        Consumer<Any> { itemClickListener?.itemClickListener(position) })
+                holder.percentFrameLayout.click(lifecycle, event) {
+                    itemClickListener?.itemClickListener(position)
+                }
             }
         }
     }

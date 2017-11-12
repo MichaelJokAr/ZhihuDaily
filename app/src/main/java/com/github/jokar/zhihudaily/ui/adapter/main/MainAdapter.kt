@@ -1,7 +1,6 @@
 package com.github.jokar.zhihudaily.ui.adapter.main
 
 import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
@@ -13,9 +12,7 @@ import com.github.jokar.zhihudaily.model.entities.MainMenu
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
 import com.github.jokar.zhihudaily.ui.layout.MainAdapterItemView
-import com.jakewharton.rxbinding2.view.RxView
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
-import java.util.concurrent.TimeUnit
+import com.github.jokar.zhihudaily.utils.extension.click
 
 /**
  * Created by JokAr on 2017/6/19.
@@ -62,20 +59,14 @@ class MainAdapter(var activity: AppCompatActivity,
                 }
             }
 
-            RxView.clicks(viewHolder.itemView)
-                    .bindUntilEvent(lifecycle, event)
-                    .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe({
-                        adapterClickListener?.itemClickListener(position)
-                    })
+            viewHolder.itemView.click(lifecycle, event) {
+                adapterClickListener?.itemClickListener(position)
+            }
         } else {
             var holder: HeadHolder = viewHolder as HeadHolder
-            RxView.clicks(holder.tvCollection)
-                    .bindUntilEvent(lifecycle, event)
-                    .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe({
-                        adapterClickListener?.collectionClick()
-                    })
+            holder.tvCollection.click(lifecycle, event) {
+                adapterClickListener?.collectionClick()
+            }
         }
     }
 

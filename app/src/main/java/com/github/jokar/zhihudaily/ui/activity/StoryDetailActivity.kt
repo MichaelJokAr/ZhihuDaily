@@ -5,13 +5,13 @@ import android.support.v4.widget.NestedScrollView
 import android.text.TextUtils
 import android.view.View
 import com.github.jokar.zhihudaily.R
-import com.github.jokar.zhihudaily.extension.load
 import com.github.jokar.zhihudaily.model.entities.story.StoryEntity
 import com.github.jokar.zhihudaily.model.rxbus.RxBus
 import com.github.jokar.zhihudaily.model.rxbus.event.UpdateCollectionEvent
 import com.github.jokar.zhihudaily.presenter.StoryDetailPresenter
 import com.github.jokar.zhihudaily.presenter.base.BasePresenter
 import com.github.jokar.zhihudaily.ui.view.common.SingleDataView
+import com.github.jokar.zhihudaily.utils.extension.load
 import com.github.jokar.zhihudaily.utils.image.ImageLoader
 import com.like.LikeButton
 import com.like.OnLikeListener

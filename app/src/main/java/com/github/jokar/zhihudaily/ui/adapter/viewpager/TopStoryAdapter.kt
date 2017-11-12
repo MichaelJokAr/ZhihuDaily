@@ -8,12 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
-import com.github.jokar.zhihudaily.extension.load
 import com.github.jokar.zhihudaily.model.entities.story.TopStoryEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.AdapterItemClickListener
-import com.github.jokar.zhihudaily.utils.image.ImageLoader
-import com.github.jokar.zhihudaily.utils.rxjava.ViewUtils
-import io.reactivex.functions.Consumer
+import com.github.jokar.zhihudaily.utils.extension.click
+import com.github.jokar.zhihudaily.utils.extension.load
 
 
 /**
@@ -32,10 +30,9 @@ class TopStoryAdapter(var context: Context,
 
         image.load(topStories[position].image)
         //
-        ViewUtils.viewClick(image, lifecycle, event,
-                Consumer<Any> {
-                    itemClickListener?.itemClickListener(position)
-                })
+        image.click(lifecycle, event) {
+            itemClickListener?.itemClickListener(position)
+        }
         collection.addView(view)
         return view
     }

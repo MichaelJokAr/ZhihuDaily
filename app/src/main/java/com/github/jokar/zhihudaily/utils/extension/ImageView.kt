@@ -1,4 +1,4 @@
-package com.github.jokar.zhihudaily.extension
+package com.github.jokar.zhihudaily.utils.extension
 
 import android.content.Context
 import android.graphics.Bitmap

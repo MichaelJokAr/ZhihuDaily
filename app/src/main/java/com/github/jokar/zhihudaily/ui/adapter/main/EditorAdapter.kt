@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.github.jokar.zhihudaily.R
-import com.github.jokar.zhihudaily.extension.loadCircle
+import com.github.jokar.zhihudaily.utils.extension.loadCircle
 import com.github.jokar.zhihudaily.model.entities.theme.EditorEntity
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseRecyclerAdapter
 import com.github.jokar.zhihudaily.ui.adapter.base.BaseViewHolder
