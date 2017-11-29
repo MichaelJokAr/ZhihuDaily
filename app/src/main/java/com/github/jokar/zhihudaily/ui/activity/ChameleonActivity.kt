@@ -1,5 +1,7 @@
 package com.github.jokar.zhihudaily.ui.activity
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -20,6 +22,12 @@ import kotlinx.android.synthetic.main.common_toolbar.*
  */
 class ChameleonActivity : BaseActivity(), View.OnClickListener {
 
+    companion object {
+        fun enter(context: Context) {
+            val intent = Intent(context, ChameleonActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     var chooseViewRes = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +75,7 @@ class ChameleonActivity : BaseActivity(), View.OnClickListener {
                 setDefaultChooseTheme(colorView_grassGreen)
             }
             colorView_hatsune.colorValue -> {
-               setDefaultChooseTheme(colorView_hatsune)
+                setDefaultChooseTheme(colorView_hatsune)
             }
             colorView_lightBlue.colorValue -> {
                 setDefaultChooseTheme(colorView_lightBlue)
@@ -82,7 +90,7 @@ class ChameleonActivity : BaseActivity(), View.OnClickListener {
                 setDefaultChooseTheme(colorView_purple)
             }
             colorView_purpleRed.colorValue -> {
-               setDefaultChooseTheme(colorView_purpleRed)
+                setDefaultChooseTheme(colorView_purpleRed)
             }
             colorView_defaultColor.colorValue -> {
                 setDefaultChooseTheme(colorView_defaultColor)
@@ -118,7 +126,7 @@ class ChameleonActivity : BaseActivity(), View.OnClickListener {
         chooseViewRes = view.id
     }
 
-    private fun setDefaultChooseTheme(colorIndicatorView: ColorIndicatorView){
+    private fun setDefaultChooseTheme(colorIndicatorView: ColorIndicatorView) {
         colorIndicatorView.setShowCheck(true)
         chooseViewRes = colorIndicatorView.id
     }

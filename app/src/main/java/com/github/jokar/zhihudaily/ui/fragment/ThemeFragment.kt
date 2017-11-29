@@ -3,7 +3,6 @@ package com.github.jokar.zhihudaily.ui.fragment
 
 import android.app.Activity
 import android.arch.lifecycle.Lifecycle
-import android.content.Intent
 import android.graphics.Color
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -100,9 +99,7 @@ class ThemeFragment : LazyFragment(), SingleDataView<ThemeEntity> {
             override fun itemClickListener(position: Int) {
                 super.itemClickListener(position)
                 //跳转详情页
-                var intent = Intent(activity, StoryDetailActivity::class.java)
-                intent.putExtra("id", themeEntity!!.stories[position].id)
-                startActivity(intent)
+                StoryDetailActivity.enter(context, themeEntity!!.stories[position].id)
             }
         }
 

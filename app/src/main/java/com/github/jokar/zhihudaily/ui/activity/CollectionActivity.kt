@@ -1,6 +1,7 @@
 package com.github.jokar.zhihudaily.ui.activity
 
 import android.arch.lifecycle.Lifecycle
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -39,6 +40,13 @@ import javax.inject.Inject
  * Created by JokAr on 2017/7/4.
  */
 class CollectionActivity : BaseActivity(), ListDataView<StoryEntity> {
+
+    companion object {
+        fun enter(context: Context) {
+            val intent = Intent(context, CollectionActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     @Inject
     lateinit var presenter: CollectionPresenter

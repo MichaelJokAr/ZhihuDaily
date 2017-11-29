@@ -1,5 +1,6 @@
 package com.github.jokar.zhihudaily.ui.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -26,6 +27,13 @@ import javax.inject.Inject
  * Created by JokAr on 2017/7/4.
  */
 class SettingActivity : BaseActivity(), SettingView {
+
+    companion object {
+        fun enter(context: Context) {
+            val intent = Intent(context, SettingActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     @Inject
     lateinit var presenter: SettingPresenter
@@ -84,7 +92,7 @@ class SettingActivity : BaseActivity(), SettingView {
                     setPadding(dip(18), 0, dip(18), 0)
                     onClick {
                         //跳转关于页面
-                        startActivity(Intent(this@SettingActivity, AboutActivity::class.java))
+                        AboutActivity.enter(this@SettingActivity)
                     }
                 }.lparams(width = matchParent, height = dip(48))
 
@@ -102,7 +110,7 @@ class SettingActivity : BaseActivity(), SettingView {
                     setPadding(dip(18), 0, dip(18), 0)
                     onClick {
                         //跳转变色龙页面
-                        startActivity(Intent(this@SettingActivity, ChameleonActivity::class.java))
+                        ChameleonActivity.enter(this@SettingActivity)
                     }
                 }.lparams(width = matchParent, height = dip(48))
 

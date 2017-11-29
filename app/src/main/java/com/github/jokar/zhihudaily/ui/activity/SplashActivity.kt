@@ -78,7 +78,7 @@ class SplashActivity : BaseActivity() {
 
             override fun onAnimationEnd(animation: Animation) {
                 //动画结束进入MainActivity
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                MainActivity.enter(this@SplashActivity)
                 finish()
             }
 

@@ -1,7 +1,5 @@
 package com.github.jokar.zhihudaily.app
 
-import android.app.Activity
-import android.app.Application
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
 import com.github.jokar.zhihudaily.BuildConfig
@@ -11,26 +9,19 @@ import com.github.jokar.zhihudaily.di.component.network.NetworkComponent
 import com.github.jokar.zhihudaily.di.module.NetworkModule
 import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import javax.inject.Inject
+import dagger.android.support.DaggerApplication
 
 /**
  * Created by JokAr on 2017/6/14.
  */
-class MyApplication : Application(), HasActivityInjector {
+class MyApplication : DaggerApplication(), HasActivityInjector {
 
-
-    @Inject
-    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
-
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return dispatchingActivityInjector
-    }
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
+            DaggerAppComponent.builder().application(this).build()
 
     companion object {
-
-        var NETCOMPONENT: NetworkComponent? = null
+        private var NETCOMPONENT: NetworkComponent? = null
 
         fun getNetComponent(): NetworkComponent {
             if (NETCOMPONENT == null) {
@@ -50,9 +41,6 @@ class MyApplication : Application(), HasActivityInjector {
             return
         }
         LeakCanary.install(this)
-
-        DaggerAppComponent.create()
-                .inject(this)
 
         //初始化xLog
         XLog.init(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE)

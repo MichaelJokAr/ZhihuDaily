@@ -2,7 +2,6 @@ package com.github.jokar.zhihudaily.ui.fragment
 
 import android.app.Activity
 import android.arch.lifecycle.Lifecycle
-import android.content.Intent
 import android.graphics.Color
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -110,9 +109,7 @@ class MainFragment : LazyFragment(), StoryView {
                 adapter?.headClickListener = object : StoryAdapter.HeadClickListener {
                     override fun itemClick(position: Int) {
                         //跳转详情页
-                        var intent = Intent(activity, StoryDetailActivity::class.java)
-                        intent.putExtra("id", data.top_stories!![position].id)
-                        startActivity(intent)
+                        StoryDetailActivity.enter(context, data.top_stories!![position].id)
                     }
                 }
                 adapter?.itemClickListener = object : LoadMoreAdapterItemClickListener {
@@ -130,9 +127,7 @@ class MainFragment : LazyFragment(), StoryView {
                             adapter?.notifyItemChanged(position)
                         }
                         //跳转详情页
-                        var intent = Intent(activity, StoryDetailActivity::class.java)
-                        intent.putExtra("id", arrayList!![position].id)
-                        startActivity(intent)
+                        StoryDetailActivity.enter(context, arrayList!![position].id)
                     }
 
                     override fun loadMore() {

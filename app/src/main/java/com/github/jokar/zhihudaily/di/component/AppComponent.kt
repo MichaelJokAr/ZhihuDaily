@@ -1,14 +1,13 @@
 package com.github.jokar.zhihudaily.di.component
 
+import android.app.Application
 import com.github.jokar.zhihudaily.app.MyApplication
 import com.github.jokar.zhihudaily.di.module.AppModule
-import com.github.jokar.zhihudaily.di.module.activity.CollectionActivityModule
-import com.github.jokar.zhihudaily.di.module.activity.MainActivityModule
-import com.github.jokar.zhihudaily.di.module.activity.SettingActivityModule
-import com.github.jokar.zhihudaily.di.module.activity.StoryDetailActivityModule
-import com.github.jokar.zhihudaily.di.module.fragment.MainFragmentModule
-import com.github.jokar.zhihudaily.di.module.fragment.ThemeFragmentModule
+import com.github.jokar.zhihudaily.di.module.activity.ActivityModule
+import com.github.jokar.zhihudaily.di.module.activity.FragmentModule
+import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 
 
@@ -18,13 +17,19 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Component(modules = arrayOf(
         AndroidSupportInjectionModule::class,
         AppModule::class,
-        MainActivityModule::class,
-        MainFragmentModule::class,
-        StoryDetailActivityModule::class,
-        ThemeFragmentModule::class,
-        CollectionActivityModule::class,
-        SettingActivityModule::class
+        FragmentModule::class,
+        ActivityModule::class
 ))
-interface AppComponent {
-    fun inject(application: MyApplication)
+interface AppComponent : AndroidInjector<MyApplication> {
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): AppComponent.Builder
+
+        fun build(): AppComponent
+    }
+
+    override fun inject(application: MyApplication)
+
 }

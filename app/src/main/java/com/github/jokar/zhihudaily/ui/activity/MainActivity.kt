@@ -2,6 +2,7 @@ package com.github.jokar.zhihudaily.ui.activity
 
 
 import android.arch.lifecycle.Lifecycle
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -40,6 +41,13 @@ import javax.inject.Inject
 
 
 class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
+    companion object {
+        fun enter(context: Context) {
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
+
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
@@ -121,8 +129,7 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .bindUntilEvent(this, Lifecycle.Event.ON_DESTROY)
                 .subscribe {
-                    val intent = Intent(this, SettingActivity::class.java)
-                    startActivity(intent)
+                    SettingActivity.enter(this@MainActivity)
                 }
 
         return super.onCreateOptionsMenu(menu)
@@ -167,8 +174,7 @@ class MainActivity : BaseActivity(), MainView, HasSupportFragmentInjector {
 
             override fun collectionClick() {
                 closeDrawaer()
-                var intent = Intent(this@MainActivity, CollectionActivity::class.java)
-                startActivity(intent)
+                CollectionActivity.enter(this@MainActivity)
             }
         }
 

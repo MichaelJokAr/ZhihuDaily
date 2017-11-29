@@ -1,5 +1,7 @@
 package com.github.jokar.zhihudaily.ui.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.view.View
@@ -17,6 +19,14 @@ import org.jetbrains.anko.matchParent
  * Created by JokAr on 2017/7/4.
  */
 class AboutActivity : BaseActivity() {
+
+    companion object {
+        fun enter(context: Context) {
+            val intent = Intent(context, AboutActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
+
     var linearLayout: LinearLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

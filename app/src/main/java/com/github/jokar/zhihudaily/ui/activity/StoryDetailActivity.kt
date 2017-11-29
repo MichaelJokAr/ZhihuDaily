@@ -1,5 +1,7 @@
 package com.github.jokar.zhihudaily.ui.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
 import android.text.TextUtils
@@ -26,6 +28,16 @@ import javax.inject.Inject
  */
 class StoryDetailActivity : BaseActivity(), SingleDataView<StoryEntity>,
         NestedScrollView.OnScrollChangeListener {
+
+
+    companion object {
+        fun enter(context: Context, id: Int) {
+            val intent = Intent(context, StoryDetailActivity::class.java)
+            intent.putExtra("id", id)
+            context.startActivity(intent)
+        }
+    }
+
 
     @Inject
     lateinit var presenter: StoryDetailPresenter
